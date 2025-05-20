@@ -5,7 +5,7 @@
       "use": "@vercel/static-build",
       "config": {
         "distDir": ".next",
-        "nodeVersion": "22.x",
+        "nodeVersion": "18.x",
         "installCommand": "pnpm install --frozen-lockfile"
       }
     }
