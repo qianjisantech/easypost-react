@@ -1,18 +1,15 @@
 {
+  "version": 2,
   "builds": [
     {
       "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": ".next",
-        "nodeVersion": "18.x",
-        "installCommand": "pnpm install --frozen-lockfile"
-      }
+      "use": "@vercel/next"
     }
   ],
   "routes": [
     {
-      "handle": "filesystem"
+      "src": "/(.*)",
+      "dest": "/"
     }
   ]
 }
