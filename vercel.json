@@ -1,0 +1,18 @@
+{
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": ".next",
+        "nodeVersion": "22.x",
+        "installCommand": "pnpm install --frozen-lockfile"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "handle": "filesystem"
+    }
+  ]
+}
