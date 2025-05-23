@@ -49,21 +49,10 @@ export const RunResponse: React.FC<RunResponseProps> = ({
     [actualRequest?.body]
   );
   useEffect(() => {
-    console.log('RunResponse value', value)
-  }, [value]);
-  // 处理响应数据
-  useEffect(() => {
-    try {
-      if (typeof value === 'object') {
-        setBody(JSON.stringify(value, null, 2));
-      } else {
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        setBody(value || '');
+    console.log('接口返回的数据为-------', value.values.data)
+      if(value.values.data){
+          setBody(JSON.stringify(value.values.data, null, 2))
       }
-    } catch (error) {
-      console.error('Error parsing response data:', error);
-      setBody('Invalid response data');
-    }
   }, [value]);
 
   // 拖拽逻辑

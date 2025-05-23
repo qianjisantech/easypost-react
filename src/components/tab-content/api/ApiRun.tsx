@@ -497,7 +497,7 @@ export function ApiRun({ activeKey }: { activeKey: string }) {
         ...allHeaders,
         ...easypostHeaders,
       },
-      baseURL: '/proxy/v1/request',
+      baseURL: '/proxy/api/v1/request',
     };
     console.log('values.parameters?.payload?.type', values.parameters?.payload?.type)
     switch (values.parameters?.payload?.type){
