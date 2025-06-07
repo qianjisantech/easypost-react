@@ -70,21 +70,23 @@ export function Schema() {
               id: menuItemId,
               name: menuName,
               type: MenuItemType.ApiSchema,
-              data: values
+              data: values,
             })
 
-            addTabItem({
-              key: menuItemId,
-              label: menuName,
-              contentType: MenuItemType.ApiSchema
-            }, { replaceTab: tabData.key })
+            addTabItem(
+              {
+                key: menuItemId,
+                label: menuName,
+                contentType: MenuItemType.ApiSchema,
+              },
+              { replaceTab: tabData.key }
+            )
           } else {
             updateMenuItem({
               id: tabData.key,
               name: menuName,
-              data: values
+              data: values,
             })
-
           }
         }}
         onValuesChange={(changedValues: ApiSchemaForm) => {

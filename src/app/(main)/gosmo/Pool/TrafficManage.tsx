@@ -1,9 +1,8 @@
 'use client'
 
-import type React from 'react'
-import { useState } from 'react'
+import type React, { useState } from 'react'
 import JsonView from 'react18-json-view'
-import dayjs from 'dayjs';
+
 import {
   Button,
   Card,
@@ -19,8 +18,10 @@ import {
   Table,
   Tag,
 } from 'antd'
+import type { ColumnsType } from 'antd/es/table'
+import dayjs from 'dayjs'
+
 import { TrafficDetail, TrafficQueryPage } from '@/api/gosmo/trafficmanage'
-import { ColumnsType } from "antd/es/table";
 
 interface DataType {
   id: string
@@ -50,8 +51,8 @@ export default function TrafficManage() {
   })
   const [viewModalVisible, setViewModalVisible] = useState(false)
   const [currentRecord, setCurrentRecord] = useState<DataType | null>(null)
-  const [formattedDates, setFormattedDates] = useState<[string, string]>(['', '']);
-  const [expandedRowKeys, setExpandedRowKeys] = useState<React.Key[]>([]);
+  const [formattedDates, setFormattedDates] = useState<[string, string]>(['', ''])
+  const [expandedRowKeys, setExpandedRowKeys] = useState<React.Key[]>([])
   // 获取接口详情
   const fetchDetail = async (id: string) => {
     try {
@@ -66,9 +67,7 @@ export default function TrafficManage() {
       throw new Error('获取详情失败，请重试')
     }
   }
- const handleCreateReplayTask = async () => {
-
- }
+  const handleCreateReplayTask = async () => {}
   const handleSearch = () => {
     form.validateFields().then((values) => {
       setExpandedRowKeys([])
@@ -124,9 +123,7 @@ export default function TrafficManage() {
 
         // 更新当前行的 details 字段
         setData((prevData) =>
-          prevData.map((item) =>
-            item.id === record.id ? { ...item, details: detail } : item
-          )
+          prevData.map((item) => (item.id === record.id ? { ...item, details: detail } : item))
         )
       } catch (error) {
         // 如果获取详情失败，设置默认值
@@ -134,18 +131,18 @@ export default function TrafficManage() {
           prevData.map((item) =>
             item.id === record.id
               ? {
-                ...item,
-                details: {
-                  id: '-',
-                  taskId: '-',
-                  url: '-',
-                  body: '-',
-                  headers: [],
-                  response: '-',
-                  recordTime: '-',
-                  status: 0,
-                },
-              }
+                  ...item,
+                  details: {
+                    id: '-',
+                    taskId: '-',
+                    url: '-',
+                    body: '-',
+                    headers: [],
+                    response: '-',
+                    recordTime: '-',
+                    status: 0,
+                  },
+                }
               : item
           )
         )
@@ -165,7 +162,6 @@ export default function TrafficManage() {
     }
     return (
       <Descriptions size="small" title="接口详情">
-
         <Descriptions.Item label="接口URL">{record.details.url}</Descriptions.Item>
         <Descriptions.Item label="请求头">
           <Table
@@ -201,11 +197,7 @@ export default function TrafficManage() {
       title: '请求方式',
       dataIndex: 'method',
       key: 'method',
-      render: (method: string) => (
-        <Tag color={'blue'}>
-          {method}
-        </Tag>
-      ),
+      render: (method: string) => <Tag color={'blue'}>{method}</Tag>,
     },
     {
       title: '请求状态',
@@ -259,13 +251,17 @@ export default function TrafficManage() {
         {/*  <RangePicker showTime />*/}
         {/*</Form.Item>*/}
         <Form style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Form.Item >
+          <Form.Item>
             <Space>
               <Button type="primary" onClick={handleSearch}>
                 查询
               </Button>
               <Button onClick={handleReset}>重置</Button>
-              <Button onClick={handleCreateReplayTask} disabled={selectedRowKeys.length === 0} type="primary">
+              <Button
+                disabled={selectedRowKeys.length === 0}
+                type="primary"
+                onClick={handleCreateReplayTask}
+              >
                 创建回放任务
               </Button>
             </Space>
@@ -281,15 +277,14 @@ export default function TrafficManage() {
         expandable={{
           expandedRowKeys,
           expandedRowRender: renderExpandedRow,
-          onExpand: (expanded:boolean, record:DataType) => {
+          onExpand: (expanded: boolean, record: DataType) => {
             if (expanded) {
-
-              setExpandedRowKeys([record.id]); // 展开当前行
+              setExpandedRowKeys([record.id]) // 展开当前行
             } else {
               setExpandedRowKeys([]) // 关闭当前行
             }
             handleExpand(expanded, record)
-          }
+          },
         }}
         loading={loading.table}
         pagination={{

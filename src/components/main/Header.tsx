@@ -3,15 +3,18 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import {
   AppstoreOutlined,
-  BellOutlined, CodeOutlined, GithubOutlined, GitlabOutlined,
+  BellOutlined,
+  CodeOutlined,
+  GithubOutlined,
+  GitlabOutlined,
   HomeOutlined,
   LoadingOutlined,
   MailOutlined,
   ReloadOutlined,
   SettingOutlined,
-  UserOutlined
-} from "@ant-design/icons";
-import { Avatar, Button, Dropdown, Menu, message, Modal, Space, Spin, Tooltip } from "antd";
+  UserOutlined,
+} from '@ant-design/icons'
+import { Avatar, Button, Dropdown, Menu, message, Modal, Space, Spin, Tooltip } from 'antd'
 
 import { ROUTES } from '@/utils/routes'
 
@@ -81,18 +84,18 @@ const HeaderPage = () => {
   )
   // 处理代码仓库菜单点击
   const handleCodeRepoClick = ({ key }) => {
-    switch(key) {
+    switch (key) {
       case 'github':
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        window.open('https://github.com/qianjisantech/easypost', '_blank');
+        window.open('https://github.com/qianjisantech/easypost', '_blank')
         break
       case 'gitee':
-        window.open('https://gitee.com/xiaoyuanyuan-rush_admin/easypost', '_blank');
+        window.open('https://gitee.com/xiaoyuanyuan-rush_admin/easypost', '_blank')
         break
       default:
-        message.info(`已选择 ${key}`);
+        message.info(`已选择 ${key}`)
     }
-  };
+  }
   const CodeRepositoryMenu = (
     <Menu onClick={handleCodeRepoClick}>
       <Menu.Item key="github" icon={<GithubOutlined />}>

@@ -14,14 +14,14 @@ const EmailLogin = (p: { password: string; email: string }) => {
   const [isPending, startTransition] = useTransition()
   const [loading, setLoading] = useState(false) // 登录按钮加载状态
   const [countdown, setCountdown] = useState(0)
-  const { messageApi, isLogin, setIsLogin,setNeedSetPassword } = useGlobalContext()
+  const { messageApi, isLogin, setIsLogin, setNeedSetPassword } = useGlobalContext()
 
   // 发送验证码
   const handleSendCode = async () => {
     if (loading || countdown > 0) {
       return
     } // 防止重复点击
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+
     const response = await EmailSendCode({ email })
     if (response?.data?.success) {
       setCodeLoading(true)
@@ -48,14 +48,13 @@ const EmailLogin = (p: { password: string; email: string }) => {
     }
     setLoading(true)
     try {
-
       const response = await RegisterByEmail({ email, code })
       if (response?.data?.success) {
         const token = response.data?.data.accessToken
         localStorage.setItem('accessToken', token)
         setIsLogin(true)
         messageApi.success(response.data?.message)
-        if (response.data.data.needSetPassword){
+        if (response.data.data.needSetPassword) {
           setNeedSetPassword(true)
         }
       }
@@ -75,11 +74,8 @@ const EmailLogin = (p: { password: string; email: string }) => {
     try {
       let response
       if (isCodeLogin) {
-
         // 这里可以调用验证码登录 API
       } else {
-
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         response = await LoginByEmail({ email, password })
       }
 

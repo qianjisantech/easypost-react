@@ -10,15 +10,15 @@ export async function parseEnvironmentSets(codeString) {
       const mockPm = {
         environment: {
           sets: [],
-          set: function(name, value) {
-            this.sets.push({ name, value });
+          set: function (name, value) {
+            this.sets.push({ name, value })
           },
-          get: function(name) {
-            const found = this.sets.find(item => item.name === name);
-            return found ? found.value : undefined;
-          }
-        }
-      };
+          get: function (name) {
+            const found = this.sets.find((item) => item.name === name)
+            return found ? found.value : undefined
+          },
+        },
+      }
 
       // 执行代码字符串
       const wrappedCode = `
@@ -26,17 +26,17 @@ export async function parseEnvironmentSets(codeString) {
           ${codeString}
           return pm.environment.sets;
         })({ environment: ${JSON.stringify(mockPm.environment)} });
-      `;
+      `
 
-      const sets = eval(wrappedCode);
+      const sets = eval(wrappedCode)
 
       if (sets && sets.length > 0) {
-        resolve(sets);
+        resolve(sets)
       } else {
-        reject(new Error('未找到有效的 pm.environment.set() 调用'));
+        reject(new Error('未找到有效的 pm.environment.set() 调用'))
       }
     } catch (error) {
-      reject(error);
+      reject(error)
     }
-  });
+  })
 }

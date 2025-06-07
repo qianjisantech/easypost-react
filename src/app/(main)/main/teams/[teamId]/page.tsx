@@ -29,10 +29,10 @@ export default function TeamPage() {
     return (
       <Layout style={{ height: '100%' }}>
         <Sider>
-          <Sidebar ></Sidebar>
+          <Sidebar></Sidebar>
         </Sider>
-        <Content >
-          <TeamsContent  loading={loading} teamId={teamId} />
+        <Content>
+          <TeamsContent loading={loading} teamId={teamId} />
         </Content>
       </Layout>
     )

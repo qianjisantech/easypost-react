@@ -56,7 +56,6 @@ export default function MainPage() {
       setPasswordMatch(false)
       return
     } else {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       const response = await UserSetPassword({ password: password })
       if (response.data.success) {
         messageApi.success(response.data.message)

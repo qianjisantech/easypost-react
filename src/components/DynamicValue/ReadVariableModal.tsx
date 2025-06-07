@@ -1,14 +1,17 @@
-import { useEffect, useState } from "react";
-import { Select, Button, Divider, Modal, message } from "antd";
-import ModalHeader from './ModalHeader';
-import { PlusOutlined } from "@ant-design/icons";
-import { EnvironmentManageDynamic } from "@/api/ams/environmentmanage";
+import { useEffect, useState } from 'react'
+
+import { PlusOutlined } from '@ant-design/icons'
+import { Button, Divider, message, Modal, Select } from 'antd'
+
+import { EnvironmentManageDynamic } from '@/api/ams/environmentmanage'
+
+import ModalHeader from './ModalHeader'
 
 interface ReadVariableModalProps {
-  visible: boolean;
-  onBack: () => void;
-  onClose: () => void;
-  onInsert: (value: string) => void;
+  visible: boolean
+  onBack: () => void
+  onClose: () => void
+  onInsert: (value: string) => void
 }
 interface Option {
   value: string
@@ -17,87 +20,86 @@ interface Option {
   id: string
 }
 const ReadVariableModal = ({ visible, onBack, onClose, onInsert }: ReadVariableModalProps) => {
-  const [selectedValue, setSelectedValue] = useState<string>('');
-  const [variableOptions, setVariableOptions]=useState<Option[]>([])
-  const loadingVariableOptions =async()=>{
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    const response =await EnvironmentManageDynamic()
-    if (response.data.success){
-      console.log('读取变量成功',response.data.data)
-      setVariableOptions(response.data.data.map((item:any)=>{
-        return {
-          value:item.value,
-          key:item.key,
-          type:item.type,
-          id:item.id
-        }
-      }))
+  const [selectedValue, setSelectedValue] = useState<string>('')
+  const [variableOptions, setVariableOptions] = useState<Option[]>([])
+  const loadingVariableOptions = async () => {
+    const response = await EnvironmentManageDynamic()
+    if (response.data.success) {
+      console.log('读取变量成功', response.data.data)
+      setVariableOptions(
+        response.data.data.map((item: any) => {
+          return {
+            value: item.value,
+            key: item.key,
+            type: item.type,
+            id: item.id,
+          }
+        })
+      )
     }
   }
 
   // 获取当前选中项的预览值
   const getPreviewValue = () => {
-    const selectedOption = variableOptions.find(opt => opt.key === selectedValue);
-    return selectedOption ? selectedOption.value : '';
-  };
+    const selectedOption = variableOptions.find((opt) => opt.key === selectedValue)
+    return selectedOption ? selectedOption.value : ''
+  }
 
   // 处理变量选择
   const handleSelect = (value: string, option: Option) => {
-    setSelectedValue(option.key); // 使用option.key而不是value
-  };
+    setSelectedValue(option.key) // 使用option.key而不是value
+  }
 
   // 处理清空
   const handleClear = () => {
-    setSelectedValue('');
-  };
+    setSelectedValue('')
+  }
 
   // 处理插入操作
   const handleInsert = () => {
     if (selectedValue) {
-      const formattedValue = `{{${selectedValue}}}`; // 格式化变量
-      onInsert(formattedValue); // 传递给父组件
-      onClose(); // 关闭弹窗
+      const formattedValue = `{{${selectedValue}}}` // 格式化变量
+      onInsert(formattedValue) // 传递给父组件
+      onClose() // 关闭弹窗
     }
-  };
+  }
   return (
     <Modal
+      bodyStyle={{ backgroundColor: 'transparent' }}
       closable={false}
       footer={null}
+      heigth={'100%'}
+      maskStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.1)' }}
       open={visible}
       width={350}
-      heigth={'100%'}
       onCancel={onClose}
-      bodyStyle={{ backgroundColor: 'transparent' }}
-      maskStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.1)' }}
     >
       <div style={{ padding: '0 16px' }}>
-        <ModalHeader
-          title="读取变量"
-          onBack={onBack}
-          onClose={onClose}
-        />
+        <ModalHeader title="读取变量" onBack={onBack} onClose={onClose} />
 
         {/* 变量选择下拉框 - 添加清空功能 */}
         <div style={{ marginBottom: 16 }}>
-          <div style={{ margin: '10px', fontSize: '14px',color: '#595959' }}>变量名</div>
+          <div style={{ margin: '10px', fontSize: '14px', color: '#595959' }}>变量名</div>
           <Select
-            placeholder="选择变量"
-            fieldNames={{
-              label: 'key',  // 显示key作为标签
-              value: 'value' // 但实际值仍使用value
-            }}
-            style={{ width: '100%' }}
-            options={variableOptions}
-            onChange={(value, option) => { handleSelect(value, option)}}
-            onClear={handleClear}
             allowClear
+            fieldNames={{
+              label: 'key', // 显示key作为标签
+              value: 'value', // 但实际值仍使用value
+            }}
             optionRender={(option) => (
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span>{option.data.key}</span>
                 <span style={{ color: '#888' }}>{option.data.type}</span>
               </div>
             )}
-            value={variableOptions.find(opt => opt.key === selectedValue)?.value || ''}
+            options={variableOptions}
+            placeholder="选择变量"
+            style={{ width: '100%' }}
+            value={variableOptions.find((opt) => opt.key === selectedValue)?.value || ''}
+            onChange={(value, option) => {
+              handleSelect(value, option)
+            }}
+            onClear={handleClear}
             onDropdownVisibleChange={(open) => {
               if (open) {
                 loadingVariableOptions()
@@ -108,18 +110,19 @@ const ReadVariableModal = ({ visible, onBack, onClose, onInsert }: ReadVariableM
         {/* 空白分割区域 */}
         <Divider style={{ margin: '12px 0' }} />
         {/* 展示框 */}
-        <div style={{
-          padding: 0,
-          marginBottom: 16,
-          borderRadius: 4,
-          minHeight: 200,
-          display: 'flex',
-          flexDirection: 'column',
-          fontSize: 16,
-        }}>
+        <div
+          style={{
+            padding: 0,
+            marginBottom: 16,
+            borderRadius: 4,
+            minHeight: 200,
+            display: 'flex',
+            flexDirection: 'column',
+            fontSize: 16,
+          }}
+        >
           {/* 按钮置顶 */}
           <Button
-            type="default"
             icon={<PlusOutlined />}
             style={{
               width: '100%',
@@ -136,9 +139,10 @@ const ReadVariableModal = ({ visible, onBack, onClose, onInsert }: ReadVariableM
               transition: 'all 0.3s', // 平滑过渡效果
               ':hover': {
                 backgroundColor: '#f0f0f0', // 悬停背景色
-                color: '#262626' // 悬停文字颜色
-              }
+                color: '#262626', // 悬停文字颜色
+              },
             }}
+            type="default"
             onClick={() => {
               console.log('添加处理函数')
               message.error('暂不支持添加处理函数')
@@ -152,56 +156,68 @@ const ReadVariableModal = ({ visible, onBack, onClose, onInsert }: ReadVariableM
         </div>
 
         {/* 展示框 */}
-        <div style={{
-          padding: 16,
-          marginBottom: 16,
-          border: '1px solid #d9d9d9',
-          borderRadius: 10,
-          minHeight: 60,  // 增加高度以适应两行内容
-          backgroundColor: '#e6f7ff',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-          justifyContent: 'center',
-          fontSize: 12
-        }}>
-          <div style={{
-            color: '#565959',
-            marginBottom: 8,
+        <div
+          style={{
+            padding: 16,
+            marginBottom: 16,
+            border: '1px solid #d9d9d9',
+            borderRadius: 10,
+            minHeight: 60, // 增加高度以适应两行内容
+            backgroundColor: '#e6f7ff',
             display: 'flex',
-            alignItems: 'center'
-          }}>
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            justifyContent: 'center',
+            fontSize: 12,
+          }}
+        >
+          <div
+            style={{
+              color: '#565959',
+              marginBottom: 8,
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
             <span style={{ fontWeight: 400, marginRight: 8 }}>表达式:</span>
-            <span style={{
-              padding: '2px 8px',
-              borderRadius: 4
-            }}>{`{{${selectedValue}}}`}</span>
+            <span
+              style={{
+                padding: '2px 8px',
+                borderRadius: 4,
+              }}
+            >{`{{${selectedValue}}}`}</span>
           </div>
-          <div style={{
-            color: "#565959",
-            display: "flex",
-            alignItems: "center"
-          }}>
+          <div
+            style={{
+              color: '#565959',
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
             <span style={{ fontWeight: 400, marginRight: 8 }}>预览:</span>
-            <span style={{
-              padding: "2px 8px",
-              borderRadius: 4
-            }}>{getPreviewValue()}</span>
+            <span
+              style={{
+                padding: '2px 8px',
+                borderRadius: 4,
+              }}
+            >
+              {getPreviewValue()}
+            </span>
           </div>
         </div>
         {/* 插入按钮 */}
         <Button
-          type="primary"
           block
           disabled={!selectedValue}
-          onClick={handleInsert}
           style={{ marginBottom: 16 }}
+          type="primary"
+          onClick={handleInsert}
         >
           插入
         </Button>
       </div>
     </Modal>
-  );
-};
+  )
+}
 
-export default ReadVariableModal;
+export default ReadVariableModal

@@ -1,10 +1,11 @@
 import { Flex, Tag } from 'antd'
+
 import { RequestBodyJson } from '@/components/tab-content/api/components/RequestBodyJson'
 import { BodyType } from '@/enums'
 import { useStyles } from '@/hooks/useStyle'
 import type { ApiDetails } from '@/types'
-import { ParamsEditableTable } from '../components/ParamsEditableTable'
 
+import { ParamsEditableTable } from '../components/ParamsEditableTable'
 
 const types = [
   { name: 'none', type: BodyType.None },
@@ -41,7 +42,7 @@ function BodyComp(props: BodyCompProps) {
   // 确保 parameters 总是有值
   const safeValue = {
     ...value,
-    parameters: value.parameters || []
+    parameters: value.parameters || [],
   }
 
   switch (safeValue.type) {
@@ -87,10 +88,12 @@ export function ParamsPayload(props: ParamsPayloadProps) {
   const { value, onChange } = props
 
   // 确保初始值中 parameters 有默认值 []
-  const safeValue = value ? {
-    ...value,
-    parameters: value.parameters || []
-  } : { type: BodyType.None, parameters: [] }
+  const safeValue = value
+    ? {
+        ...value,
+        parameters: value.parameters || [],
+      }
+    : { type: BodyType.None, parameters: [] }
 
   const selectedType = safeValue.type
 
@@ -99,7 +102,7 @@ export function ParamsPayload(props: ParamsPayloadProps) {
       ...safeValue,
       type,
       // 确保 parameters 总是有值
-      parameters: safeValue.parameters || []
+      parameters: safeValue.parameters || [],
     }
     onChange?.(newValue)
   }
@@ -119,10 +122,7 @@ export function ParamsPayload(props: ParamsPayloadProps) {
       </Flex>
 
       <div>
-        <BodyComp
-          value={safeValue}
-          onChange={onChange}
-        />
+        <BodyComp value={safeValue} onChange={onChange} />
       </div>
     </div>
   )

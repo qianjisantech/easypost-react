@@ -1,31 +1,41 @@
-"use client";
-import { useEffect, useRef, useState } from "react";
+'use client'
+import { useEffect, useRef, useState } from 'react'
 
-import { Button, Divider, Empty, Form, type FormProps, message, Select, type SelectProps, Space } from "antd";
-import { nanoid } from "nanoid";
-import { ApiDetailCreate, ApiDetailUpdate, ApiRunDetail, ApiRunSave } from "@/api/ams/api";
+import {
+  Button,
+  Divider,
+  Empty,
+  Form,
+  type FormProps,
+  message,
+  Select,
+  type SelectProps,
+  Space,
+} from 'antd'
+import { nanoid } from 'nanoid'
 
-import { PageTabStatus } from "@/components/ApiTab/ApiTab.enum";
-import { useTabContentContext } from "@/components/ApiTab/TabContentContext";
-import { ParamsRunTab } from "@/components/tab-content/api/params/ParamsRunTab";
-import { RunResponse } from "@/components/tab-content/api/response/RunResponse";
-import { HTTP_METHOD_CONFIG } from "@/configs/static";
-import { useGlobalContext } from "@/contexts/global";
-import { useMenuTabHelpers } from "@/contexts/menu-tab-settings";
-import { initialCreateApiDetailsData } from "@/data/remote";
-import { AuthorizationType, BodyType, MenuItemType, ParamType, ScriptsType } from "@/enums";
-import type { ApiDetails, GlobalParameter } from "@/types";
-import { GlobalParameterChildren } from "@/types";
-import { request } from "@/utils/request";
-import { GroupTitle } from "./components/GroupTitle";
-import { PathInput, type PathInputProps } from "./components/PathInput";
-import { PrimitiveSchema } from "@/components/JsonSchema/JsonSchema.type";
+import { ApiDetailCreate, ApiDetailUpdate, ApiRunDetail, ApiRunSave } from '@/api/ams/api'
+import { PageTabStatus } from '@/components/ApiTab/ApiTab.enum'
+import { useTabContentContext } from '@/components/ApiTab/TabContentContext'
+import type { PrimitiveSchema } from '@/components/JsonSchema/JsonSchema.type'
+import { ParamsRunTab } from '@/components/tab-content/api/params/ParamsRunTab'
+import { RunResponse } from '@/components/tab-content/api/response/RunResponse'
+import { HTTP_METHOD_CONFIG } from '@/configs/static'
+import { useGlobalContext } from '@/contexts/global'
+import { useMenuTabHelpers } from '@/contexts/menu-tab-settings'
+import { initialCreateApiDetailsData } from '@/data/remote'
+import { AuthorizationType, BodyType, MenuItemType, ParamType, ScriptsType } from '@/enums'
+import type { ApiDetails, GlobalParameter, GlobalParameterChildren } from '@/types'
+import { request } from '@/utils/request'
+
+import { GroupTitle } from './components/GroupTitle'
+import { PathInput, type PathInputProps } from './components/PathInput'
 
 interface JavaParseResult {
-  className?: string;
-  methods: { name: string; returnType: string }[];
-  fields: { name: string; type: string }[];
-  parseError?: string;
+  className?: string
+  methods: { name: string; returnType: string }[]
+  fields: { name: string; type: string }[]
+  parseError?: string
 }
 const DEFAULT_NAME = '未命名接口'
 
@@ -56,9 +66,9 @@ export function ApiRun({ activeKey }: { activeKey: string }) {
   const { tabData } = useTabContentContext()
   const [sendLoading, setSendLoading] = useState(false)
   const [saveLoading, setSaveLoading] = useState(false)
-// 在 ApiRun 组件的顶部添加这些状态
-  const [parsedVariables, setParsedVariables] = useState<{name: string, value: any}[]>([]);
-  const [parseError, setParseError] = useState<string | null>(null);
+  // 在 ApiRun 组件的顶部添加这些状态
+  const [parsedVariables, setParsedVariables] = useState<{ name: string; value: any }[]>([])
+  const [parseError, setParseError] = useState<string | null>(null)
   const isCreating = tabData.data?.tabStatus === PageTabStatus.Create
   const loadingApiDetails = async (id: string) => {
     try {
@@ -142,7 +152,7 @@ export function ApiRun({ activeKey }: { activeKey: string }) {
     //     parseError: error instanceof Error ? error.message : "解析失败",
     //   };
     // }
-  };
+  }
   useEffect(() => {
     if (isCreating) {
       form.setFieldsValue(initialCreateApiDetailsData)
@@ -206,38 +216,38 @@ export function ApiRun({ activeKey }: { activeKey: string }) {
         ${codeString}
         return pm.environment.sets;
       })();
-    `;
+    `
 
-      const sets = eval(wrappedCode);
+      const sets = eval(wrappedCode)
 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       if (sets && sets.length > 0) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        setParsedVariables(sets);
-        setParseError(null);
+        setParsedVariables(sets)
+        setParseError(null)
 
         // 将解析出的变量添加到全局参数列表
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-        sets.forEach(({name, value}) => {
-          if (!globalParameterList.some(p => p.name === name)) {
+        sets.forEach(({ name, value }) => {
+          if (!globalParameterList.some((p) => p.name === name)) {
             globalParameterList.push({
               id: nanoid(6),
-              key:name,
+              key: name,
               value: String(value),
               type: 'string',
-              description: '由预处理脚本生成'
-            });
+              description: '由预处理脚本生成',
+            })
           }
         })
-        console.log('globalParameterList解析出的变量:', globalParameterList);
+        console.log('globalParameterList解析出的变量:', globalParameterList)
       } else {
-        setParseError('未找到有效的 pm.environment.set() 调用');
+        setParseError('未找到有效的 pm.environment.set() 调用')
       }
     } catch (error) {
-      setParseError(error instanceof Error ? error.message : String(error));
-      console.error('解析错误:', error);
+      setParseError(error instanceof Error ? error.message : String(error))
+      console.error('解析错误:', error)
     }
-  };
+  }
   const saveApiForm = async (values) => {
     setSaveLoading(true)
 
@@ -247,14 +257,13 @@ export function ApiRun({ activeKey }: { activeKey: string }) {
     formData.append('method', values.data.method || 'GET')
     formData.append('path', values.data.path || '')
     formData.append('parameters', JSON.stringify(values.data.parameters))
-    formData.append('response', JSON.stringify(values.data.response|| []))
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    formData.append('response', JSON.stringify(values.data.response || []))
+
     const response = await ApiRunSave(formData)
     console.log('response.data.data.id', response.data.data.id)
     if (response.data.success) {
       message.success(response.data.message)
       loadingApiDetails(response.data.data.id)
-
     }
     setSaveLoading(false)
   }
@@ -275,7 +284,7 @@ export function ApiRun({ activeKey }: { activeKey: string }) {
       } catch (err) {
         console.error('保存接口失败', err)
       }
-      const menuItemData={
+      const menuItemData = {
         id: menuItemId,
         name: menuName,
         type: MenuItemType.ApiDetail,
@@ -355,69 +364,68 @@ export function ApiRun({ activeKey }: { activeKey: string }) {
   ): PrimitiveSchema | ObjectSchema | ArraySchema | RefSchema | undefined => {
     // 处理undefined或null情况
     if (data === undefined || data === null) {
-      return data;
+      return data
     }
 
     // 如果是字符串类型，执行参数替换
     if (typeof data === 'string') {
       return data.replace(/\{\{(.*?)\}\}/g, (match, key) => {
         // 去除可能的空格
-        key = key.trim();
+        key = key.trim()
 
         // 在globalParameterList中查找匹配的参数
-        const param = globalParameterList.find((p) => p.name === key);
+        const param = globalParameterList.find((p) => p.name === key)
 
         // 如果找到参数则返回其值，否则保留原始匹配
-        return param ? String(param.value) : match;
-      });
+        return param ? String(param.value) : match
+      })
     }
 
     // 对于其他类型（数字、布尔值、对象、数组等），直接返回原值
-    return data;
-  };
+    return data
+  }
   const globalParameterList: GlobalParameterChildren[] = []
-// 示例的Java代码执行函数（需要后端支持）
+  // 示例的Java代码执行函数（需要后端支持）
 
-
-// 示例的Python代码执行函数（需要后端支持）
+  // 示例的Python代码执行函数（需要后端支持）
   const executePythonCode = async (pythonCode: string) => {
     try {
       const response = await request({
         method: 'POST',
         url: '/api/execute/python',
         data: {
-          code: pythonCode
-        }
-      });
+          code: pythonCode,
+        },
+      })
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-      return response.data;
+      return response.data
     } catch (error) {
-      throw new Error('执行Python代码失败');
+      throw new Error('执行Python代码失败')
     }
-  };
-  const handlePrescripts=async (prescripts:ApiDetails["parameters"]["prescripts"])=>{
-    if (prescripts){
-      console.log('脚本数据',prescripts)
+  }
+  const handlePrescripts = async (prescripts: ApiDetails['parameters']['prescripts']) => {
+    if (prescripts) {
+      console.log('脚本数据', prescripts)
       // 使用正确的switch语法检查type
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       switch (prescripts.type) {
         case ScriptsType.JavaScript:
-          console.log('执行JavaScript预处理脚本');
-          await  parseEnvironmentSets(prescripts.data);
-          break;
+          console.log('执行JavaScript预处理脚本')
+          await parseEnvironmentSets(prescripts.data)
+          break
         case ScriptsType.Java:
-          console.log('执行Java预处理脚本');
+          console.log('执行Java预处理脚本')
 
-          break;
+          break
         case ScriptsType.Python:
-          console.log('执行Python预处理脚本');
-          break;
+          console.log('执行Python预处理脚本')
+          break
         default:
-          console.log('未知脚本类型');
-          break;
+          console.log('未知脚本类型')
+          break
       }
-    }else {
-      console.log('未设置预处理脚本或脚本数据为空');
+    } else {
+      console.log('未设置预处理脚本或脚本数据为空')
     }
   }
 
@@ -498,17 +506,20 @@ export function ApiRun({ activeKey }: { activeKey: string }) {
         ...easypostHeaders,
       },
       baseURL: '/proxy/api/v1/request',
-    };
-    console.log('values.parameters?.payload?.type', values.parameters?.payload?.type)
-    switch (values.parameters?.payload?.type){
-      case BodyType.Json:
-        if (values.parameters?.payload?.jsonSchema) {
-          console.log('replaceRawParameter', globalParameterList)
-          requestConfig.body = replaceJSONParameter(values.parameters.payload.jsonSchema, globalParameterList)
     }
+    console.log('values.parameters?.payload?.type', values.parameters?.payload?.type)
+    switch (values.parameters?.payload?.type) {
+      case BodyType.Json:
+        if (values.parameters.payload.jsonSchema) {
+          console.log('replaceRawParameter', globalParameterList)
+          requestConfig.body = replaceJSONParameter(
+            values.parameters.payload.jsonSchema,
+            globalParameterList
+          )
+        }
 
       case BodyType.UrlEncoded:
-        if (values.parameters?.payload?.parameters) {
+        if (values.parameters.payload.parameters) {
           const formData = new FormData()
           values.parameters.payload.parameters.forEach((item) => {
             formData.append(item.name!, item.example)
@@ -516,7 +527,7 @@ export function ApiRun({ activeKey }: { activeKey: string }) {
           requestConfig.body = formData
         }
       case BodyType.FormData:
-        if (values.parameters?.payload?.parameters) {
+        if (values.parameters.payload.parameters) {
           const formData = new FormData()
           values.parameters.payload.parameters.forEach((item) => {
             formData.append(item.name!, item.example)
@@ -531,11 +542,11 @@ export function ApiRun({ activeKey }: { activeKey: string }) {
     try {
       const res = await request(requestConfig)
       form.setFieldValue('response', {
-        values:res
+        values: res,
       })
     } catch (e) {
       console.error('Error:', e)
-      message.error('请求失败',e)
+      message.error('请求失败', e)
     } finally {
       setSendLoading(false)
     }

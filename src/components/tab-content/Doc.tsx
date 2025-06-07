@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 
+import { usePathname } from 'next/navigation'
 import { Viewer } from '@bytemd/react'
 import { Button, Space, theme } from 'antd'
 
-import {  DocDetail, DocSave } from "@/api/ams/doc";
-import { ApiTreeQueryPage } from "@/api/ams/api";
+import { ApiTreeQueryPage } from '@/api/ams/api'
+import { DocDetail, DocSave } from '@/api/ams/doc'
 import { PageTabStatus } from '@/components/ApiTab/ApiTab.enum'
 import { useTabContentContext } from '@/components/ApiTab/TabContentContext'
 import { InputUnderline } from '@/components/InputUnderline'
@@ -14,7 +15,6 @@ import { useMenuHelpersContext } from '@/contexts/menu-helpers'
 import { useMenuTabHelpers } from '@/contexts/menu-tab-settings'
 import { MenuItemType } from '@/enums'
 import type { ApiDoc } from '@/types'
-import { usePathname } from "next/navigation";
 
 const DEFAULT_DOC_NAME = '未命名文档'
 
@@ -40,9 +40,8 @@ export function Doc() {
         }
       }
     }
-
   }
-  const fetchDoc = async (id:string) => {
+  const fetchDoc = async (id: string) => {
     setLoading(true)
     try {
       const response = await DocDetail(id)
@@ -78,7 +77,6 @@ export function Doc() {
       fetchDoc(response.data.data.id)
       loadingMenuTree()
     }
-
   }
 
   if (loading) {
@@ -123,18 +121,21 @@ export function Doc() {
                     id: values.id,
                     name: values.name || DEFAULT_DOC_NAME,
                     type: MenuItemType.Doc,
-                    data: values
+                    data: values,
                   })
-                  addTabItem({
-                    key: "",
-                    label: docValue?.name || DEFAULT_DOC_NAME,
-                    contentType: MenuItemType.Doc
-                  }, { replaceTab: tabData.key })
+                  addTabItem(
+                    {
+                      key: '',
+                      label: docValue?.name || DEFAULT_DOC_NAME,
+                      contentType: MenuItemType.Doc,
+                    },
+                    { replaceTab: tabData.key }
+                  )
                 } else {
                   updateMenuItem({
                     id: values.id,
                     name: values.name,
-                    data: values
+                    data: values,
                   })
                 }
                 docSave(values)

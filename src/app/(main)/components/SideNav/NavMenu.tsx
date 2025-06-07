@@ -1,3 +1,5 @@
+import type React from 'react'
+
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Space } from 'antd'
@@ -5,7 +7,6 @@ import { Space } from 'antd'
 import { useStyles } from '@/hooks/useStyle'
 
 import { css } from '@emotion/css'
-import React from "react";
 
 interface NavItemProps {
   active?: boolean
@@ -40,13 +41,12 @@ function NavItem(props: NavItemProps) {
 }
 
 const enum NavPath {
-    Api = '/project/api',
-  AutoTest='/project/auto-test',
-  Shared='/project/shared',
-  History='/project/history',
+  Api = '/project/api',
+  AutoTest = '/project/auto-test',
+  Shared = '/project/shared',
+  History = '/project/history',
   Settings = '/project/settings',
   Invite = '/project/invite',
-
 }
 
 export function NavMenu() {
@@ -54,10 +54,9 @@ export function NavMenu() {
 
   return (
     <Space direction="vertical" size={14}>
-      <Link href={NavPath.Api} >
+      <Link href={NavPath.Api}>
         <NavItem
           active={pathname === NavPath.Api}
-
           icon={
             <svg
               aria-hidden="true"
@@ -78,134 +77,133 @@ export function NavMenu() {
         />
       </Link>
 
+      <Link href={NavPath.AutoTest}>
+        <NavItem
+          active={pathname === NavPath.AutoTest}
+          icon={
+            <svg
+              aria-hidden="true"
+              className="size-6"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                clipRule="evenodd"
+                d="M9.6 2.6A2 2 0 0 1 11 2h2a2 2 0 0 1 2 2l.5.3a2 2 0 0 1 2.9 0l1.4 1.3a2 2 0 0 1 0 2.9l.1.5h.1a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2l-.3.5a2 2 0 0 1 0 2.9l-1.3 1.4a2 2 0 0 1-2.9 0l-.5.1v.1a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2l-.5-.3a2 2 0 0 1-2.9 0l-1.4-1.3a2 2 0 0 1 0-2.9l-.1-.5H4a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2l.3-.5a2 2 0 0 1 0-2.9l1.3-1.4a2 2 0 0 1 2.9 0l.5-.1V4c0-.5.2-1 .6-1.4ZM8 12a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z"
+                fillRule="evenodd"
+              />
+            </svg>
+          }
+          name="自动化测试"
+        />
+      </Link>
+      <Link href={NavPath.Shared}>
+        <NavItem
+          active={pathname === NavPath.Shared}
+          icon={
+            <svg
+              aria-hidden="true"
+              className="size-6"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                clipRule="evenodd"
+                d="M9.6 2.6A2 2 0 0 1 11 2h2a2 2 0 0 1 2 2l.5.3a2 2 0 0 1 2.9 0l1.4 1.3a2 2 0 0 1 0 2.9l.1.5h.1a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2l-.3.5a2 2 0 0 1 0 2.9l-1.3 1.4a2 2 0 0 1-2.9 0l-.5.1v.1a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2l-.5-.3a2 2 0 0 1-2.9 0l-1.4-1.3a2 2 0 0 1 0-2.9l-.1-.5H4a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2l.3-.5a2 2 0 0 1 0-2.9l1.3-1.4a2 2 0 0 1 2.9 0l.5-.1V4c0-.5.2-1 .6-1.4ZM8 12a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z"
+                fillRule="evenodd"
+              />
+            </svg>
+          }
+          name="分享文档"
+        />
+      </Link>
+      <Link href={NavPath.History}>
+        <NavItem
+          active={pathname === NavPath.History}
+          icon={
+            <svg
+              aria-hidden="true"
+              className="size-6"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                clipRule="evenodd"
+                d="M9.6 2.6A2 2 0 0 1 11 2h2a2 2 0 0 1 2 2l.5.3a2 2 0 0 1 2.9 0l1.4 1.3a2 2 0 0 1 0 2.9l.1.5h.1a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2l-.3.5a2 2 0 0 1 0 2.9l-1.3 1.4a2 2 0 0 1-2.9 0l-.5.1v.1a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2l-.5-.3a2 2 0 0 1-2.9 0l-1.4-1.3a2 2 0 0 1 0-2.9l-.1-.5H4a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2l.3-.5a2 2 0 0 1 0-2.9l1.3-1.4a2 2 0 0 1 2.9 0l.5-.1V4c0-.5.2-1 .6-1.4ZM8 12a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z"
+                fillRule="evenodd"
+              />
+            </svg>
+          }
+          name="请求历史"
+        />
+      </Link>
 
-        <Link href={NavPath.AutoTest}>
-            <NavItem
-                active={pathname === NavPath.AutoTest}
-                icon={
-                    <svg
-                        aria-hidden="true"
-                        className="size-6"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path
-                            clipRule="evenodd"
-                            d="M9.6 2.6A2 2 0 0 1 11 2h2a2 2 0 0 1 2 2l.5.3a2 2 0 0 1 2.9 0l1.4 1.3a2 2 0 0 1 0 2.9l.1.5h.1a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2l-.3.5a2 2 0 0 1 0 2.9l-1.3 1.4a2 2 0 0 1-2.9 0l-.5.1v.1a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2l-.5-.3a2 2 0 0 1-2.9 0l-1.4-1.3a2 2 0 0 1 0-2.9l-.1-.5H4a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2l.3-.5a2 2 0 0 1 0-2.9l1.3-1.4a2 2 0 0 1 2.9 0l.5-.1V4c0-.5.2-1 .6-1.4ZM8 12a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z"
-                            fillRule="evenodd"
-                        />
-                    </svg>
-                }
-                name="自动化测试"
-            />
-        </Link>
-        <Link href={NavPath.Shared}>
-            <NavItem
-                active={pathname === NavPath.Shared}
-                icon={
-                    <svg
-                        aria-hidden="true"
-                        className="size-6"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path
-                            clipRule="evenodd"
-                            d="M9.6 2.6A2 2 0 0 1 11 2h2a2 2 0 0 1 2 2l.5.3a2 2 0 0 1 2.9 0l1.4 1.3a2 2 0 0 1 0 2.9l.1.5h.1a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2l-.3.5a2 2 0 0 1 0 2.9l-1.3 1.4a2 2 0 0 1-2.9 0l-.5.1v.1a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2l-.5-.3a2 2 0 0 1-2.9 0l-1.4-1.3a2 2 0 0 1 0-2.9l-.1-.5H4a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2l.3-.5a2 2 0 0 1 0-2.9l1.3-1.4a2 2 0 0 1 2.9 0l.5-.1V4c0-.5.2-1 .6-1.4ZM8 12a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z"
-                            fillRule="evenodd"
-                        />
-                    </svg>
-                }
-                name="分享文档"
-            />
-        </Link>
-        <Link href={NavPath.History}>
-            <NavItem
-                active={pathname === NavPath.History}
-                icon={
-                    <svg
-                        aria-hidden="true"
-                        className="size-6"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path
-                            clipRule="evenodd"
-                            d="M9.6 2.6A2 2 0 0 1 11 2h2a2 2 0 0 1 2 2l.5.3a2 2 0 0 1 2.9 0l1.4 1.3a2 2 0 0 1 0 2.9l.1.5h.1a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2l-.3.5a2 2 0 0 1 0 2.9l-1.3 1.4a2 2 0 0 1-2.9 0l-.5.1v.1a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2l-.5-.3a2 2 0 0 1-2.9 0l-1.4-1.3a2 2 0 0 1 0-2.9l-.1-.5H4a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2l.3-.5a2 2 0 0 1 0-2.9l1.3-1.4a2 2 0 0 1 2.9 0l.5-.1V4c0-.5.2-1 .6-1.4ZM8 12a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z"
-                            fillRule="evenodd"
-                        />
-                    </svg>
-                }
-                name="请求历史"
-            />
-        </Link>
-
-        <Link href={NavPath.Settings}>
-            <NavItem
-                active={pathname === NavPath.Settings}
-                icon={
-                    <svg
-                        aria-hidden="true"
-                        className="size-6"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path
-                            clipRule="evenodd"
-                            d="M9.6 2.6A2 2 0 0 1 11 2h2a2 2 0 0 1 2 2l.5.3a2 2 0 0 1 2.9 0l1.4 1.3a2 2 0 0 1 0 2.9l.1.5h.1a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2l-.3.5a2 2 0 0 1 0 2.9l-1.3 1.4a2 2 0 0 1-2.9 0l-.5.1v.1a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2l-.5-.3a2 2 0 0 1-2.9 0l-1.4-1.3a2 2 0 0 1 0-2.9l-.1-.5H4a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2l.3-.5a2 2 0 0 1 0-2.9l1.3-1.4a2 2 0 0 1 2.9 0l.5-.1V4c0-.5.2-1 .6-1.4ZM8 12a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z"
-                            fillRule="evenodd"
-                        />
-                    </svg>
-                }
-                name="项目设置"
-            />
-        </Link>
-        <Space direction="vertical" size={100}>
-            <Link href={NavPath.Invite}>
-                <NavItem
-                    active={pathname === NavPath.Invite}
-                    icon={
-                        <svg
-                            aria-hidden="true"
-                            className="size-6"
-                            fill="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                clipRule="evenodd"
-                                d="M9.6 2.6A2 2 0 0 1 11 2h2a2 2 0 0 1 2 2l.5.3a2 2 0 0 1 2.9 0l1.4 1.3a2 2 0 0 1 0 2.9l.1.5h.1a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2l-.3.5a2 2 0 0 1 0 2.9l-1.3 1.4a2 2 0 0 1-2.9 0l-.5.1v.1a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2l-.5-.3a2 2 0 0 1-2.9 0l-1.4-1.3a2 2 0 0 1 0-2.9l-.1-.5H4a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2l.3-.5a2 2 0 0 1 0-2.9l1.3-1.4a2 2 0 0 1 2.9 0l.5-.1V4c0-.5.2-1 .6-1.4ZM8 12a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z"
-                                fillRule="evenodd"
-                            />
-                        </svg>
-                    }
-                    name="邀请成员"
+      <Link href={NavPath.Settings}>
+        <NavItem
+          active={pathname === NavPath.Settings}
+          icon={
+            <svg
+              aria-hidden="true"
+              className="size-6"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                clipRule="evenodd"
+                d="M9.6 2.6A2 2 0 0 1 11 2h2a2 2 0 0 1 2 2l.5.3a2 2 0 0 1 2.9 0l1.4 1.3a2 2 0 0 1 0 2.9l.1.5h.1a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2l-.3.5a2 2 0 0 1 0 2.9l-1.3 1.4a2 2 0 0 1-2.9 0l-.5.1v.1a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2l-.5-.3a2 2 0 0 1-2.9 0l-1.4-1.3a2 2 0 0 1 0-2.9l-.1-.5H4a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2l.3-.5a2 2 0 0 1 0-2.9l1.3-1.4a2 2 0 0 1 2.9 0l.5-.1V4c0-.5.2-1 .6-1.4ZM8 12a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z"
+                fillRule="evenodd"
+              />
+            </svg>
+          }
+          name="项目设置"
+        />
+      </Link>
+      <Space direction="vertical" size={100}>
+        <Link href={NavPath.Invite}>
+          <NavItem
+            active={pathname === NavPath.Invite}
+            icon={
+              <svg
+                aria-hidden="true"
+                className="size-6"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  clipRule="evenodd"
+                  d="M9.6 2.6A2 2 0 0 1 11 2h2a2 2 0 0 1 2 2l.5.3a2 2 0 0 1 2.9 0l1.4 1.3a2 2 0 0 1 0 2.9l.1.5h.1a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2l-.3.5a2 2 0 0 1 0 2.9l-1.3 1.4a2 2 0 0 1-2.9 0l-.5.1v.1a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2l-.5-.3a2 2 0 0 1-2.9 0l-1.4-1.3a2 2 0 0 1 0-2.9l-.1-.5H4a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2l.3-.5a2 2 0 0 1 0-2.9l1.3-1.4a2 2 0 0 1 2.9 0l.5-.1V4c0-.5.2-1 .6-1.4ZM8 12a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z"
+                  fillRule="evenodd"
                 />
-            </Link>
-        </Space>
+              </svg>
+            }
+            name="邀请成员"
+          />
+        </Link>
+      </Space>
       {/*<Link href="https://github.com/Codennnn/EasyPost" target="_blank">*/}
-        {/*<NavItem*/}
-        {/*  icon={*/}
-        {/*    <svg*/}
-        {/*      aria-hidden="true"*/}
-        {/*      className="size-6"*/}
-        {/*      fill="currentColor"*/}
-        {/*      viewBox="0 0 24 24"*/}
-        {/*      xmlns="http://www.w3.org/2000/svg"*/}
-        {/*    >*/}
-        {/*      <path*/}
-        {/*        clipRule="evenodd"*/}
-        {/*        d="M12 2c-2.4 0-4.7.9-6.5 2.4a10.5 10.5 0 0 0-2 13.1A10 10 0 0 0 8.7 22c.5 0 .7-.2.7-.5v-2c-2.8.7-3.4-1.1-3.4-1.1-.1-.6-.5-1.2-1-1.5-1-.7 0-.7 0-.7a2 2 0 0 1 1.5 1.1 2.2 2.2 0 0 0 1.3 1 2 2 0 0 0 1.6-.1c0-.6.3-1 .7-1.4-2.2-.3-4.6-1.2-4.6-5 0-1.1.4-2 1-2.8a4 4 0 0 1 .2-2.7s.8-.3 2.7 1c1.6-.5 3.4-.5 5 0 2-1.3 2.8-1 2.8-1 .3.8.4 1.8 0 2.7a4 4 0 0 1 1 2.7c0 4-2.3 4.8-4.5 5a2.5 2.5 0 0 1 .7 2v2.8c0 .3.2.6.7.5a10 10 0 0 0 5.4-4.4 10.5 10.5 0 0 0-2.1-13.2A9.8 9.8 0 0 0 12 2Z"*/}
-        {/*        fillRule="evenodd"*/}
-        {/*      />*/}
-        {/*    </svg>*/}
-        {/*  }*/}
-        {/*  name="源码仓库"*/}
-        {/*/>*/}
+      {/*<NavItem*/}
+      {/*  icon={*/}
+      {/*    <svg*/}
+      {/*      aria-hidden="true"*/}
+      {/*      className="size-6"*/}
+      {/*      fill="currentColor"*/}
+      {/*      viewBox="0 0 24 24"*/}
+      {/*      xmlns="http://www.w3.org/2000/svg"*/}
+      {/*    >*/}
+      {/*      <path*/}
+      {/*        clipRule="evenodd"*/}
+      {/*        d="M12 2c-2.4 0-4.7.9-6.5 2.4a10.5 10.5 0 0 0-2 13.1A10 10 0 0 0 8.7 22c.5 0 .7-.2.7-.5v-2c-2.8.7-3.4-1.1-3.4-1.1-.1-.6-.5-1.2-1-1.5-1-.7 0-.7 0-.7a2 2 0 0 1 1.5 1.1 2.2 2.2 0 0 0 1.3 1 2 2 0 0 0 1.6-.1c0-.6.3-1 .7-1.4-2.2-.3-4.6-1.2-4.6-5 0-1.1.4-2 1-2.8a4 4 0 0 1 .2-2.7s.8-.3 2.7 1c1.6-.5 3.4-.5 5 0 2-1.3 2.8-1 2.8-1 .3.8.4 1.8 0 2.7a4 4 0 0 1 1 2.7c0 4-2.3 4.8-4.5 5a2.5 2.5 0 0 1 .7 2v2.8c0 .3.2.6.7.5a10 10 0 0 0 5.4-4.4 10.5 10.5 0 0 0-2.1-13.2A9.8 9.8 0 0 0 12 2Z"*/}
+      {/*        fillRule="evenodd"*/}
+      {/*      />*/}
+      {/*    </svg>*/}
+      {/*  }*/}
+      {/*  name="源码仓库"*/}
+      {/*/>*/}
       {/*</Link>*/}
     </Space>
   )

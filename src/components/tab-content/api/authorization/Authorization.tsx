@@ -15,8 +15,8 @@ export function Authorization({ value, onChange }: AuthorizationProps) {
   const [form] = Form.useForm()
 
   useEffect(() => {
-    console.log(' Authorization value',value)
-    console.log(' Authorization onChange',onChange)
+    console.log(' Authorization value', value)
+    console.log(' Authorization onChange', onChange)
     if (value) {
       setType(value.type || AuthorizationType.无需鉴权)
       form.setFieldsValue(value.data || {})
@@ -24,7 +24,7 @@ export function Authorization({ value, onChange }: AuthorizationProps) {
       // 新增：当没有初始值时，主动触发一次onChange
       onChange?.({
         type: 'NoneAuth',
-        data: {}
+        data: {},
       })
     }
   }, [value, form, onChange])

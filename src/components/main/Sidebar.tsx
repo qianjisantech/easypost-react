@@ -6,8 +6,8 @@ import { Input, Menu, Modal } from 'antd'
 
 import { TeamCreate } from '@/api/team'
 import { UserProfile } from '@/api/user'
+import { useGlobalContext } from '@/contexts/global'
 import { ROUTES } from '@/utils/routes'
-import { useGlobalContext } from "@/contexts/global";
 
 const sidebarStyle = {
   height: '100%',
@@ -27,7 +27,7 @@ const Sidebar = forwardRef((props, ref) => {
   const router = useRouter()
   const [teamName, setTeamName] = useState('')
   const [modalVisible, setModalVisible] = useState(false)
-  const { messageApi ,teams,fetchTeams } = useGlobalContext()
+  const { messageApi, teams, fetchTeams } = useGlobalContext()
   const [defaultOpenKeys, setDefaultOpenKeys] = useState([])
   useEffect(() => {
     const fetchData = async () => {
@@ -36,9 +36,8 @@ const Sidebar = forwardRef((props, ref) => {
     fetchData()
   }, []) // 仅在组件挂载时执行
 
-
   useImperativeHandle(ref, () => ({
-    handleMenuItemClick
+    handleMenuItemClick,
   }))
 
   const handleCreateTeamClick = () => {
@@ -58,16 +57,14 @@ const Sidebar = forwardRef((props, ref) => {
         setModalVisible(false)
 
         // 重新加载团队列表
-        await fetchTeams().then(()=>{
+        await fetchTeams().then(() => {
           handleMenuItemClick(response.data.data.id)
         })
-
       }
     } catch (error) {
       messageApi.error('创建团队失败')
     }
   }
-
 
   const handleMenuItemClick = (teamId) => {
     setDefaultOpenKeys(teamId)

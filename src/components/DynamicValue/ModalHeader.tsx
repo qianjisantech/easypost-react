@@ -1,9 +1,9 @@
-import { LeftOutlined, CloseOutlined } from '@ant-design/icons';
+import { CloseOutlined, LeftOutlined } from '@ant-design/icons'
 
 interface ModalHeaderProps {
-  title: string;
-  onBack?: () => void;
-  onClose?: () => void;
+  title: string
+  onBack?: () => void
+  onClose?: () => void
 }
 
 const ModalHeader = ({ title, onBack, onClose }: ModalHeaderProps) => (
@@ -22,6 +22,6 @@ const ModalHeader = ({ title, onBack, onClose }: ModalHeaderProps) => (
       />
     )}
   </div>
-);
+)
 
 export default ModalHeader

@@ -1,16 +1,17 @@
 'use client'
 
+import { usePathname } from 'next/navigation'
 import { Layout, theme } from 'antd'
+
 import HeaderPage from '@/components/main/Header'
 import { LayoutProvider } from '@/contexts/layout-settings'
 import { useCssVariable } from '@/hooks/useCssVariable'
-import { usePathname } from "next/navigation";
 
 export default function MainLayout(props: React.PropsWithChildren) {
   const { token } = theme.useToken()
 
   const cssVar = useCssVariable()
- const pathname= usePathname()
+  const pathname = usePathname()
   return (
     <div style={{ backgroundColor: token.colorFillTertiary, ...cssVar }}>
       <div>

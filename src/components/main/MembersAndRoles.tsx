@@ -26,8 +26,7 @@ import {
 } from 'antd'
 import TabPane from 'antd/es/tabs/TabPane'
 
-import { TeamInviteMember, TeamMemberPage, TeamUserSearch } from "@/api/team";
-
+import { TeamInviteMember, TeamMemberPage, TeamUserSearch } from '@/api/team'
 
 const { Text } = Typography
 
@@ -59,7 +58,7 @@ const MembersAndRoles = ({ teamId }) => {
       total: pagination.total,
       current: pagination.current,
       pageSize: pagination.pageSize,
-      totalPages: pagination.totalPages
+      totalPages: pagination.totalPages,
     })
     handleQueryMembers()
   }
@@ -120,7 +119,6 @@ const MembersAndRoles = ({ teamId }) => {
     try {
       const values = await inviteForm.validateFields()
       console.log('邮箱邀请数据:', values)
-
 
       message.success('邀请已发送！')
       setInviteModalVisible(false)
@@ -413,7 +411,7 @@ const MembersAndRoles = ({ teamId }) => {
 
           {/* 新增成员按钮 */}
           <Col span={24} style={{ marginTop: '16px', textAlign: 'right', marginBottom: '16px' }}>
-            <Button style={{marginRight: '16px'}}  type="primary"  onClick={handleQueryMembers}>
+            <Button style={{ marginRight: '16px' }} type="primary" onClick={handleQueryMembers}>
               查询
             </Button>
             <Button icon={<PlusOutlined />} type="default" onClick={handleOpenInvite}>

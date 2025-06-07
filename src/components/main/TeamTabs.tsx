@@ -1,14 +1,27 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
-import { LinkOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Col, Empty, Form, Input, message, Modal, Radio, Row, Spin, Table, Tabs } from "antd";
+import { LinkOutlined, PlusOutlined } from '@ant-design/icons'
+import {
+  Button,
+  Col,
+  Empty,
+  Form,
+  Input,
+  message,
+  Modal,
+  Radio,
+  Row,
+  Spin,
+  Table,
+  Tabs,
+} from 'antd'
 
 import { ProjectCreate, ProjectQueryPage } from '@/api/project'
+import CollaborationBoard from '@/components/CollaborationBoard'
 import TeamSettings from '@/components/main/TeamSettings'
 
 import MembersAndRoles from './MembersAndRoles'
 import ProjectCard from './ProjectCard'
-import CollaborationBoard from "@/components/CollaborationBoard";
 
 const { TabPane } = Tabs
 
@@ -21,8 +34,8 @@ const TeamTabs = ({ teamId }) => {
   const [membersLoading, setMembersLoading] = useState(false)
   const [settingsLoading, setSettingsLoading] = useState(false)
 
-  const [data, setData] = useState([]);
-  const [loadFailed, setLoadFailed] = useState(false);
+  const [data, setData] = useState([])
+  const [loadFailed, setLoadFailed] = useState(false)
   // Modal related state
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [privacy, setPrivacy] = useState(false) // Default is private
@@ -31,7 +44,7 @@ const TeamTabs = ({ teamId }) => {
     id: '',
     projectName: '',
     isPublic: false,
-    teamId:teamId
+    teamId: teamId,
   })
 
   const handleModalCancel = () => {
@@ -54,7 +67,6 @@ const TeamTabs = ({ teamId }) => {
         }
         setCardsData(data)
       }
-
     } catch (err) {
       setLoadFailed(true)
       message.error('团队项目数据加载失败')
@@ -95,12 +107,12 @@ const TeamTabs = ({ teamId }) => {
 
   // Create new project
   const handleCreateNewProject = () => {
-    if (teamId){
+    if (teamId) {
       setInitialFormValues({
         id: teamId,
         projectName: '',
         isPublic: false,
-        teamId:teamId
+        teamId: teamId,
       })
     }
     setIsModalVisible(true)
@@ -109,32 +121,32 @@ const TeamTabs = ({ teamId }) => {
   const handleUrlClick = (url) => {
     window.open(url, '_blank')
   }
-// 模拟数据
+  // 模拟数据
   const mockData = [
     {
       key: '1',
       name: '百度',
       url: 'https://www.baidu.com',
-      description: '全球最大的中文搜索引擎'
+      description: '全球最大的中文搜索引擎',
     },
     {
       key: '2',
       name: '谷歌',
       url: 'https://www.google.com',
-      description: '全球最大的搜索引擎'
+      description: '全球最大的搜索引擎',
     },
     {
       key: '3',
       name: 'GitHub',
       url: 'https://github.com',
-      description: '代码托管平台'
+      description: '代码托管平台',
     },
     {
       key: '4',
       name: 'Gitee',
       url: 'https://gitee.com',
-      description: '国内代码托管平台'
-    }
+      description: '国内代码托管平台',
+    },
   ]
   const columns = [
     {
@@ -146,7 +158,7 @@ const TeamTabs = ({ teamId }) => {
           <div style={{ fontWeight: 500 }}>{text}</div>
           <div style={{ color: '#999', fontSize: 12 }}>{record.description}</div>
         </div>
-      )
+      ),
     },
     {
       title: '地址',
@@ -154,24 +166,25 @@ const TeamTabs = ({ teamId }) => {
       key: 'url',
       render: (url) => (
         <Button
-          type="link"
           icon={<LinkOutlined />}
-          onClick={() => handleUrlClick(url)}
           style={{ padding: 0 }}
+          type="link"
+          onClick={() => {
+            handleUrlClick(url)
+          }}
         >
           {url}
         </Button>
-      )
-    }
-  ];
-
+      ),
+    },
+  ]
 
   // Handle form submit for project creation
   const handleProjectFormSubmit = async (values) => {
     const payload = {
       ...values,
       teamId: teamId, // 键值对形式，teamId 是变量名
-    };
+    }
     try {
       await ProjectCreate(payload)
       setIsModalVisible(false)
@@ -181,17 +194,17 @@ const TeamTabs = ({ teamId }) => {
     }
   }
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData()
+  }, [])
 
   const fetchData = () => {
-    setLoading(true);
+    setLoading(true)
     // 模拟API请求
     setTimeout(() => {
-      setData(mockData);
-      setLoading(false);
-    }, 800);
-  };
+      setData(mockData)
+      setLoading(false)
+    }, 800)
+  }
   // Handle privacy change
   const handlePrivacyChange = (e) => {
     setPrivacy(e.target.value)
@@ -232,7 +245,11 @@ const TeamTabs = ({ teamId }) => {
                 <Row gutter={[16, 16]} justify="start">
                   {cardsData.map((card) => (
                     <Col key={card.id} span={4.5}>
-                      <ProjectCard card={card} fetchCardsData={fetchCardsData} teamId={initialFormValues.teamId} />
+                      <ProjectCard
+                        card={card}
+                        fetchCardsData={fetchCardsData}
+                        teamId={initialFormValues.teamId}
+                      />
                     </Col>
                   ))}
                 </Row>
@@ -256,10 +273,14 @@ const TeamTabs = ({ teamId }) => {
           </div>
         </TabPane>
         <TabPane key="2" tab="协作看板">
-          <CollaborationBoard/>
+          <CollaborationBoard />
         </TabPane>
         <TabPane key="3" tab="成员/权限">
-          {membersLoading ? <Spin tip="加载成员和角色数据..." /> : <MembersAndRoles teamId={teamId} />}
+          {membersLoading ? (
+            <Spin tip="加载成员和角色数据..." />
+          ) : (
+            <MembersAndRoles teamId={teamId} />
+          )}
         </TabPane>
         <TabPane key="4" tab="团队设置">
           {settingsLoading ? <Spin tip="加载团队设置..." /> : <TeamSettings teamId={teamId} />}

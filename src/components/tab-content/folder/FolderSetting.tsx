@@ -17,7 +17,6 @@ export function FolderSetting() {
   const [form] = Form.useForm<ApiFolder>()
 
   const fetchFolderDetail = async () => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     const response = await FolderDetail(tabData.key)
     if (response.data.success) {
       form.setFieldsValue({
@@ -30,7 +29,6 @@ export function FolderSetting() {
     }
   }
   const createFolderDetail = async (values) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     const response = await FolderDetailSave(values)
     if (response.data.success) {
       message.success(response.data.message)

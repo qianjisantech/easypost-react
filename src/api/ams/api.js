@@ -1,4 +1,5 @@
 import request from '@/api/index.ts'
+
 export function ApiTreeQueryPage() {
   return request({
     url: '/ams/api/tree/page',

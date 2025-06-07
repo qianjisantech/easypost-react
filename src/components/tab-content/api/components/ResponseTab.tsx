@@ -176,13 +176,11 @@ export function ResponseTab(props: ResponseTabProps) {
                                     <Form.Item
                                       noStyle
                                       name={['responseExamples', targetIdx, 'id']}
-                                    >
-                                    </Form.Item>
+                                    ></Form.Item>
                                     <Form.Item
                                       noStyle
                                       name={['responseExamples', targetIdx, 'name']}
-                                    >
-                                    </Form.Item>
+                                    ></Form.Item>
                                     <Form.Item
                                       noStyle
                                       name={['responseExamples', targetIdx, 'data']}

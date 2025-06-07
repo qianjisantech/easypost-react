@@ -10,8 +10,8 @@ import type {
   HttpMethod,
   MenuItemType,
   ParamType,
+  ScriptsType,
 } from './enums'
-import { ScriptsType } from "./enums";
 
 export type TabContentType = CatalogType | MenuItemType | 'blank'
 
@@ -172,11 +172,11 @@ export interface GlobalParameter {
   query: GlobalParameterChildren[]
   body: GlobalParameterChildren[]
 }
-export interface GlobalVariable{
+export interface GlobalVariable {
   team: GlobalVariableChildren[]
   project: GlobalVariableChildren[]
 }
-export interface GlobalVariableChildren{
+export interface GlobalVariableChildren {
   id: string
   name: string
   type: string
@@ -184,23 +184,22 @@ export interface GlobalVariableChildren{
   description: string
 }
 
-
 export interface KeyStore {
   id: string
   name: string
-  type:string
+  type: string
   value: string
   description: string
 }
 export interface Server {
   id: string
   name: string
-  frontUrl:string
+  frontUrl: string
 }
 export interface Variable {
   id: string
   key: string
-  type:string
+  type: string
   value: string
   description: string
 }
@@ -228,11 +227,11 @@ export interface SelfHostMock {
 export interface GlobalParameterChildren {
   id: string
   key: string
-  type:string
+  type: string
   value: string
   description: string
 }
-export  interface  EnvironmentManagement {
+export interface EnvironmentManagement {
   id: string
   globalParameter: GlobalParameter
   globalVariable: GlobalVariable

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from 'react'
 
 import { Button, ConfigProvider, Tabs, type TabsProps, theme, Tooltip } from 'antd'
 import { PanelRightIcon } from 'lucide-react'
@@ -27,7 +27,7 @@ export function Api() {
     // 例如重置某些状态或重新获取数据
   }, [activeKey])
 
-  const [renderKey, setRenderKey] = useState(0);
+  const [renderKey, setRenderKey] = useState(0)
   const apiTabItems = useMemo<TabsProps['items']>(() => {
     return [
       {
@@ -35,7 +35,7 @@ export function Api() {
         label: '文档',
         children: (
           <ApiTabContentWrapper key={`doc-${renderKey}`}>
-            <ApiDoc  activeKey={activeKey} setActiveKey={setActiveKey} />
+            <ApiDoc activeKey={activeKey} setActiveKey={setActiveKey} />
           </ApiTabContentWrapper>
         ),
       },
@@ -44,7 +44,7 @@ export function Api() {
         label: '修改文档',
         children: (
           <ApiTabContentWrapper key={`docEdit-${renderKey}`}>
-            <ApiDocEditing  activeKey={activeKey} setActiveKey={setActiveKey} />
+            <ApiDocEditing activeKey={activeKey} setActiveKey={setActiveKey} />
           </ApiTabContentWrapper>
         ),
       },
@@ -52,8 +52,8 @@ export function Api() {
         key: 'run',
         label: '运行',
         children: (
-          <ApiTabContentWrapper  key={`run-${renderKey}`}>
-            <ApiRun activeKey={activeKey}/>
+          <ApiTabContentWrapper key={`run-${renderKey}`}>
+            <ApiRun activeKey={activeKey} />
           </ApiTabContentWrapper>
         ),
       },
@@ -63,11 +63,11 @@ export function Api() {
       //   children: <ApiTabContentWrapper></ApiTabContentWrapper>,
       // },
     ]
-  }, [activeKey,renderKey])
+  }, [activeKey, renderKey])
   const handleTabChange = (key: string) => {
-    console.log('Tab changing to:', key);  // 添加调试日志
-    setActiveKey(key);
-  };
+    console.log('Tab changing to:', key) // 添加调试日志
+    setActiveKey(key)
+  }
   return (
     <div className="h-full overflow-hidden">
       <ConfigProvider
@@ -96,7 +96,6 @@ export function Api() {
               animated={false}
               className="api-details-tabs flex-1"
               items={apiTabItems}
-              onChange={handleTabChange}
               tabBarExtraContent={
                 <>
                   <Tooltip placement="topLeft" title="历史记录、SEO 设置">
@@ -115,7 +114,7 @@ export function Api() {
                   </Tooltip>
                 </>
               }
-
+              onChange={handleTabChange}
             />
 
             <ApiSidePanel

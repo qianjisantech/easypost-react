@@ -1,5 +1,6 @@
 import React from 'react'
-import { Row, Col, Button, Typography,QRCode } from 'antd'
+
+import { Button, Col, QRCode, Row, Typography } from 'antd'
 
 const { Title } = Typography
 
@@ -18,19 +19,18 @@ const QRCodeLogin = () => {
         gutter={[16, 16]}
         style={{
           marginBottom: 24,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center"
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
         <Col>
-          <QRCode value={generateQRCodeData()} size={144} />
+          <QRCode size={144} value={generateQRCodeData()} />
         </Col>
         <div>
           <p>
-            扫码表示您同意{" "}
-            <span style={{ color: "#D6A5D6" }}>服务协议</span> 和{" "}
-            <span style={{ color: "#D6A5D6" }}>隐私协议</span>
+            扫码表示您同意 <span style={{ color: '#D6A5D6' }}>服务协议</span> 和{' '}
+            <span style={{ color: '#D6A5D6' }}>隐私协议</span>
           </p>
         </div>
       </Row>

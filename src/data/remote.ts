@@ -618,7 +618,7 @@ export const initialTabItems: (
       key: 'newCatalog',
       label: '新建...',
       contentType: 'blank',
-    }
+    },
   ]
 })()
 
@@ -648,7 +648,7 @@ export const initialCreateApiDetailsData: ApiDetails = {
   method: HttpMethod.Get,
   path: '',
   name: '',
-  responsibleId:'',
+  responsibleId: '',
   tags: [],
   description: '',
   status: ApiStatus.Developing,
@@ -662,4 +662,3 @@ export const initialCreateApiSchemaData: ApiSchema = {
     type: SchemaType.Object,
   },
 }
-

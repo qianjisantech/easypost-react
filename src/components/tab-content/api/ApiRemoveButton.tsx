@@ -1,4 +1,4 @@
-import { Button, message, Popconfirm } from "antd";
+import { Button, message, Popconfirm } from 'antd'
 
 import { useMenuHelpersContext } from '@/contexts/menu-helpers'
 import { useMenuTabHelpers } from '@/contexts/menu-tab-settings'
@@ -8,7 +8,7 @@ export function ApiRemoveButton(props: { tabKey: string }) {
 
   const { removeMenuItem } = useMenuHelpersContext()
   const { removeTabItem } = useMenuTabHelpers()
- const handleDelete = () => {
+  const handleDelete = () => {
     message.error('别急 删除还没做')
   }
   return (
@@ -21,7 +21,7 @@ export function ApiRemoveButton(props: { tabKey: string }) {
         // removeMenuItem({ id: tabKey })
       }}
     >
-      <Button >删除</Button>
+      <Button>删除</Button>
     </Popconfirm>
   )
 }

@@ -28,7 +28,6 @@ export function UserActions(body) {
   })
 }
 
-
 export function UserSetPassword(body) {
   return request({
     url: '/user/setPassword',

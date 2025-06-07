@@ -1,32 +1,32 @@
 'use client'
 
-import type React from 'react'
+import type React, { useState } from 'react'
+import useEvent from 'react-use-event-hook'
+
 import {
-  SettingOutlined,
+  ClusterOutlined,
   DatabaseOutlined,
   DeploymentUnitOutlined,
   RocketOutlined,
-  ToolOutlined,
-  ClusterOutlined,
+  SettingOutlined,
+  SoundOutlined,
   SyncOutlined,
   ThunderboltOutlined,
-  SoundOutlined
+  ToolOutlined,
 } from '@ant-design/icons'
-import type { MenuProps } from 'antd'
-import { Menu } from 'antd'
-import { useState } from 'react'
-import { useMenuHelpersContext } from "@/contexts/menu-helpers";
-import { useApiMenuContext } from "@/components/ApiMenu/ApiMenuContext";
-import { useMenuTabContext, useMenuTabHelpers } from "@/contexts/menu-tab-settings";
-import useEvent from "react-use-event-hook";
-import EsManage from "@/app/(main)/gosmo/SystemSettings/EsManage";
-import AgentManage from "@/app/(main)/gosmo/SystemSettings/AgentManage";
-import RecordTask from "@/app/(main)/gosmo/Record/RecordTask";
-import RecordRule from "@/app/(main)/gosmo/Record/RecordRule";
-import TrafficManage from "@/app/(main)/gosmo/Pool/TrafficManage";
-import ReplayTask from "@/app/(main)/gosmo/Replay/ReplayTask";
-import TrafficComparison from "@/app/(main)/gosmo/Replay/TrafficComparison";
-import NoiseFiltering from "@/app/(main)/gosmo/Replay/NoiseFiltering";
+import type { Menu, MenuProps } from 'antd'
+
+import TrafficManage from '@/app/(main)/gosmo/Pool/TrafficManage'
+import RecordRule from '@/app/(main)/gosmo/Record/RecordRule'
+import RecordTask from '@/app/(main)/gosmo/Record/RecordTask'
+import NoiseFiltering from '@/app/(main)/gosmo/Replay/NoiseFiltering'
+import ReplayTask from '@/app/(main)/gosmo/Replay/ReplayTask'
+import TrafficComparison from '@/app/(main)/gosmo/Replay/TrafficComparison'
+import AgentManage from '@/app/(main)/gosmo/SystemSettings/AgentManage'
+import EsManage from '@/app/(main)/gosmo/SystemSettings/EsManage'
+import { useApiMenuContext } from '@/components/ApiMenu/ApiMenuContext'
+import { useMenuHelpersContext } from '@/contexts/menu-helpers'
+import { useMenuTabContext, useMenuTabHelpers } from '@/contexts/menu-tab-settings'
 // key 和 组件映射
 const componentMap: Record<string, React.ReactNode> = {
   '1-1': <EsManage />,
@@ -62,9 +62,7 @@ const items: MenuProps['items'] = [
     key: '3',
     label: '流量池',
     icon: <SyncOutlined />,
-    children: [
-      { key: '3-1', label: '流量管理', icon: <ThunderboltOutlined /> },
-    ],
+    children: [{ key: '3-1', label: '流量管理', icon: <ThunderboltOutlined /> }],
   },
   {
     key: '4',
@@ -98,11 +96,9 @@ export default function GosmoMenu() {
   })
 
   const onClick: MenuProps['onClick'] = (e) => {
-
     console.log('点击了菜单：', e.key)
 
     setSelectedKey(e.key)
-
   }
 
   return (
@@ -115,9 +111,7 @@ export default function GosmoMenu() {
         style={{ width: 256 }}
         onClick={onClick}
       />
-      <div className="flex-1 p-4">
-        {componentMap[selectedKey] || <div>请选择一个菜单</div>}
-      </div>
+      <div className="flex-1 p-4">{componentMap[selectedKey] || <div>请选择一个菜单</div>}</div>
     </div>
   )
 }

@@ -42,20 +42,24 @@ const nextConfig = {
 
   // 代理配置
   async rewrites() {
-    if (!process.env.API_BASE_URL) {
-      console.warn('API_BASE_URL is not set, rewrites will be disabled')
+    if (!process.env.EASYPOST_APP_URL) {
+      console.warn('EASYPOST_APP_URL is not set, rewrites will be disabled')
+      return []
+    }
+    if (!process.env.EASYPOST_PROXY_URL) {
+      console.warn('EASYPOST_PROXY_URL is not set, rewrites will be disabled')
       return []
     }
 
     return [
       {
         source: '/app/:path*',
-        destination: `${process.env.API_BASE_URL}/app/:path*`,
+        destination: `${process.env.EASYPOST_APP_URL}/:path*`,
         basePath: false
       },
       {
         source: '/proxy/:path*',
-        destination: `${process.env.API_BASE_URL}/proxy/:path*`,
+        destination: `${process.env.EASYPOST_PROXY_URL}/:path*`,
         basePath: false
       }
     ]

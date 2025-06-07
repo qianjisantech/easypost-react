@@ -3,7 +3,6 @@ import { Editor, type EditorProps } from '@bytemd/react'
 
 import { useStyles } from '@/hooks/useStyle'
 
-// eslint-disable-next-line import/no-unresolved
 import 'bytemd/dist/index.css'
 import { css } from '@emotion/css'
 

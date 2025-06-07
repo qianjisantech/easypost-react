@@ -1,95 +1,96 @@
-import { useState } from 'react';
-import { Select, Button, Divider, Modal, message } from "antd";
-import ModalHeader from './ModalHeader';
-import { PlusOutlined } from "@ant-design/icons";
+import { useState } from 'react'
+
+import { PlusOutlined } from '@ant-design/icons'
+import { Button, Divider, message, Modal, Select } from 'antd'
+
+import ModalHeader from './ModalHeader'
 
 interface DataGeneratorModalProps {
-  visible: boolean;
-  onBack: () => void;
-  onClose: () => void;
-  onInsert: (value: string) => void;
+  visible: boolean
+  onBack: () => void
+  onClose: () => void
+  onInsert: (value: string) => void
 }
 
 const DataGeneratorModal = ({ visible, onBack, onClose, onInsert }: DataGeneratorModalProps) => {
-  const [selectedValue, setSelectedValue] = useState<string>('');
+  const [selectedValue, setSelectedValue] = useState<string>('')
 
   // 数据生成器选项
   const generatorOptions = [
     {
       value: 'random_number',
       label: '随机数字',
-      preview: '42'
+      preview: '42',
     },
     {
       value: 'random_string',
       label: '随机字符串',
-      preview: '"aB3dE"'
+      preview: '"aB3dE"',
     },
     {
       value: 'uuid',
       label: 'UUID',
-      preview: '"550e8400-e29b-41d4-a716-446655440000"'
+      preview: '"550e8400-e29b-41d4-a716-446655440000"',
     },
     {
       value: 'timestamp',
       label: '时间戳',
-      preview: '1672531200'
+      preview: '1672531200',
     },
     {
       value: 'date',
       label: '日期',
-      preview: '"2023-01-01"'
+      preview: '"2023-01-01"',
     },
     {
       value: 'datetime',
       label: '日期时间',
-      preview: '"2023-01-01 12:00:00"'
+      preview: '"2023-01-01 12:00:00"',
     },
-  ];
+  ]
 
   // 获取当前预览值
   const getPreviewValue = () => {
-    const selectedOption = generatorOptions.find(opt => opt.value === selectedValue);
-    return selectedOption ? selectedOption.preview : '';
-  };
+    const selectedOption = generatorOptions.find((opt) => opt.value === selectedValue)
+    return selectedOption ? selectedOption.preview : ''
+  }
 
   const handleSelect = (value: string) => {
-    setSelectedValue(value);
-  };
+    setSelectedValue(value)
+  }
 
   const handleClear = () => {
-    setSelectedValue('');
-  };
+    setSelectedValue('')
+  }
 
   const handleInsert = () => {
     if (selectedValue) {
-      onInsert(`{{${selectedValue}}}`);
-      onClose();
+      onInsert(`{{${selectedValue}}}`)
+      onClose()
     }
-  };
+  }
 
   return (
     <Modal
+      bodyStyle={{ backgroundColor: 'transparent' }}
       closable={false}
       footer={null}
+      maskStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.1)' }}
       open={visible}
       width={400}
       onCancel={onClose}
-      bodyStyle={{ backgroundColor: 'transparent' }}
-      maskStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.1)' }}
     >
       <div style={{ padding: '0 16px' }}>
-        <ModalHeader
-          title="数据生成器"
-          onBack={onBack}
-          onClose={onClose}
-        />
+        <ModalHeader title="数据生成器" onBack={onBack} onClose={onClose} />
         {/* 变量选择下拉框 - 添加清空功能 */}
         <div style={{ marginBottom: 16 }}>
-          <div style={{ margin: "10px 10px 5px", fontSize: "12px", color: "#484444" }}>类型</div>
+          <div style={{ margin: '10px 10px 5px', fontSize: '12px', color: '#484444' }}>类型</div>
           <Select
-            placeholder="选择函数"
-            style={{ width: "100%" }}
+            allowClear
+            dropdownStyle={{
+              padding: "8px 0",
+              borderRadius: 4
+            }}
             options={generatorOptions.map(opt => ({
               value: opt.value,
               label: (
@@ -112,15 +113,12 @@ const DataGeneratorModal = ({ visible, onBack, onClose, onInsert }: DataGenerato
                 </div>
               )
             }))}
+            placeholder="选择函数"
+            size="small"
+            style={{ width: "100%" }}
+            value={selectedValue}
             onChange={handleSelect}
             onClear={handleClear}
-            allowClear
-            size="small"
-            value={selectedValue}
-            dropdownStyle={{
-              padding: "8px 0",
-              borderRadius: 4
-            }}
             listHeight={256}
             // 关键修改：选中后只显示value
             tagRender={(props) => (
@@ -135,20 +133,21 @@ const DataGeneratorModal = ({ visible, onBack, onClose, onInsert }: DataGenerato
           />
         </div>
         {/* 空白分割区域 */}
-        <Divider style={{ margin: "12px 0" }} />
+        <Divider style={{ margin: '12px 0' }} />
         {/* 展示框 */}
-        <div style={{
-          padding: 0,
-          marginBottom: 16,
-          borderRadius: 4,
-          minHeight: 200,
-          display: "flex",
-          flexDirection: "column",
-          fontSize: 16
-        }}>
+        <div
+          style={{
+            padding: 0,
+            marginBottom: 16,
+            borderRadius: 4,
+            minHeight: 200,
+            display: 'flex',
+            flexDirection: 'column',
+            fontSize: 16,
+          }}
+        >
           {/* 按钮置顶 */}
           <Button
-            type="default"
             icon={<PlusOutlined />}
             style={{
               width: '100%',
@@ -165,9 +164,10 @@ const DataGeneratorModal = ({ visible, onBack, onClose, onInsert }: DataGenerato
               transition: 'all 0.3s', // 平滑过渡效果
               ':hover': {
                 backgroundColor: '#f0f0f0', // 悬停背景色
-                color: '#262626' // 悬停文字颜色
-              }
+                color: '#262626', // 悬停文字颜色
+              },
             }}
+            type="default"
             onClick={() => {
               console.log('添加处理函数')
               message.error('暂不支持添加处理函数')
@@ -180,56 +180,66 @@ const DataGeneratorModal = ({ visible, onBack, onClose, onInsert }: DataGenerato
           <div style={{ flex: 1 }}></div>
         </div>
         {/* 预览框 */}
-        <div style={{
-          padding: 16,
-          marginBottom: 16,
-          border: '1px solid #d9d9d9',
-          borderRadius: 10,
-          minHeight: 80,
-          backgroundColor: '#e6f7ff',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-          justifyContent: 'center',
-          fontSize: 12,
-          overflow: 'hidden' // 防止内容溢出容器
-        }}>
-          <div style={{
-            color: '#0050b3',
-            marginBottom: 8,
+        <div
+          style={{
+            padding: 16,
+            marginBottom: 16,
+            border: '1px solid #d9d9d9',
+            borderRadius: 10,
+            minHeight: 80,
+            backgroundColor: '#e6f7ff',
             display: 'flex',
-            alignItems: 'center',
-            width: '100%' // 确保宽度填满
-          }}>
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            justifyContent: 'center',
+            fontSize: 12,
+            overflow: 'hidden', // 防止内容溢出容器
+          }}
+        >
+          <div
+            style={{
+              color: '#0050b3',
+              marginBottom: 8,
+              display: 'flex',
+              alignItems: 'center',
+              width: '100%', // 确保宽度填满
+            }}
+          >
             <span style={{ fontWeight: 500, marginRight: 8, flexShrink: 0 }}>表达式:</span>
-            <span style={{
-              padding: '2px 8px',
-              borderRadius: 4,
-              fontFamily: 'monospace',
-              whiteSpace: 'nowrap', // 防止换行
-              overflow: 'auto', // 允许滚动
-              maxWidth: '100%',
-              display: 'inline-block'
-            }}>
-      {selectedValue ? `{{${selectedValue}}}` : '未选择'}
-    </span>
+            <span
+              style={{
+                padding: '2px 8px',
+                borderRadius: 4,
+                fontFamily: 'monospace',
+                whiteSpace: 'nowrap', // 防止换行
+                overflow: 'auto', // 允许滚动
+                maxWidth: '100%',
+                display: 'inline-block',
+              }}
+            >
+              {selectedValue ? `{{${selectedValue}}}` : '未选择'}
+            </span>
           </div>
-          <div style={{
-            color: '#0050b3',
-            display: 'flex',
-            alignItems: 'center',
-            width: '100%' // 确保宽度填满
-          }}>
+          <div
+            style={{
+              color: '#0050b3',
+              display: 'flex',
+              alignItems: 'center',
+              width: '100%', // 确保宽度填满
+            }}
+          >
             <span style={{ fontWeight: 500, marginRight: 8, flexShrink: 0 }}>预览:</span>
-            <div style={{
-              padding: '2px 8px',
-              borderRadius: 4,
-              fontFamily: 'monospace',
-              whiteSpace: 'nowrap', // 防止换行
-              overflow: 'auto', // 允许滚动
-              maxWidth: '100%',
-              display: 'inline-block'
-            }}>
+            <div
+              style={{
+                padding: '2px 8px',
+                borderRadius: 4,
+                fontFamily: 'monospace',
+                whiteSpace: 'nowrap', // 防止换行
+                overflow: 'auto', // 允许滚动
+                maxWidth: '100%',
+                display: 'inline-block',
+              }}
+            >
               {getPreviewValue() || '无'}
             </div>
           </div>
@@ -237,17 +247,17 @@ const DataGeneratorModal = ({ visible, onBack, onClose, onInsert }: DataGenerato
 
         {/* 插入按钮 */}
         <Button
-          type="primary"
           block
           disabled={!selectedValue}
-          onClick={handleInsert}
           style={{ marginBottom: 16 }}
+          type="primary"
+          onClick={handleInsert}
         >
           插入
         </Button>
       </div>
     </Modal>
-  );
-};
+  )
+}
 
-export default DataGeneratorModal;
+export default DataGeneratorModal

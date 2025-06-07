@@ -1,24 +1,25 @@
 // components/RouteGuard.tsx
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect } from 'react'
+
+import { useRouter } from 'next/router'
 
 const RouteGuard = (WrappedComponent: React.ComponentType) => {
   const Wrapper = (props: any) => {
-    const router = useRouter();
-    const isAuthenticated = false; // 替换为你的认证逻辑
+    const router = useRouter()
+    const isAuthenticated = false // 替换为你的认证逻辑
 
     useEffect(() => {
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!isAuthenticated) {
-        router.push('/login'); // 未认证跳转到登录页
+        router.push('/login') // 未认证跳转到登录页
       }
-    }, [isAuthenticated, router]);
+    }, [isAuthenticated, router])
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    return isAuthenticated ? <WrappedComponent {...props} /> : null;
-  };
+    return isAuthenticated ? <WrappedComponent {...props} /> : null
+  }
 
-  return Wrapper;
-};
+  return Wrapper
+}
 
-export default RouteGuard;
+export default RouteGuard

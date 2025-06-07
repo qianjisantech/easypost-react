@@ -1,11 +1,13 @@
 import { Form, Tabs, theme, Typography } from 'antd'
 
 import { Authorization } from '@/components/tab-content/api/authorization/Authorization'
+import PostScripts from '@/components/tab-content/api/scripts/PostScripts'
 import { PreScripts } from '@/components/tab-content/api/scripts/PreScripts'
 import type { ApiDetails } from '@/types'
+
 import { ParamsEditableTable } from '../components/ParamsEditableTable'
+
 import { ParamsPayload } from './ParamsPayload'
-import PostScripts from "@/components/tab-content/api/scripts/PostScripts";
 
 function BadgeLabel(props: React.PropsWithChildren<{ count?: number }>) {
   const { token } = theme.useToken()
@@ -142,7 +144,7 @@ export function ParamsTab(props: ParamsTabProps) {
             <PreScripts
               value={value?.prescripts}
               onChange={(prescripts) => {
-                onChange?.({ ...value, prescripts})
+                onChange?.({ ...value, prescripts })
               }}
             />
           ),
@@ -154,8 +156,9 @@ export function ParamsTab(props: ParamsTabProps) {
             <PostScripts
               value={value?.postscripts}
               onChange={(postscripts) => {
-                onChange?.({ ...value, postscripts})
-              }}/>
+                onChange?.({ ...value, postscripts })
+              }}
+            />
           ),
         },
       ]}

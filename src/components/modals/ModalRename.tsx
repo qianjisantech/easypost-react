@@ -1,11 +1,11 @@
 import { useEffect, useRef } from 'react'
 
 import { create, useModal } from '@ebay/nice-modal-react'
-import { Form, Input, type InputRef, message, Modal, type ModalProps } from "antd";
+import { Form, Input, type InputRef, message, Modal, type ModalProps } from 'antd'
 
+import { ApiRename } from '@/api/ams/api'
 import type { ApiMenuData } from '@/components/ApiMenu/ApiMenu.type'
 import { useMenuHelpersContext } from '@/contexts/menu-helpers'
-import { ApiRename } from "@/api/ams/api";
 
 interface ModalRenameProps extends Omit<ModalProps, 'open' | 'onOk'> {
   formData?: Pick<ApiMenuData, 'id' | 'name'>
@@ -30,14 +30,14 @@ export const ModalRename = create(({ formData, ...props }: ModalRenameProps) => 
     form.resetFields()
     void modal.hide()
   }
-const apiRename=async (values)=>{
-   const  response= await  ApiRename(values)
-  if (response.data.success){
-    message.success(response.data.message)
-    updateMenuItem(values)
-    handleHide()
+  const apiRename = async (values) => {
+    const response = await ApiRename(values)
+    if (response.data.success) {
+      message.success(response.data.message)
+      updateMenuItem(values)
+      handleHide()
+    }
   }
-}
   const inputRef = useRef<InputRef>(null)
 
   return (

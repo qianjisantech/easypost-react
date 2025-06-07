@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { AntdRegistry } from '@ant-design/nextjs-registry'
 import { App } from 'antd'
+
 import { ThemeProviderClient } from '@/components/ThemeEditor'
 import { GlobalContextProvider } from '@/contexts/global'
 
@@ -22,12 +23,12 @@ export const viewport: Viewport = {
 
 export default function RootLayout(props: React.PropsWithChildren) {
   return (
-    <html  lang="zh-Hans-CN">
-      <body >
+    <html lang="zh-Hans-CN">
+      <body>
         <AntdRegistry>
-          <App >
+          <App>
             <ThemeProviderClient autoSaveId="theme:persistence">
-              <main >
+              <main>
                 <GlobalContextProvider>{props.children}</GlobalContextProvider>
               </main>
             </ThemeProviderClient>

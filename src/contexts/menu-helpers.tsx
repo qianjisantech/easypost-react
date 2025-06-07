@@ -2,38 +2,54 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 
 import { current, produce } from 'immer'
 import { nanoid } from 'nanoid'
-import type { ApiMenuData } from '@/components/ApiMenu'
-import { creator } from "@/data/remote"; // 假设这两个是从远程获取的 API
-import { ApiStatus, BodyType, CatalogType, HttpMethod } from "@/enums";
-import { getCatalogType, isMenuFolder } from '@/helpers'
-import type { ApiDetailsResponse, Parameter, RecycleCatalogType, RecycleData, RecycleDataItem } from "@/types";
-import { moveArrayItem } from '@/utils'
 
+import type { ApiMenuData } from '@/components/ApiMenu'
+import { creator } from '@/data/remote' // 假设这两个是从远程获取的 API
+import { type ApiStatus, type BodyType, CatalogType, type HttpMethod } from '@/enums'
+import { getCatalogType, isMenuFolder } from '@/helpers'
+import type {
+  ApiDetailsResponse,
+  Parameter,
+  RecycleCatalogType,
+  RecycleData,
+  RecycleDataItem,
+} from '@/types'
+import { moveArrayItem } from '@/utils'
 
 interface MenuHelpers {
   /** 添加一个新的菜单项到菜单列表中。 */
   addMenuItem: (menuData: {
     data: {
-      editorId?: string;
-      method: HttpMethod;
-      creatorId?: string;
-      description?: string;
-      serverId?: string;
-      tags?: string[];
-      responseExamples?: ApiDetailsResponseExample[];
-      path?: string;
-      createdAt?: string;
-      requestBody?: { Id: string; type: BodyType; parameters?: Parameter[]; jsonSchema?: JsonSchema };
-      name: string;
-      responses?: ApiDetailsResponse[];
-      responsibleId?: string;
-      id: string;
-      parameters?: { cookie?: Parameter[]; header?: Parameter[]; query?: Parameter[]; path?: Parameter[] };
-      status: ApiStatus;
+      editorId?: string
+      method: HttpMethod
+      creatorId?: string
+      description?: string
+      serverId?: string
+      tags?: string[]
+      responseExamples?: ApiDetailsResponseExample[]
+      path?: string
+      createdAt?: string
+      requestBody?: {
+        Id: string
+        type: BodyType
+        parameters?: Parameter[]
+        jsonSchema?: JsonSchema
+      }
+      name: string
+      responses?: ApiDetailsResponse[]
+      responsibleId?: string
+      id: string
+      parameters?: {
+        cookie?: Parameter[]
+        header?: Parameter[]
+        query?: Parameter[]
+        path?: Parameter[]
+      }
+      status: ApiStatus
       updatedAt?: string
-    };
-    name: string;
-    id: string;
+    }
+    name: string
+    id: string
     type: MenuItemType
   }) => void
   /** 从菜单列表中移除一个菜单项。 */
@@ -41,25 +57,35 @@ interface MenuHelpers {
   /** 更新一个菜单项的信息。 */
   updateMenuItem: (menuData: {
     data: {
-      editorId?: string;
-      method: HttpMethod;
-      creatorId?: string;
-      description?: string;
-      serverId?: string;
-      tags?: string[];
-      responseExamples?: ApiDetailsResponseExample[];
-      path?: string;
-      createdAt?: string;
-      requestBody?: { Id: string; type: BodyType; parameters?: Parameter[]; jsonSchema?: JsonSchema };
-      name: string;
-      responses?: ApiDetailsResponse[];
-      responsibleId?: string;
-      id: string;
-      parameters?: { cookie?: Parameter[]; header?: Parameter[]; query?: Parameter[]; path?: Parameter[] };
-      status: ApiStatus;
+      editorId?: string
+      method: HttpMethod
+      creatorId?: string
+      description?: string
+      serverId?: string
+      tags?: string[]
+      responseExamples?: ApiDetailsResponseExample[]
+      path?: string
+      createdAt?: string
+      requestBody?: {
+        Id: string
+        type: BodyType
+        parameters?: Parameter[]
+        jsonSchema?: JsonSchema
+      }
+      name: string
+      responses?: ApiDetailsResponse[]
+      responsibleId?: string
+      id: string
+      parameters?: {
+        cookie?: Parameter[]
+        header?: Parameter[]
+        query?: Parameter[]
+        path?: Parameter[]
+      }
+      status: ApiStatus
       updatedAt?: string
-    };
-    id: any;
+    }
+    id: any
     type: MenuItemType
   }) => void
   /** 从回收站中恢复菜单项。 */
@@ -86,7 +112,9 @@ interface MenuHelpersContextData extends MenuHelpers {
   setMenuSearchWord?: React.Dispatch<React.SetStateAction<MenuHelpersContextData['menuSearchWord']>>
 
   apiDetailDisplay: 'name' | 'path'
-  setApiDetailDisplay: React.Dispatch<React.SetStateAction<MenuHelpersContextData['apiDetailDisplay']>>
+  setApiDetailDisplay: React.Dispatch<
+    React.SetStateAction<MenuHelpersContextData['apiDetailDisplay']>
+  >
 
   setMenuRawList?: React.Dispatch<React.SetStateAction<ApiMenuData[] | undefined>> // 暴露 setMenuRawList
 }
@@ -117,25 +145,25 @@ export function MenuHelpersContextProvider(props: React.PropsWithChildren) {
             setRecyleRawData((d) =>
               d
                 ? produce(d, (draft) => {
-                  let catalogType = getCatalogType(item.type)
+                    let catalogType = getCatalogType(item.type)
 
-                  if (catalogType === CatalogType.Markdown) {
-                    catalogType = CatalogType.Http
-                  }
+                    if (catalogType === CatalogType.Markdown) {
+                      catalogType = CatalogType.Http
+                    }
 
-                  if (
-                    catalogType === CatalogType.Http ||
-                    catalogType === CatalogType.Schema ||
-                    catalogType === CatalogType.Request
-                  ) {
-                    const list = draft[catalogType].list
+                    if (
+                      catalogType === CatalogType.Http ||
+                      catalogType === CatalogType.Schema ||
+                      catalogType === CatalogType.Request
+                    ) {
+                      const list = draft[catalogType].list
 
-                    draft[catalogType].list = [
-                      { id: nanoid(6), expiredAt: '30天', creator, deletedItem: item },
-                      ...(list || []),
-                    ]
-                  }
-                })
+                      draft[catalogType].list = [
+                        { id: nanoid(6), expiredAt: '30天', creator, deletedItem: item },
+                        ...(list || []),
+                      ]
+                    }
+                  })
                 : d
             )
           }

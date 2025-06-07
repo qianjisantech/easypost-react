@@ -1,32 +1,36 @@
-import { useState } from 'react';
-import { Button, Modal } from 'antd';
-import { QuestionCircleOutlined, RightOutlined } from '@ant-design/icons';
-import ReadVariableModal from './ReadVariableModal';
-import DataGeneratorModal from './DataGeneratorModal';
-import ModalHeader from './ModalHeader';
+import { useState } from 'react'
+
+import { QuestionCircleOutlined, RightOutlined } from '@ant-design/icons'
+import { Button, Modal } from 'antd'
+
+import DataGeneratorModal from './DataGeneratorModal'
+import ModalHeader from './ModalHeader'
+import ReadVariableModal from './ReadVariableModal'
 
 interface DynamicValueDropdownProps {
-  onInsert: (value: string) => void;
+  onInsert: (value: string) => void
 }
 
 const DynamicValueModal = ({ onInsert }: DynamicValueDropdownProps) => {
-  const [dynamicValueModalVisible, setDynamicValueModalVisible] = useState(false);
-  const [readVariableModalVisible, setReadVariableModalVisible] = useState(false);
-  const [dataGeneratorModalVisible, setDataGeneratorModalVisible] = useState(false);
+  const [dynamicValueModalVisible, setDynamicValueModalVisible] = useState(false)
+  const [readVariableModalVisible, setReadVariableModalVisible] = useState(false)
+  const [dataGeneratorModalVisible, setDataGeneratorModalVisible] = useState(false)
 
   const handleInsert = (value: string) => {
-    console.log('将收到格式如 {{message}} 的字符串',value); // 将收到格式如 {{message}} 的字符串
-    onInsert(value);
-    setDynamicValueModalVisible(false);
-    setReadVariableModalVisible(false);
-    setDataGeneratorModalVisible(false);
-  };
+    console.log('将收到格式如 {{message}} 的字符串', value) // 将收到格式如 {{message}} 的字符串
+    onInsert(value)
+    setDynamicValueModalVisible(false)
+    setReadVariableModalVisible(false)
+    setDataGeneratorModalVisible(false)
+  }
 
   const renderDynamicValueModal = () => (
     <>
       <ModalHeader
         title="插入动态值"
-        onClose={() => { setDynamicValueModalVisible(false); }}
+        onClose={() => {
+          setDynamicValueModalVisible(false)
+        }}
       />
       <div style={{ padding: '8px 16px 16px' }}>
         <div
@@ -40,8 +44,8 @@ const DynamicValueModal = ({ onInsert }: DynamicValueDropdownProps) => {
             backgroundColor: 'transparent',
           }}
           onClick={() => {
-            setDynamicValueModalVisible(false);
-            setReadVariableModalVisible(true);
+            setDynamicValueModalVisible(false)
+            setReadVariableModalVisible(true)
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -62,8 +66,8 @@ const DynamicValueModal = ({ onInsert }: DynamicValueDropdownProps) => {
             backgroundColor: 'transparent',
           }}
           onClick={() => {
-            setDynamicValueModalVisible(false);
-            setDataGeneratorModalVisible(true);
+            setDynamicValueModalVisible(false)
+            setDataGeneratorModalVisible(true)
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -74,7 +78,7 @@ const DynamicValueModal = ({ onInsert }: DynamicValueDropdownProps) => {
         </div>
       </div>
     </>
-  );
+  )
 
   return (
     <>
@@ -93,19 +97,23 @@ const DynamicValueModal = ({ onInsert }: DynamicValueDropdownProps) => {
           alignItems: 'center',
         }}
         type="text"
-        onClick={() => { setDynamicValueModalVisible(true); }}
+        onClick={() => {
+          setDynamicValueModalVisible(true)
+        }}
       >
         动态值
       </Button>
 
       <Modal
+        bodyStyle={{ backgroundColor: 'transparent' }}
         closable={false}
         footer={null}
+        maskStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.1)' }}
         open={dynamicValueModalVisible}
         width={400}
-        onCancel={() => { setDynamicValueModalVisible(false); }}
-        bodyStyle={{ backgroundColor: 'transparent' }}
-        maskStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.1)' }}
+        onCancel={() => {
+          setDynamicValueModalVisible(false)
+        }}
       >
         {renderDynamicValueModal()}
       </Modal>
@@ -113,24 +121,28 @@ const DynamicValueModal = ({ onInsert }: DynamicValueDropdownProps) => {
       <ReadVariableModal
         visible={readVariableModalVisible}
         onBack={() => {
-          setReadVariableModalVisible(false);
-          setDynamicValueModalVisible(true);
+          setReadVariableModalVisible(false)
+          setDynamicValueModalVisible(true)
         }}
-        onClose={() => { setReadVariableModalVisible(false); }}
+        onClose={() => {
+          setReadVariableModalVisible(false)
+        }}
         onInsert={handleInsert}
       />
 
       <DataGeneratorModal
         visible={dataGeneratorModalVisible}
         onBack={() => {
-          setDataGeneratorModalVisible(false);
-          setDynamicValueModalVisible(true);
+          setDataGeneratorModalVisible(false)
+          setDynamicValueModalVisible(true)
         }}
-        onClose={() => { setDataGeneratorModalVisible(false); }}
+        onClose={() => {
+          setDataGeneratorModalVisible(false)
+        }}
         onInsert={handleInsert}
       />
     </>
-  );
-};
+  )
+}
 
 export default DynamicValueModal

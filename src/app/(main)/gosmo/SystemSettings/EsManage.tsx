@@ -1,18 +1,20 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+
 import {
   Button,
   Card,
   Form,
   Input,
+  message,
   Modal,
   Pagination,
+  Select,
   Space,
   Table,
   Tag,
-  message, Select
-} from "antd";
+} from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import dayjs from 'dayjs'
 
@@ -85,12 +87,10 @@ export default function EsManage() {
     })
   }
 
-
   const handleReset = () => {
     form.resetFields()
     fetchData({ result: 0, page: 1, pageSize: pagination.pageSize })
   }
-
 
   const handleTableChange = (page: number, pageSize?: number) => {
     fetchData({
@@ -158,16 +158,37 @@ export default function EsManage() {
       width: 300,
       render: (_, record) => (
         <Space>
-          <Button type="link" onClick={() => handleEdit(record)}>
+          <Button
+            type="link"
+            onClick={() => {
+              handleEdit(record)
+            }}
+          >
             编辑
           </Button>
-          <Button type="link" onClick={() => handleView(record)}>
+          <Button
+            type="link"
+            onClick={() => {
+              handleView(record)
+            }}
+          >
             查看
           </Button>
-          <Button type="link" danger onClick={() => handleDelete(record)}>
+          <Button
+            danger
+            type="link"
+            onClick={() => {
+              handleDelete(record)
+            }}
+          >
             删除
           </Button>
-          <Button type="link" onClick={() => handleTestConnection(record)}>
+          <Button
+            type="link"
+            onClick={() => {
+              handleTestConnection(record)
+            }}
+          >
             测试连接
           </Button>
         </Space>
@@ -188,13 +209,13 @@ export default function EsManage() {
         <Form.Item label="连接结果" name="result">
           <Select
             allowClear
-            style={{ width: 120 }}
             defaultValue={null}
             options={[
               { label: '全部', value: null },
               { label: '成功', value: 1 },
               { label: '失败', value: 0 },
             ]}
+            style={{ width: 120 }}
           />
         </Form.Item>
         <Form.Item>
@@ -215,7 +236,6 @@ export default function EsManage() {
         bordered
         columns={columns}
         dataSource={data}
-
         loading={loading}
         pagination={false}
         rowKey="key"
@@ -236,7 +256,9 @@ export default function EsManage() {
       <Modal
         open={addModalVisible}
         title="新增ES信息"
-        onCancel={() => setAddModalVisible(false)}
+        onCancel={() => {
+          setAddModalVisible(false)
+        }}
         onOk={() => {
           message.success('新增成功')
           setAddModalVisible(false)
@@ -255,13 +277,15 @@ export default function EsManage() {
       <Modal
         open={editModalVisible}
         title="编辑ES信息"
-        onCancel={() => setEditModalVisible(false)}
+        onCancel={() => {
+          setEditModalVisible(false)
+        }}
         onOk={() => {
           message.success('修改成功')
           setEditModalVisible(false)
         }}
       >
-        <Form layout="vertical" initialValues={currentRecord || {}}>
+        <Form initialValues={currentRecord || {}} layout="vertical">
           <Form.Item label="Es名称" name="name">
             <Input />
           </Form.Item>
@@ -273,21 +297,45 @@ export default function EsManage() {
 
       {/* 查看弹窗 */}
       <Modal
+        footer={null}
         open={viewModalVisible}
         title="查看ES信息"
-        footer={null}
-        onCancel={() => setViewModalVisible(false)}
+        onCancel={() => {
+          setViewModalVisible(false)
+        }}
       >
-        <p><strong>ES名称：</strong>{currentRecord?.name}</p>
-        <p><strong>ES地址：</strong>{currentRecord?.address}</p>
-        <p><strong>连接结果：</strong>
+        <p>
+          <strong>ES名称：</strong>
+          {currentRecord?.name}
+        </p>
+        <p>
+          <strong>ES地址：</strong>
+          {currentRecord?.address}
+        </p>
+        <p>
+          <strong>连接结果：</strong>
           {currentRecord?.result ? <Tag color="green">成功</Tag> : <Tag color="red">失败</Tag>}
         </p>
-        <p><strong>测试连接时间：</strong>{currentRecord?.testTime}</p>
-        <p><strong>创建时间：</strong>{currentRecord?.createdAt}</p>
-        <p><strong>创建人：</strong>{currentRecord?.createdBy}</p>
-        <p><strong>更新时间：</strong>{currentRecord?.updatedAt}</p>
-        <p><strong>更新人：</strong>{currentRecord?.updatedBy}</p>
+        <p>
+          <strong>测试连接时间：</strong>
+          {currentRecord?.testTime}
+        </p>
+        <p>
+          <strong>创建时间：</strong>
+          {currentRecord?.createdAt}
+        </p>
+        <p>
+          <strong>创建人：</strong>
+          {currentRecord?.createdBy}
+        </p>
+        <p>
+          <strong>更新时间：</strong>
+          {currentRecord?.updatedAt}
+        </p>
+        <p>
+          <strong>更新人：</strong>
+          {currentRecord?.updatedBy}
+        </p>
       </Modal>
 
       {/* 原有查看、编辑弹窗不变 */}

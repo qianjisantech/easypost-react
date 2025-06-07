@@ -1,6 +1,8 @@
-import { ConfigProvider, Input, type InputProps, theme } from 'antd'
-import { css } from '@emotion/css'
 import React from 'react'
+
+import { ConfigProvider, Input, type InputProps, theme } from 'antd'
+
+import { css } from '@emotion/css'
 
 interface UnderlineInputProps extends InputProps {
   /**
@@ -56,12 +58,12 @@ export const UnderlineInput = React.forwardRef<Input, UnderlineInputProps>(
 
         '&.ant-input-status-error': {
           borderColor: token.colorError,
-        }
+        },
       }),
       requiredMark: css({
         color: token.colorError,
         marginRight: token.marginXXS,
-      })
+      }),
     }
 
     // 处理输入变化
@@ -91,12 +93,12 @@ export const UnderlineInput = React.forwardRef<Input, UnderlineInputProps>(
           <Input
             {...restProps}
             ref={ref}
-            value={value}
-            onChange={handleChange}  // 确保使用内部处理函数
-            placeholder={placeholder}
             className={styles.input}
+            placeholder={placeholder}
             size="large"
+            value={value}
             variant="borderless"
+            onChange={handleChange} // 确保使用内部处理函数
           />
         </div>
       </ConfigProvider>

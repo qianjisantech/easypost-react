@@ -31,15 +31,14 @@ export function BaseFormItems() {
   const [containerSize, setContainerSize] = useState<'xs' | 'sm' | 'md' | 'lg'>()
   const [options, setOptions] = useState([]) // 存储下拉选项
   const loadingResponsible = async () => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     const response = await ResponsibleSearch({ content: '', teamId: '131' })
-    if (response?.data?.success) {
-      const formattedOptions = response?.data?.data?.map(item => ({
+    if (response.data?.success) {
+      const formattedOptions = response.data?.data?.map((item) => ({
         label: `${item.name}（@${item.username}）`,
         value: JSON.stringify(item), // 实际值
       }))
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      setOptions(formattedOptions);
+      setOptions(formattedOptions)
     }
   }
   useEffect(() => {
@@ -87,9 +86,7 @@ export function BaseFormItems() {
 
         <Col span={colSpan}>
           <Form.Item label="责任人" labelCol={{ span: 24 }} name="responsible">
-            <Select
-              options={options}
-            />
+            <Select options={options} />
           </Form.Item>
         </Col>
 

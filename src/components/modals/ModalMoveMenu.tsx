@@ -1,13 +1,13 @@
-import { useEffect } from "react";
+import { useEffect } from 'react'
 
-import { create, useModal } from "@ebay/nice-modal-react";
-import { Form, Input, message, Modal, type ModalProps } from "antd";
+import { create, useModal } from '@ebay/nice-modal-react'
+import { Form, Input, message, Modal, type ModalProps } from 'antd'
 
-import type { ApiMenuData } from "@/components/ApiMenu/ApiMenu.type";
-import { SelectorCatalog } from "@/components/SelectorCatalog";
-import { useMenuHelpersContext } from "@/contexts/menu-helpers";
-import { MenuItemType } from "@/enums";
-import { ApiMove, ApiTreeQueryPage } from "@/api/ams/api";
+import { ApiMove, ApiTreeQueryPage } from '@/api/ams/api'
+import type { ApiMenuData } from '@/components/ApiMenu/ApiMenu.type'
+import { SelectorCatalog } from '@/components/SelectorCatalog'
+import { useMenuHelpersContext } from '@/contexts/menu-helpers'
+import { MenuItemType } from '@/enums'
 
 interface ModalMoveMenuProps extends Omit<ModalProps, 'open' | 'onOk'> {
   menuItemType?: MenuItemType
@@ -40,17 +40,16 @@ export const ModalMoveMenu = create(({ menuItemType, formData, ...props }: Modal
     void modal.hide()
   }
   const moveApi = async (values) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     const response = await ApiMove(values)
-    if (response.data.success){
+    if (response.data.success) {
       message.success(response.data.message)
       loadingMenuTree()
       handleHide()
     }
   }
-  const moveApiFolder =  (values) => {
-    console.log('moveApiFolder',values)
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  const moveApiFolder = (values) => {
+    console.log('moveApiFolder', values)
+
     // const response = await ApiMove(values)
     // if (response.data.success){
     //   message.success(response.data.message)
@@ -64,14 +63,13 @@ export const ModalMoveMenu = create(({ menuItemType, formData, ...props }: Modal
       {...props}
       open={modal.visible}
       onCancel={(...parmas) => {
-
         props.onCancel?.(...parmas)
         handleHide()
       }}
       onOk={() => {
         form.validateFields().then((values) => {
-          switch (menuItemType){
-            case  MenuItemType.ApiDetail:
+          switch (menuItemType) {
+            case MenuItemType.ApiDetail:
               moveApi(values)
               break
             case MenuItemType.Doc:

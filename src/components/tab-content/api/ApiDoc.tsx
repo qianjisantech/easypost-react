@@ -1,44 +1,45 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from 'react'
 
-import { Viewer } from "@bytemd/react";
+import { Viewer } from '@bytemd/react'
 import {
   Button,
   Card,
   Dropdown,
-  MenuProps,
+  type MenuProps,
   message,
   Select,
   type SelectProps,
   Space,
   Tabs,
   theme,
-  Tooltip
-} from "antd";
-import dayjs from "dayjs";
-import jsonBeautify from "json-beautify";
-import { Code2Icon, ZapIcon } from "lucide-react";
+  Tooltip,
+} from 'antd'
+import dayjs from 'dayjs'
+import jsonBeautify from 'json-beautify'
+import { Code2Icon, ZapIcon } from 'lucide-react'
 
-import { ApiDocDetail } from "@/api/ams/api";
-import { useTabContentContext } from "@/components/ApiTab/TabContentContext";
-import { IconText } from "@/components/IconText";
-import { JsonViewer } from "@/components/JsonViewer";
-import { ApiRemoveButton } from "@/components/tab-content/api/ApiRemoveButton";
-import { API_STATUS_CONFIG, HTTP_METHOD_CONFIG } from "@/configs/static";
-import { useGlobalContext } from "@/contexts/global";
-import { getContentTypeString } from "@/helpers";
-import { useStyles } from "@/hooks/useStyle";
-import type { ApiDetails, Parameter } from "@/types";
+import { ApiDocDetail } from '@/api/ams/api'
+import { useTabContentContext } from '@/components/ApiTab/TabContentContext'
+import GenerateCode from '@/components/GenerateCode'
+import { IconText } from '@/components/IconText'
+import { JsonViewer } from '@/components/JsonViewer'
+import { ApiRemoveButton } from '@/components/tab-content/api/ApiRemoveButton'
+import { API_STATUS_CONFIG, HTTP_METHOD_CONFIG } from '@/configs/static'
+import { useGlobalContext } from '@/contexts/global'
+import { BodyType } from '@/enums'
+import { getContentTypeString } from '@/helpers'
+import { useStyles } from '@/hooks/useStyle'
+import type { ApiDetails, Parameter } from '@/types'
 
-import { css } from "@emotion/css";
-import { BodyType } from "@/enums";
-import GenerateCode from "@/components/GenerateCode";
+import { css } from '@emotion/css'
+
 interface ApiData {
-  method: string;
-  path: string;
-  headers?: Record<string, string>;
-  parameters?: any;
-  body?: any;
-  responses?: any;
+  method: string
+  path: string
+  headers?: Record<string, string>
+  parameters?: any
+  body?: any
+  responses?: any
 }
 
 const statusOptions: SelectProps['options'] = Object.entries(API_STATUS_CONFIG).map(
@@ -150,34 +151,42 @@ function ApiParameter({ param }: { param: Parameter }) {
   )
 }
 
-export function ApiDoc({ activeKey,setActiveKey}: { activeKey: string ,setActiveKey: (key: string) => void}) {
+export function ApiDoc({
+  activeKey,
+  setActiveKey,
+}: {
+  activeKey: string
+  setActiveKey: (key: string) => void
+}) {
   const { token } = theme.useToken()
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false)
   const { messageApi } = useGlobalContext()
   const { tabData } = useTabContentContext()
   const [apiDetails, setApiDetails] = useState<ApiDetails | null>(null)
-  const [apiData, setApiData] = useState<ApiData|null>(null)
+  const [apiData, setApiData] = useState<ApiData | null>(null)
   // 加载 API 详情
   const loadingApiDetails = async () => {
-    if (!tabData.key) {return;}
+    if (!tabData.key) {
+      return
+    }
 
     try {
-      const response = await ApiDocDetail(tabData.key);
+      const response = await ApiDocDetail(tabData.key)
       if (response.data.success) {
-        const apiDetails = response.data.data.data;
-        console.log('获取到的apiDetails', apiDetails);
+        const apiDetails = response.data.data.data
+        console.log('获取到的apiDetails', apiDetails)
 
         // 立即设置apiDetails和apiData
-        setApiDetails(apiDetails);
+        setApiDetails(apiDetails)
 
         // 处理body数据，安全解析JSON
-        let parsedBody = null;
+        let parsedBody = null
         if (apiDetails.parameters?.payload?.jsonSchema) {
           try {
-            parsedBody = JSON.parse(apiDetails.parameters.payload.jsonSchema);
+            parsedBody = JSON.parse(apiDetails.parameters.payload.jsonSchema)
           } catch (e) {
-            console.error('JSON解析错误:', e);
-            parsedBody = apiDetails.parameters.payload.jsonSchema; // 保留原始字符串
+            console.error('JSON解析错误:', e)
+            parsedBody = apiDetails.parameters.payload.jsonSchema // 保留原始字符串
           }
         }
 
@@ -187,27 +196,30 @@ export function ApiDoc({ activeKey,setActiveKey}: { activeKey: string ,setActive
           // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           headers: transformHeaders(apiDetails.parameters?.header) || {},
           parameters: apiDetails.parameters?.payload?.parameters || null,
-          body: parsedBody
-        });
+          body: parsedBody,
+        })
       } else {
-        setApiDetails(null);
-        setApiData(null);
+        setApiDetails(null)
+        setApiData(null)
       }
     } catch (error) {
-      console.error('获取API详情失败:', error);
-      setApiDetails(null);
-      setApiData(null);
+      console.error('获取API详情失败:', error)
+      setApiDetails(null)
+      setApiData(null)
     }
-  };
+  }
   // 将apiDetails的header数组转换为Record<string, string>格式
   const transformHeaders = (headers?: Parameter[] | undefined): Record<string, string> => {
-    return headers?.reduce((acc, header) => {
-      if (header.name && header.example) {
-        acc[header.name] = header.example;
-      }
-      return acc;
-    }, {} as Record<string, string>);
-  };
+    return headers?.reduce(
+      (acc, header) => {
+        if (header.name && header.example) {
+          acc[header.name] = header.example
+        }
+        return acc
+      },
+      {} as Record<string, string>
+    )
+  }
   // 计算 `docValue` 和 `methodConfig`
   const { docValue, methodConfig } = useMemo(() => {
     const methodConfig = apiDetails ? HTTP_METHOD_CONFIG[apiDetails.method] : undefined
@@ -220,8 +232,8 @@ export function ApiDoc({ activeKey,setActiveKey}: { activeKey: string ,setActive
     }
   }, [activeKey, tabData.key])
   useEffect(() => {
-    console.log('ApiDoc apiData',apiData)
-  }, [apiData]);
+    console.log('ApiDoc apiData', apiData)
+  }, [apiData])
   const generateCodeItems: MenuProps['items'] = [
     {
       key: 'generateApiCode',
@@ -238,7 +250,7 @@ export function ApiDoc({ activeKey,setActiveKey}: { activeKey: string ,setActive
     //     message.error('还没做，别急')
     //   },
     // },
-  ];
+  ]
   const { styles } = useStyles(({ token }) => {
     return {
       card: css({
@@ -272,34 +284,36 @@ export function ApiDoc({ activeKey,setActiveKey}: { activeKey: string ,setActive
   }
   const hasHeaders =
     docValue.parameters?.header &&
-    Array.isArray(docValue.parameters?.header) &&
+    Array.isArray(docValue.parameters.header) &&
     docValue.parameters.header.length > 0
   const hasPathParams =
-    Array.isArray(docValue.parameters?.path) && docValue.parameters?.path.length > 0
+    Array.isArray(docValue.parameters?.path) && docValue.parameters.path.length > 0
   const hasQueryParams =
-    Array.isArray(docValue.parameters?.query) && docValue.parameters?.query.length > 0
+    Array.isArray(docValue.parameters?.query) && docValue.parameters.query.length > 0
   const hasCookieParams =
-    Array.isArray(docValue.parameters?.cookie) && docValue.parameters?.cookie.length > 0
-  const hasJson=docValue.parameters?.payload?.type === BodyType.Json
-    && docValue.parameters.payload.jsonSchema
-  const hasUrlEncoded=docValue.parameters?.payload?.type === BodyType.UrlEncoded &&Array.isArray(docValue.parameters?.cookie)
-    && docValue.parameters.payload.parameters?.length>0
-  const hasFormData =docValue.parameters?.payload?.type === BodyType.FormData &&
-    Array.isArray(docValue.parameters?.payload?.parameters)&&
-  docValue.parameters.payload.parameters?.length > 0
+    Array.isArray(docValue.parameters?.cookie) && docValue.parameters.cookie.length > 0
+  const hasJson =
+    docValue.parameters?.payload?.type === BodyType.Json && docValue.parameters.payload.jsonSchema
+  const hasUrlEncoded =
+    docValue.parameters?.payload?.type === BodyType.UrlEncoded &&
+    Array.isArray(docValue.parameters.cookie) &&
+    docValue.parameters.payload.parameters?.length > 0
+  const hasFormData =
+    docValue.parameters?.payload?.type === BodyType.FormData &&
+    Array.isArray(docValue.parameters.payload.parameters) &&
+    docValue.parameters.payload.parameters.length > 0
   const hasPayload = hasJson || hasUrlEncoded || hasFormData
   const hasParams = hasPathParams || hasQueryParams || hasCookieParams
   const headers = docValue.parameters?.header
   const payload = docValue.parameters?.payload
   const pathParams = docValue.parameters?.path
   const queryParams = docValue.parameters?.query
-  const cookieParams=docValue.parameters?.cookie
+  const cookieParams = docValue.parameters?.cookie
   // console.log('hasPathParams', hasPathParams)
   // console.log('hasPayload', hasPayload)
   // console.log('hasCookieParams',hasCookieParams)
   // console.log('hasPayload',hasPayload)
   // console.log('hasJson',hasJson)
-  // eslint-disable-next-line react-hooks/rules-of-hooks
 
   return (
     <div className="h-full overflow-auto p-tabContent">
@@ -325,17 +339,16 @@ export function ApiDoc({ activeKey,setActiveKey}: { activeKey: string ,setActive
         </Space>
 
         <Space className="ml-auto pl-2">
-          <Button type="primary"
-                  onClick={() => { setActiveKey('run'); }}
+          <Button
+            type="primary"
+            onClick={() => {
+              setActiveKey('run')
+            }}
           >
             <IconText icon={<ZapIcon size={14} />} text="运行" />
           </Button>
 
-          <Dropdown
-            menu={{ items: generateCodeItems }}
-            placement="bottom"
-            trigger={['click']}
-          >
+          <Dropdown menu={{ items: generateCodeItems }} placement="bottom" trigger={['click']}>
             <Button>
               <IconText icon={<Code2Icon size={14} />} text="生成代码" />
             </Button>
@@ -345,10 +358,12 @@ export function ApiDoc({ activeKey,setActiveKey}: { activeKey: string ,setActive
         </Space>
       </div>
       <GenerateCode
-        visible={modalVisible}
-        onClose={() => { setModalVisible(false); }}
-        apiData={apiData}
         key={`code-gen-${tabData.key}`} // 使用 API ID 作为 key 的一部分
+        apiData={apiData}
+        visible={modalVisible}
+        onClose={() => {
+          setModalVisible(false)
+        }}
       />
       <div className="mb-3">
         <span
@@ -416,33 +431,39 @@ export function ApiDoc({ activeKey,setActiveKey}: { activeKey: string ,setActive
         {hasParams || hasPayload ? (
           <div className="flex flex-col gap-y-4">
             {hasHeaders && (
-              <Card className={styles.card} title={
-                <span
-                style={{
-                  color: "rgb(52, 64, 84)",
-                  fontWeight: "bold",
-                  fontSize: "14px"
-                }}
+              <Card
+                className={styles.card}
+                title={
+                  <span
+                    style={{
+                      color: 'rgb(52, 64, 84)',
+                      fontWeight: 'bold',
+                      fontSize: '14px',
+                    }}
+                  >
+                    Header 参数
+                  </span>
+                }
               >
-                      Header 参数
-                    </span>}>
                 <div className="flex flex-col gap-3">
                   {headers?.map((param) => <ApiParameter key={param.id} param={param} />)}
                 </div>
               </Card>
             )}
             {hasPathParams && (
-              <Card className={styles.card}
-                    title={
-                      <span
-                        style={{
-                          color: "rgb(52, 64, 84)",
-                          fontWeight: "bold",
-                          fontSize: "14px"
-                        }}
-                      >
-                      Params 参数
-                    </span>}
+              <Card
+                className={styles.card}
+                title={
+                  <span
+                    style={{
+                      color: 'rgb(52, 64, 84)',
+                      fontWeight: 'bold',
+                      fontSize: '14px',
+                    }}
+                  >
+                    Params 参数
+                  </span>
+                }
               >
                 <div className="flex flex-col gap-3">
                   {pathParams?.map((param) => <ApiParameter key={param.id} param={param} />)}
@@ -450,17 +471,19 @@ export function ApiDoc({ activeKey,setActiveKey}: { activeKey: string ,setActive
               </Card>
             )}
             {hasCookieParams && (
-              <Card className={styles.card}
-                    title={
-                      <span
-                        style={{
-                          color: "rgb(52, 64, 84)",
-                          fontWeight: "bold",
-                          fontSize: "14px"
-                        }}
-                      >
-                      Cookie 参数
-                    </span>}
+              <Card
+                className={styles.card}
+                title={
+                  <span
+                    style={{
+                      color: 'rgb(52, 64, 84)',
+                      fontWeight: 'bold',
+                      fontSize: '14px',
+                    }}
+                  >
+                    Cookie 参数
+                  </span>
+                }
               >
                 <div className="flex flex-col gap-3">
                   {cookieParams?.map((param) => <ApiParameter key={param.id} param={param} />)}
@@ -468,17 +491,20 @@ export function ApiDoc({ activeKey,setActiveKey}: { activeKey: string ,setActive
               </Card>
             )}
             {hasQueryParams && (
-              <Card className={styles.card}
-                    title={
-                      <span
-                        style={{
-                          color: "rgb(52, 64, 84)",
-                          fontWeight: "bold",
-                          fontSize: "14px"
-                        }}
-                      >
-                      Query 参数
-                    </span>}>
+              <Card
+                className={styles.card}
+                title={
+                  <span
+                    style={{
+                      color: 'rgb(52, 64, 84)',
+                      fontWeight: 'bold',
+                      fontSize: '14px',
+                    }}
+                  >
+                    Query 参数
+                  </span>
+                }
+              >
                 <div className="flex flex-col gap-3">
                   {queryParams?.map((param) => <ApiParameter key={param.id} param={param} />)}
                 </div>
@@ -489,26 +515,26 @@ export function ApiDoc({ activeKey,setActiveKey}: { activeKey: string ,setActive
               <Card
                 className={styles.card}
                 headStyle={{
-                  fontSize: "14px", // 设置字体大小
-                  color: "#ce7d5f", // 设置字体颜色
-                  fontWeight: "bold" // 可选：设置字体粗细
+                  fontSize: '14px', // 设置字体大小
+                  color: '#ce7d5f', // 设置字体颜色
+                  fontWeight: 'bold', // 可选：设置字体粗细
                 }}
                 title={
                   <span>
                     <span
                       style={{
-                        color: "rgb(52, 64, 84)",
-                        fontWeight: "bold",
-                        fontSize: "14px"
+                        color: 'rgb(52, 64, 84)',
+                        fontWeight: 'bold',
+                        fontSize: '14px',
                       }}
                     >
                       Body 参数
                     </span>
                     <span
                       style={{
-                        color: "rgb(52, 64, 84)",
-                        marginLeft: "10px",
-                        fontSize: "12px"
+                        color: 'rgb(52, 64, 84)',
+                        marginLeft: '10px',
+                        fontSize: '12px',
                       }}
                     >
                       {payload?.type}
@@ -516,34 +542,42 @@ export function ApiDoc({ activeKey,setActiveKey}: { activeKey: string ,setActive
                   </span>
                 }
               >
-                <div style={{ height: "100%", overflow: "auto", width: "100%" }}>
-                  <Card title={<span
-                    style={{
-                      color: "rgb(52, 64, 84)",
-                      fontWeight: "bold",
-                      fontSize: "14px"
-                    }}
+                <div style={{ height: '100%', overflow: 'auto', width: '100%' }}>
+                  <Card
+                    title={
+                      <span
+                        style={{
+                          color: 'rgb(52, 64, 84)',
+                          fontWeight: 'bold',
+                          fontSize: '14px',
+                        }}
+                      >
+                        示例
+                      </span>
+                    }
                   >
-                      示例
-                    </span>}>
                     {(() => {
                       switch (payload?.type) {
                         case BodyType.Json:
                           return (
                             <JsonViewer
-                              value={jsonBeautify(JSON.parse(payload?.jsonSchema), null, 2)}
+                              value={jsonBeautify(JSON.parse(payload.jsonSchema), null, 2)}
                             />
-                          );
+                          )
                         case BodyType.FormData:
                           return (
                             <div className="flex flex-col gap-3">
-                              {payload.parameters?.map((param) => <ApiParameter key={param.id} param={pa} />)}
+                              {payload.parameters?.map((param) => (
+                                <ApiParameter key={param.id} param={pa} />
+                              ))}
                             </div>
-                          );
+                          )
                         case BodyType.UrlEncoded:
                           return (
                             <div className="flex flex-col gap-3">
-                              {payload.parameters?.map((param) => <ApiParameter key={param.id} param={param} />)}
+                              {payload.parameters?.map((param) => (
+                                <ApiParameter key={param.id} param={param} />
+                              ))}
                             </div>
                           )
                         case BodyType.Xml:
@@ -560,7 +594,7 @@ export function ApiDoc({ activeKey,setActiveKey}: { activeKey: string ,setActive
                               <p>不支持的数据类型: {payload?.type}</p>
                               <pre>{JSON.stringify(payload, null, 2)}</pre>
                             </div>
-                          );
+                          )
                       }
                     })()}
                   </Card>
@@ -569,7 +603,7 @@ export function ApiDoc({ activeKey,setActiveKey}: { activeKey: string ,setActive
             )}
           </div>
         ) : (
-          "无"
+          '无'
         )}
       </div>
 

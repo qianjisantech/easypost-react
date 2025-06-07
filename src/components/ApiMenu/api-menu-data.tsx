@@ -108,7 +108,6 @@ export function useMenuData(): MenuState {
   const menusWithRender: CatalogDataNode[] | undefined = useMemo(
     () =>
       menus?.map<CatalogDataNode>((item) => {
-
         const catalog = item.customData.catalog
         const isHttp =
           catalog.type === MenuItemType.ApiDetail || catalog.type === MenuItemType.HttpRequest

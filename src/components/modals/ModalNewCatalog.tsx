@@ -4,11 +4,11 @@ import { create, useModal } from '@ebay/nice-modal-react'
 import { Form, Input, type InputRef, Modal, type ModalProps } from 'antd'
 import { nanoid } from 'nanoid'
 
+import { ApiDetailCreate } from '@/api/ams/api'
 import type { ApiMenuData } from '@/components/ApiMenu/ApiMenu.type'
 import { SelectorCatalog } from '@/components/SelectorCatalog'
 import { ROOT_CATALOG } from '@/configs/static'
 import { useMenuHelpersContext } from '@/contexts/menu-helpers'
-import {ApiDetailCreate} from "@/api/ams/api";
 
 interface ModalNewCatalogProps extends Omit<ModalProps, 'open' | 'onOk'> {
   formData?: Pick<ApiMenuData, 'parentId' | 'type'>
@@ -59,16 +59,16 @@ export const ModalNewCatalog = create(({ formData, ...props }: ModalNewCatalogPr
         form.validateFields().then((values) => {
           ApiDetailCreate({
             ...values,
-            id:'',
+            id: '',
             parentId: values.parentId === ROOT_CATALOG ? undefined : values.parentId,
-          }).then(res=>{
-            console.log("res",res)
-          } )
-          console.log("目录",values)
+          }).then((res) => {
+            console.log('res', res)
+          })
+          console.log('目录', values)
           addMenuItem({
             ...values,
-            id: "",
-            parentId: values.parentId === ROOT_CATALOG ? undefined : values.parentId
+            id: '',
+            parentId: values.parentId === ROOT_CATALOG ? undefined : values.parentId,
           })
           handleHide()
         })

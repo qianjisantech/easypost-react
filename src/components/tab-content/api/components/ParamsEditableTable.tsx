@@ -1,5 +1,5 @@
 import { CloseCircleFilled } from '@ant-design/icons'
-import { AutoComplete, Input, Select, theme, Tooltip } from "antd";
+import { AutoComplete, Input, Select, theme, Tooltip } from 'antd'
 import { PlusCircleIcon, XCircleIcon } from 'lucide-react'
 import { nanoid } from 'nanoid'
 
@@ -26,7 +26,6 @@ interface ParamsEditableTableProps extends Pick<EditableTableProps, 'autoNewRow'
   onChange?: (value: ParamsEditableTableProps['value']) => void
   removable?: boolean
   isPathParamsTable?: boolean
-
 }
 
 export function ParamsEditableTable(props: ParamsEditableTableProps) {
@@ -38,7 +37,6 @@ export function ParamsEditableTable(props: ParamsEditableTableProps) {
     isPathParamsTable = false,
     autoNewRow = !isPathParamsTable,
     removable = true,
-
   } = props
 
   const newRowRecordId = nanoid(6)
@@ -223,7 +221,7 @@ export function ParamsEditableTable(props: ParamsEditableTableProps) {
       dataIndex: 'example',
       width: '25%',
       render: (exampleVal, record, ridx) => {
-        const commonHeaders = ['1', '1', '2', '3', '4'];
+        const commonHeaders = ['1', '1', '2', '3', '4']
         if (record.type === ParamType.Array) {
           const example: string[] =
             Array.isArray(exampleVal) && exampleVal.length > 0 ? exampleVal : ['']

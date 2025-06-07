@@ -117,6 +117,6 @@ export const enum AuthorizationType {
 }
 export const enum ScriptsType {
   JavaScript = 'javascript',
-  Java= 'java',
+  Java = 'java',
   Python = 'python',
 }

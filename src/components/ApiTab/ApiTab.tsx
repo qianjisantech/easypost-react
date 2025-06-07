@@ -1,6 +1,6 @@
-import type React from 'react'
-import { cloneElement, useMemo, useState,PointerEvent } from 'react'
+import type React, { cloneElement, PointerEvent, useMemo, useState } from 'react'
 import useEvent from 'react-use-event-hook'
+
 import {
   DndContext,
   type DndContextProps,
@@ -14,16 +14,7 @@ import {
   useSortable,
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import {
-
-  ConfigProvider,
-  Dropdown,
-  Popconfirm,
-  Tabs,
-  type TabsProps,
-  theme,
-} from 'antd'
-
+import { ConfigProvider, Dropdown, Popconfirm, Tabs, type TabsProps, theme } from 'antd'
 import { BadgeInfoIcon, XIcon } from 'lucide-react'
 import { nanoid } from 'nanoid'
 
@@ -287,10 +278,7 @@ export function ApiTab(props: TabsProps) {
         className={`ui-tabs main-tabs ${styles.appTabs}`}
         items={items}
         renderTabBar={renderTabBar}
-        tabBarExtraContent={
-          <EnvironmentManager
-          />
-        }
+        tabBarExtraContent={<EnvironmentManager />}
         tabBarStyle={{ width: '100%', marginBottom: 0 }}
         type="editable-card"
         onEdit={handleEdit}

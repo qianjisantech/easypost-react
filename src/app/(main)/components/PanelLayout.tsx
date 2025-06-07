@@ -137,7 +137,8 @@ export function PanelLayout(props: PanelLayoutProps) {
                     fontWeight: 520,
                     fontFeatureSettings: 'tnum',
                     color: 'rgba(16, 24, 40, 0.8)',
-                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", roboto, "Helvetica Neue", arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
+                    fontFamily:
+                      '-apple-system, BlinkMacSystemFont, "Segoe UI", roboto, "Helvetica Neue", arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
                   }}
                 >
                   {layoutName}

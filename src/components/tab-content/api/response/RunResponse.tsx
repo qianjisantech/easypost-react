@@ -1,128 +1,132 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { Tabs, Space, Statistic, Tooltip, Segmented, Table } from "antd";
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { docco } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
-import PostmanStyleJsonEditor from "@/components/JsonSchema/PostmanStyleJsonEditor";
+import type React, { useEffect, useMemo, useState } from 'react'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { docco } from 'react-syntax-highlighter/dist/cjs/styles/hljs'
+
+import { Segmented, Space, Statistic, Table, Tabs, Tooltip } from 'antd'
+
+import PostmanStyleJsonEditor from '@/components/JsonSchema/PostmanStyleJsonEditor'
+
 interface RunResponseProps {
-  value?: string;
-  headers?: Record<string, string>;
+  value?: string
+  headers?: Record<string, string>
   cookies?: {
-    name: string;
-    value: string;
-    domain?: string;
-    path?: string;
-    expires?: string;
-  }[];
+    name: string
+    value: string
+    domain?: string
+    path?: string
+    expires?: string
+  }[]
   actualRequest?: {
-    method: string;
-    url: string;
-    headers: Record<string, string>;
-    body?: any;
-  };
-  responseStatus?: number;
-  responseTime?: number;
+    method: string
+    url: string
+    headers: Record<string, string>
+    body?: any
+  }
+  responseStatus?: number
+  responseTime?: number
 }
 
 export const RunResponse: React.FC<RunResponseProps> = ({
-                                                          value = {},
-                                                          headers = {},
-                                                          cookies = [],
-                                                          actualRequest,
-                                                          responseStatus = 200,
-                                                          responseTime = 0,
-                                                        }) => {
-  const [body, setBody] = useState<string>('');
-  const [sidebarWidth, setSidebarWidth] = useState(280);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [startWidth, setStartWidth] = useState(0);
-  const [alignValue, setAlignValue] = useState<'pretty' | 'raw' | 'preview'>('pretty');
-  const [isEditorReady, setIsEditorReady] = useState(false);
+  value = {},
+  headers = {},
+  cookies = [],
+  actualRequest,
+  responseStatus = 200,
+  responseTime = 0,
+}) => {
+  const [body, setBody] = useState<string>('')
+  const [sidebarWidth, setSidebarWidth] = useState(280)
+  const [isDragging, setIsDragging] = useState(false)
+  const [startX, setStartX] = useState(0)
+  const [startWidth, setStartWidth] = useState(0)
+  const [alignValue, setAlignValue] = useState<'pretty' | 'raw' | 'preview'>('pretty')
+  const [isEditorReady, setIsEditorReady] = useState(false)
   // 计算响应大小
-  const responseSize = useMemo(() =>
-      value?.data ? new Blob([JSON.stringify(value.data)]).size : 0,
+  const responseSize = useMemo(
+    () => (value.data ? new Blob([JSON.stringify(value.data)]).size : 0),
     [value.data]
-  );
+  )
 
-  const requestSize = useMemo(() =>
-      actualRequest?.body ? new Blob([JSON.stringify(actualRequest.body)]).size : 0,
+  const requestSize = useMemo(
+    () => (actualRequest?.body ? new Blob([JSON.stringify(actualRequest.body)]).size : 0),
     [actualRequest?.body]
-  );
+  )
   useEffect(() => {
     console.log('接口返回的数据为-------', value.values.data)
-      if(value.values.data){
-          setBody(JSON.stringify(value.values.data, null, 2))
-      }
-  }, [value]);
+    if (value.values.data) {
+      setBody(JSON.stringify(value.values.data, null, 2))
+    }
+  }, [value])
 
   // 拖拽逻辑
   const handleMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true);
-    setStartX(e.clientX);
-    setStartWidth(sidebarWidth);
-    document.body.style.cursor = 'col-resize';
-    document.body.style.userSelect = 'none';
-  };
+    setIsDragging(true)
+    setStartX(e.clientX)
+    setStartWidth(sidebarWidth)
+    document.body.style.cursor = 'col-resize'
+    document.body.style.userSelect = 'none'
+  }
 
   const handleMouseMove = (e: MouseEvent) => {
-    if (!isDragging) return;
-    const newWidth = startWidth + (startX - e.clientX);
-    setSidebarWidth(Math.max(200, Math.min(400, newWidth)));
-  };
+    if (!isDragging) {
+      return
+    }
+    const newWidth = startWidth + (startX - e.clientX)
+    setSidebarWidth(Math.max(200, Math.min(400, newWidth)))
+  }
   useEffect(() => {
     if (body && !isEditorReady) {
-      setIsEditorReady(true);
+      setIsEditorReady(true)
     }
-  }, [body]);
+  }, [body])
   const handleMouseUp = () => {
-    if (!isDragging) return;
-    setIsDragging(false);
-    document.body.style.cursor = '';
-    document.body.style.userSelect = '';
-  };
+    if (!isDragging) {
+      return
+    }
+    setIsDragging(false)
+    document.body.style.cursor = ''
+    document.body.style.userSelect = ''
+  }
 
   useEffect(() => {
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
+    document.addEventListener('mousemove', handleMouseMove)
+    document.addEventListener('mouseup', handleMouseUp)
     return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-    };
-  }, [isDragging, startX, startWidth]);
+      document.removeEventListener('mousemove', handleMouseMove)
+      document.removeEventListener('mouseup', handleMouseUp)
+    }
+  }, [isDragging, startX, startWidth])
 
   // 渲染响应体
   const renderResponseBody = () => {
-    if (!body) return <div>No response data available</div>;
+    if (!body) {
+      return <div>No response data available</div>
+    }
 
     switch (alignValue) {
       case 'pretty':
-
         return isEditorReady ? (
-          <PostmanStyleJsonEditor
-            value={body}
-            defaultValue={body}
-            disabled={true}
-          />
+          <PostmanStyleJsonEditor defaultValue={body} disabled={true} value={body} />
         ) : (
           <div style={{ padding: 16, background: '#f5f5f5' }}>
             <SyntaxHighlighter language="json" style={docco}>
               {body}
             </SyntaxHighlighter>
           </div>
-        );
+        )
 
       case 'raw':
         return (
           <SyntaxHighlighter language="json" style={docco}>
             {body}
           </SyntaxHighlighter>
-        );
+        )
       case 'preview':
-        return <div>{body}</div>;
+        return <div>{body}</div>
       default:
-        return null;
+        return null
     }
-  };
+  }
 
   // 表格配置
   const cookieColumns = [
@@ -131,7 +135,7 @@ export const RunResponse: React.FC<RunResponseProps> = ({
     { title: 'Domain', dataIndex: 'domain', key: 'domain' },
     { title: 'Path', dataIndex: 'path', key: 'path' },
     { title: 'Expires', dataIndex: 'expires', key: 'expires' },
-  ];
+  ]
 
   const headerColumns = [
     { title: 'Name', dataIndex: 'name', key: 'name' },
@@ -143,9 +147,9 @@ export const RunResponse: React.FC<RunResponseProps> = ({
         <SyntaxHighlighter language="text" style={docco}>
           {value}
         </SyntaxHighlighter>
-      )
+      ),
     },
-  ];
+  ]
 
   // Tabs 配置
   const tabItems = [
@@ -160,9 +164,11 @@ export const RunResponse: React.FC<RunResponseProps> = ({
               { label: 'Raw', value: 'raw' },
               { label: 'Preview', value: 'preview' },
             ]}
-            value={alignValue}
-            onChange={(value) => setAlignValue(value as typeof alignValue)}
             style={{ marginBottom: 16 }}
+            value={alignValue}
+            onChange={(value) => {
+              setAlignValue(value as typeof alignValue)
+            }}
           />
           {renderResponseBody()}
         </div>
@@ -180,8 +186,8 @@ export const RunResponse: React.FC<RunResponseProps> = ({
             key: name,
           }))}
           pagination={false}
-          size="small"
           rowKey="name"
+          size="small"
         />
       ),
     },
@@ -191,9 +197,7 @@ export const RunResponse: React.FC<RunResponseProps> = ({
       children: actualRequest ? (
         <div style={{ padding: 16 }}>
           <div style={{ marginBottom: 24 }}>
-            <div style={{ fontWeight: 500, marginBottom: 8, fontSize: 16 }}>
-              Request URL
-            </div>
+            <div style={{ fontWeight: 500, marginBottom: 8, fontSize: 16 }}>Request URL</div>
             <div>
               <span style={{ marginRight: 16 }}>{actualRequest.method}</span>
               <span>{actualRequest.url}</span>
@@ -201,9 +205,7 @@ export const RunResponse: React.FC<RunResponseProps> = ({
           </div>
 
           <div style={{ marginBottom: 24 }}>
-            <div style={{ fontWeight: 500, marginBottom: 8, fontSize: 16 }}>
-              Headers
-            </div>
+            <div style={{ fontWeight: 500, marginBottom: 8, fontSize: 16 }}>Headers</div>
             <Table
               columns={headerColumns}
               dataSource={Object.entries(actualRequest.headers || {}).map(([name, value]) => ({
@@ -212,15 +214,13 @@ export const RunResponse: React.FC<RunResponseProps> = ({
                 key: name,
               }))}
               pagination={false}
-              size="small"
               rowKey="name"
+              size="small"
             />
           </div>
 
           <div>
-            <div style={{ fontWeight: 500, marginBottom: 8, fontSize: 16 }}>
-              Body
-            </div>
+            <div style={{ fontWeight: 500, marginBottom: 8, fontSize: 16 }}>Body</div>
             {actualRequest.body ? (
               <SyntaxHighlighter language="json" style={docco}>
                 {JSON.stringify(actualRequest.body, null, 2)}
@@ -230,23 +230,24 @@ export const RunResponse: React.FC<RunResponseProps> = ({
             )}
           </div>
         </div>
-      ) : <div>No request data</div>,
+      ) : (
+        <div>No request data</div>
+      ),
     },
-  ];
+  ]
 
   return (
     <div style={{ display: 'flex', height: '100%', position: 'relative' }}>
       {/* 主内容区域 */}
-      <div style={{
-        flex: 1,
-        overflow: 'auto',
-        marginRight: sidebarWidth,
-        transition: 'margin 0.2s'
-      }}>
-        <Tabs
-          defaultActiveKey="body"
-          items={tabItems}
-        />
+      <div
+        style={{
+          flex: 1,
+          overflow: 'auto',
+          marginRight: sidebarWidth,
+          transition: 'margin 0.2s',
+        }}
+      >
+        <Tabs defaultActiveKey="body" items={tabItems} />
       </div>
 
       {/* 侧边栏 */}
@@ -261,7 +262,7 @@ export const RunResponse: React.FC<RunResponseProps> = ({
           borderLeft: '1px solid #f0f0f0',
           padding: '16px',
           overflow: 'auto',
-          boxSizing: 'border-box'
+          boxSizing: 'border-box',
         }}
       >
         {/* 拖动条 */}
@@ -273,7 +274,7 @@ export const RunResponse: React.FC<RunResponseProps> = ({
             bottom: 0,
             width: 10,
             cursor: 'col-resize',
-            zIndex: 1
+            zIndex: 1,
           }}
           onMouseDown={handleMouseDown}
         />
@@ -289,48 +290,48 @@ export const RunResponse: React.FC<RunResponseProps> = ({
             fontSize: '12px',
             backgroundColor: '#f5f5f5',
             borderRadius: '4px',
-            border: '1px solid #e8e8e8'
+            border: '1px solid #e8e8e8',
           }}
         >
           <Tooltip title="Status Code">
             <Statistic
               value={responseStatus}
               valueStyle={{
-                color: responseStatus >= 400 ? '#ff4d4f' :
-                  responseStatus >= 300 ? '#faad14' : '#52c41a',
-                fontSize: '12px'
+                color:
+                  responseStatus >= 400 ? '#ff4d4f' : responseStatus >= 300 ? '#faad14' : '#52c41a',
+                fontSize: '12px',
               }}
             />
           </Tooltip>
 
           <Tooltip title="Response Time">
             <Statistic
+              precision={2}
+              suffix="ms"
               value={responseTime}
               valueStyle={{ color: '#52c41a', fontSize: '12px' }}
-              suffix="ms"
-              precision={2}
             />
           </Tooltip>
 
           <Tooltip title="Request Size">
             <Statistic
+              suffix="bytes"
               value={requestSize}
               valueStyle={{ color: '#52c41a', fontSize: '12px' }}
-              suffix="bytes"
             />
           </Tooltip>
 
           <Tooltip title="Response Size">
             <Statistic
+              suffix="bytes"
               value={responseSize}
               valueStyle={{ color: '#52c41a', fontSize: '12px' }}
-              suffix="bytes"
             />
           </Tooltip>
         </Space>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default RunResponse;
+export default RunResponse

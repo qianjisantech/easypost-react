@@ -3,8 +3,7 @@ import useEvent from 'react-use-event-hook'
 
 import type { ApiTabItem, EditStatus } from '@/components/ApiTab'
 import { initialActiveTabKey, initialTabItems } from '@/data/remote'
-import { HttpMethod, MenuItemType } from "@/enums";
-
+import { HttpMethod, type MenuItemType } from '@/enums'
 
 interface MenuTabContextData {
   /** 当前在 Tabs 中打开的所有页签。 */
@@ -60,11 +59,11 @@ interface MenuTabHelpers {
   /** 添加新的页签。 */
   addTabItem: (
     payload: { label: string; contentType: MenuItemType; key: string },
-    config?: { autoActive?: boolean; replaceTab?: ApiTabItem["key"] }
+    config?: { autoActive?: boolean; replaceTab?: ApiTabItem['key'] }
   ) => void
   updateTabItem: (
     payload: { label: string; contentType: MenuItemType; key: string },
-    config?: { autoActive?: boolean; replaceTab?: ApiTabItem["key"] }
+    config?: { autoActive?: boolean; replaceTab?: ApiTabItem['key'] }
   ) => void
   /** 移除页签。 */
   removeTabItem: (payload: Pick<ApiTabItem, 'key'>) => void
@@ -114,39 +113,33 @@ export function useMenuTabHelpers(): MenuTabHelpers {
           activeTabItem({ key: payload.key })
         }
       }
-      console.log('addTabItem tabItems',tabItems)
+      console.log('addTabItem tabItems', tabItems)
     }
   )
   const updateTabItem = useEvent<MenuTabHelpers['updateTabItem']>(
     (payload, { autoActive = true, replaceKey } = {}) => {
       // 如果指定了 replaceKey，则用新页签替换旧页签
       if (replaceKey) {
-        setTabItems((items) =>
-          items.map((item) =>
-            item.key === replaceKey ? payload : item
-          )
-        );
+        setTabItems((items) => items.map((item) => (item.key === replaceKey ? payload : item)))
       }
       // 否则按 key 更新现有页签
       else {
-        const targetIndex = tabItems.findIndex((item) => item.key === payload.key);
+        const targetIndex = tabItems.findIndex((item) => item.key === payload.key)
 
         if (targetIndex === -1) {
-          throw new Error('要更新的页签不存在。');
+          throw new Error('要更新的页签不存在。')
         }
 
         setTabItems((items) =>
-          items.map((item) =>
-            item.key === payload.key ? { ...item, ...payload } : item
-          )
-        );
+          items.map((item) => (item.key === payload.key ? { ...item, ...payload } : item))
+        )
       }
 
       if (autoActive) {
-        activeTabItem({ key: payload.key });
+        activeTabItem({ key: payload.key })
       }
 
-      console.log('updateTabItem tabItems', tabItems);
+      console.log('updateTabItem tabItems', tabItems)
     }
   )
   const removeTabItem = useEvent<MenuTabHelpers['removeTabItem']>((payload) => {

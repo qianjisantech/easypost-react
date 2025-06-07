@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
+
 import { ExpandOutlined, QuestionCircleOutlined, ShrinkOutlined } from '@ant-design/icons'
 import MonacoEditor from '@monaco-editor/react'
 import { Button, Divider, Space } from 'antd'
-import DynamicValueModal from "@/components/DynamicValue/DynamicValueModal";
+
+import DynamicValueModal from '@/components/DynamicValue/DynamicValueModal'
 
 interface PostmanStyleJsonEditorProps {
   value?: string
@@ -19,7 +21,7 @@ function PostmanStyleJsonEditor(props: PostmanStyleJsonEditorProps) {
   const editorRef = useRef<any>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const [isMounted, setIsMounted] = useState(false)
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false)
 
   // 初始化时设置默认值
   useEffect(() => {
@@ -60,35 +62,37 @@ function PostmanStyleJsonEditor(props: PostmanStyleJsonEditorProps) {
 
   // 处理动态值插入
   const handleInsertDynamicValue = (value: string) => {
-    if (!editorRef.current) return;
+    if (!editorRef.current) {
+      return
+    }
 
-    const editor = editorRef.current;
-    const selection = editor.getSelection();
+    const editor = editorRef.current
+    const selection = editor.getSelection()
 
     if (selection) {
       // 在当前光标位置执行编辑操作
       editor.executeEdits('insert-dynamic-value', [
         {
           range: selection, // 使用当前选择范围
-          text: value,     // 要插入的文本
-          forceMoveMarkers: true // 强制移动标记
-        }
-      ]);
+          text: value, // 要插入的文本
+          forceMoveMarkers: true, // 强制移动标记
+        },
+      ])
 
       // 将光标移动到插入内容之后
-      const position = selection.getEndPosition();
-      editor.setPosition(position);
-      editor.focus();
+      const position = selection.getEndPosition()
+      editor.setPosition(position)
+      editor.focus()
 
       // 更新状态
-      const newValue = editor.getValue();
-      setRawJson(newValue);
-      onChange?.(newValue);
+      const newValue = editor.getValue()
+      setRawJson(newValue)
+      onChange?.(newValue)
     } else {
       // 如果没有选择范围，在文档末尾插入
-      const model = editor.getModel();
-      const fullRange = model.getFullModelRange();
-      const endPosition = model.getPositionAt(model.getValueLength());
+      const model = editor.getModel()
+      const fullRange = model.getFullModelRange()
+      const endPosition = model.getPositionAt(model.getValueLength())
 
       editor.executeEdits('insert-dynamic-value', [
         {
@@ -96,24 +100,24 @@ function PostmanStyleJsonEditor(props: PostmanStyleJsonEditorProps) {
             startLineNumber: endPosition.lineNumber,
             startColumn: endPosition.column,
             endLineNumber: endPosition.lineNumber,
-            endColumn: endPosition.column
+            endColumn: endPosition.column,
           },
           text: value,
-          forceMoveMarkers: true
-        }
-      ]);
+          forceMoveMarkers: true,
+        },
+      ])
 
       // 将光标移动到新插入内容之后
-      const newPosition = model.getPositionAt(model.getValueLength());
-      editor.setPosition(newPosition);
-      editor.focus();
+      const newPosition = model.getPositionAt(model.getValueLength())
+      editor.setPosition(newPosition)
+      editor.focus()
 
       // 更新状态
-      const newValue = editor.getValue();
-      setRawJson(newValue);
-      onChange?.(newValue);
+      const newValue = editor.getValue()
+      setRawJson(newValue)
+      onChange?.(newValue)
     }
-  };
+  }
 
   // 处理编辑器挂载
   const handleEditorDidMount = (editor: any, monaco: any) => {
@@ -160,9 +164,9 @@ function PostmanStyleJsonEditor(props: PostmanStyleJsonEditorProps) {
     if (disabled) {
       return
     }
-    const newValue = value || '';
-    setRawJson(newValue);
-    onChange?.(newValue); // 通知父组件值已变更
+    const newValue = value || ''
+    setRawJson(newValue)
+    onChange?.(newValue) // 通知父组件值已变更
   }
 
   // 格式化 JSON
@@ -171,7 +175,7 @@ function PostmanStyleJsonEditor(props: PostmanStyleJsonEditorProps) {
       const parsed = JSON.parse(rawJson)
       const formattedJson = JSON.stringify(parsed, null, 2)
       setRawJson(formattedJson)
-      onChange?.(formattedJson); // 通知父组件值已变更
+      onChange?.(formattedJson) // 通知父组件值已变更
       setError(null)
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err))
@@ -184,7 +188,7 @@ function PostmanStyleJsonEditor(props: PostmanStyleJsonEditorProps) {
       const parsed = JSON.parse(rawJson)
       const minifiedJson = JSON.stringify(parsed)
       setRawJson(minifiedJson)
-      onChange?.(minifiedJson); // 通知父组件值已变更
+      onChange?.(minifiedJson) // 通知父组件值已变更
       setError(null)
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err))
@@ -198,9 +202,9 @@ function PostmanStyleJsonEditor(props: PostmanStyleJsonEditorProps) {
     backgroundColor: '#f0f0f0', // 浅灰色背景
     ':hover': {
       backgroundColor: '#e0e0e0', // 悬停时稍深的灰色
-      color: '#212529'
-    }
-  };
+      color: '#212529',
+    },
+  }
 
   return (
     <div
@@ -224,23 +228,29 @@ function PostmanStyleJsonEditor(props: PostmanStyleJsonEditorProps) {
         }}
       >
         {/* 左侧 - 自动生成按钮和动态值弹窗 */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between', // 左右两端对齐
-          alignItems: 'center', // 垂直居中
-        }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between', // 左右两端对齐
+            alignItems: 'center', // 垂直居中
+          }}
+        >
           <Button
-            type="text"
-            size="small"
             icon={<QuestionCircleOutlined />}
+            size="small"
             style={dynamicButtonStyle}
-            onClick={() => setModalVisible(true)}
+            type="text"
+            onClick={() => {
+              setModalVisible(true)
+            }}
           >
             自动生成
           </Button>
           <DynamicValueModal
             visible={modalVisible}
-            onClose={() => { setModalVisible(false); }}
+            onClose={() => {
+              setModalVisible(false)
+            }}
             onInsert={handleInsertDynamicValue}
           />
         </div>
@@ -289,8 +299,8 @@ function PostmanStyleJsonEditor(props: PostmanStyleJsonEditorProps) {
               monaco.editor.onDidCreateEditor((editor) => {
                 editor.onDidAttemptReadOnlyEdit(() => {
                   // 空函数，阻止默认警告行为
-                });
-              });
+                })
+              })
             }}
             height="500px"
             language="json"
@@ -307,24 +317,24 @@ function PostmanStyleJsonEditor(props: PostmanStyleJsonEditorProps) {
               lineNumbers: 'on',
               lineNumbersMinChars: 3,
               lineDecorationsWidth: 10,
-              hover:{enabled:false},
-              cursorStyle:'line',
+              hover: { enabled: false },
+              cursorStyle: 'line',
             }}
             theme={theme === 'dark' ? 'custom-dark' : 'custom-light'}
-            onMount={(editor, monaco) => {
-              // 1. 移除默认的只读警告处理器
-              editor.onDidAttemptReadOnlyEdit = () => {};
-
-              // 2. 覆盖编辑器贡献点
-              const contributions = editor.getContribution('editor.contrib.readOnlyMessage');
-              if (contributions) {
-                contributions.dispose();
-              }
-
-              handleEditorDidMount(editor, monaco);
-            }}
             value={rawJson}
             onChange={handleMonacoChange}
+            onMount={(editor, monaco) => {
+              // 1. 移除默认的只读警告处理器
+              editor.onDidAttemptReadOnlyEdit = () => {}
+
+              // 2. 覆盖编辑器贡献点
+              const contributions = editor.getContribution('editor.contrib.readOnlyMessage')
+              if (contributions) {
+                contributions.dispose()
+              }
+
+              handleEditorDidMount(editor, monaco)
+            }}
           />
         )}
       </div>

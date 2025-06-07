@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react'
 
 import { Button, Form, type FormProps, message, Select, type SelectProps, Space } from 'antd'
 import { nanoid } from 'nanoid'
-// eslint-disable-next-line import/no-unresolved
-import { ApiDetail, ApiDetailCreate, ApiDetailUpdate, ApiTreeQueryPage } from "@/api/ams/api";
 
+import { ApiDetail, ApiDetailCreate, ApiDetailUpdate, ApiTreeQueryPage } from '@/api/ams/api'
+import type { ApiTabItem } from '@/components/ApiTab'
 import { PageTabStatus } from '@/components/ApiTab/ApiTab.enum'
 import { useTabContentContext } from '@/components/ApiTab/TabContentContext'
 import { InputUnderline } from '@/components/InputUnderline'
@@ -13,7 +13,7 @@ import { ResponseTab } from '@/components/tab-content/api/components/ResponseTab
 import { HTTP_METHOD_CONFIG } from '@/configs/static'
 import { useGlobalContext } from '@/contexts/global'
 import { useMenuHelpersContext } from '@/contexts/menu-helpers'
-import { useMenuTabContext, useMenuTabHelpers, } from "@/contexts/menu-tab-settings";
+import { useMenuTabContext, useMenuTabHelpers } from '@/contexts/menu-tab-settings'
 import { initialCreateApiDetailsData } from '@/data/remote'
 import { MenuItemType, ParamType } from '@/enums'
 import type { ApiDetails } from '@/types'
@@ -22,8 +22,6 @@ import { BaseFormItems } from './components/BaseFormItems'
 import { GroupTitle } from './components/GroupTitle'
 import { PathInput, type PathInputProps } from './components/PathInput'
 import { ParamsTab } from './params/ParamsTab'
-import type { ApiTabItem } from "@/components/ApiTab";
-
 
 const DEFAULT_NAME = '未命名接口'
 
@@ -43,13 +41,19 @@ const methodOptions: SelectProps['options'] = Object.entries(HTTP_METHOD_CONFIG)
 /**
  * API 「修改文档」部分。
  */
-export function ApiDocEditing({ activeKey,setActiveKey }: { activeKey: string,setActiveKey: (key:string)=>void }) {
+export function ApiDocEditing({
+  activeKey,
+  setActiveKey,
+}: {
+  activeKey: string
+  setActiveKey: (key: string) => void
+}) {
   const [form] = Form.useForm<ApiDetails>()
   const { messageApi } = useGlobalContext()
   const msgKey = useRef<string>()
   const { setTabItemEditStatus } = useMenuTabHelpers()
-  const { tabData} = useTabContentContext()
-  const  [loading,setLoading]=useState(false)
+  const { tabData } = useTabContentContext()
+  const [loading, setLoading] = useState(false)
   const { setMenuRawList } = useMenuHelpersContext()
   const isCreating = tabData.data?.tabStatus === PageTabStatus.Create
   const loadingApiDetails = async (id: string) => {
@@ -57,29 +61,24 @@ export function ApiDocEditing({ activeKey,setActiveKey }: { activeKey: string,se
       if (id) {
         const response = await ApiDetail(id)
         if (response.data.success) {
-
           const menuData = response.data.data
           const apiDetails = menuData.data
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           form.setFieldsValue(apiDetails)
-          console.log('menuData',apiDetails)
-          }
-
+          console.log('menuData', apiDetails)
         }
-
+      }
     } catch (error) {
       console.error('加载 API 详情失败:', error)
     }
-
   }
   useEffect(() => {
     if (isCreating) {
       form.setFieldsValue(initialCreateApiDetailsData)
     } else {
-      if (activeKey === 'docEdit'){
+      if (activeKey === 'docEdit') {
         loadingApiDetails(tabData.key)
       }
-
     }
   }, [activeKey, isCreating, tabData.key])
   const loadingMenuTree = async () => {
@@ -95,8 +94,7 @@ export function ApiDocEditing({ activeKey,setActiveKey }: { activeKey: string,se
     } else {
       loadingApiDetails(tabData.key)
     }
-  }, [form,isCreating, tabData.key])
-
+  }, [form, isCreating, tabData.key])
 
   const createApiForm = async (values) => {
     setLoading(true)
@@ -113,7 +111,7 @@ export function ApiDocEditing({ activeKey,setActiveKey }: { activeKey: string,se
     formData.append('description', values.data.description || '')
     formData.append('serverId', values.data.serverId || '')
     formData.append('parameters', JSON.stringify(values.data.parameters))
-    formData.append('responses', JSON.stringify(values.data.responses|| []))
+    formData.append('responses', JSON.stringify(values.data.responses || []))
     // formData.append('authorization', JSON.stringify(values.data.authorization || {"type":"NoneAuth","data":{}}))
     // formData.append(
     //   'requestBody',
@@ -127,7 +125,6 @@ export function ApiDocEditing({ activeKey,setActiveKey }: { activeKey: string,se
       message.success(response.data.message)
       loadingMenuTree()
       loadingApiDetails(response.data.data.id)
-
     }
     setLoading(false)
   }
@@ -146,7 +143,7 @@ export function ApiDocEditing({ activeKey,setActiveKey }: { activeKey: string,se
     formData.append('description', values.data.description || '')
     formData.append('serverId', values.data.serverId || '')
     formData.append('parameters', JSON.stringify(values.data.parameters))
-    formData.append('responses', JSON.stringify(values.data.responses|| []))
+    formData.append('responses', JSON.stringify(values.data.responses || []))
     // formData.append('authorization', JSON.stringify(values.data.authorization || {"type":"NoneAuth","data":{}}))
     // formData.append(
     //   'requestBody',
@@ -162,7 +159,6 @@ export function ApiDocEditing({ activeKey,setActiveKey }: { activeKey: string,se
       loadingApiDetails(response.data.data.id)
     }
     setLoading(false)
-
   }
   const handleFinish: FormProps<ApiDetails>['onFinish'] = async (values) => {
     const menuName = values.name || DEFAULT_NAME
@@ -176,11 +172,8 @@ export function ApiDocEditing({ activeKey,setActiveKey }: { activeKey: string,se
         type: MenuItemType.ApiDetail,
         data: { ...values, name: menuName },
       }
-      console.log('创建menuItemData',JSON.stringify(menuItemData))
+      console.log('创建menuItemData', JSON.stringify(menuItemData))
       createApiForm(menuItemData)
-
-
-
     } else {
       const menuItemData = {
         id: tabData.key,
@@ -190,7 +183,6 @@ export function ApiDocEditing({ activeKey,setActiveKey }: { activeKey: string,se
       console.log('更新 menuItemData', JSON.stringify(menuItemData))
 
       updateApiForm(menuItemData)
-
     }
   }
 
@@ -289,7 +281,6 @@ export function ApiDocEditing({ activeKey,setActiveKey }: { activeKey: string,se
     <Form<ApiDetails>
       className="flex h-full flex-col"
       form={form}
-
       onFinish={(values) => {
         console.log('提交的表单数据:', values)
 
@@ -315,15 +306,19 @@ export function ApiDocEditing({ activeKey,setActiveKey }: { activeKey: string,se
         </Space.Compact>
 
         <Space className="ml-auto pl-2">
-          <Button loading={loading} htmlType="submit" type="primary">
+          <Button htmlType="submit" loading={loading} type="primary">
             保存
           </Button>
 
           {!isCreating && (
             <>
               <Button
-                onClick={() => { setActiveKey('run'); }}
-              >运行</Button>
+                onClick={() => {
+                  setActiveKey('run')
+                }}
+              >
+                运行
+              </Button>
               <ApiRemoveButton tabKey={tabData.key} />
             </>
           )}

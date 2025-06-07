@@ -1,32 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import {
-  PlusOutlined,
-  SearchOutlined,
-  EditOutlined,
-  DeleteOutlined
-} from "@ant-design/icons";
-import type { TabsProps } from 'antd';
-import { Button, Form, Input, Space, Table, Select, Tabs } from "antd";
-import { nanoid } from "nanoid";
+import type React, { useEffect, useState } from 'react'
+
+import { DeleteOutlined, EditOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons'
+import type { Button, Form, Input, Select, Space, Table, Tabs, TabsProps } from 'antd'
+import { nanoid } from 'nanoid'
 
 interface Parameter {
-  id: string;
-  key: string;
-  type: string;
-  value: string;
-  description: string;
+  id: string
+  key: string
+  type: string
+  value: string
+  description: string
 }
 
 interface GlobalParameterData {
-  header: Parameter[];
-  cookie: Parameter[];
-  query: Parameter[];
-  body: Parameter[];
+  header: Parameter[]
+  cookie: Parameter[]
+  query: Parameter[]
+  body: Parameter[]
 }
 
 interface GlobalParameterProps {
-  data?: GlobalParameterData;
-  onChange?: (newData: GlobalParameterData) => void;
+  data?: GlobalParameterData
+  onChange?: (newData: GlobalParameterData) => void
 }
 
 const typeOptions = [
@@ -34,44 +29,44 @@ const typeOptions = [
   { value: 'number', label: 'number', color: '#52c41a' },
   { value: 'boolean', label: 'boolean', color: '#faad14' },
   { value: 'object', label: 'object', color: '#722ed1' },
-];
+]
 
 const GlobalParameter: React.FC<GlobalParameterProps> = ({
-                                                           data = {
-                                                             header: [],
-                                                             cookie: [],
-                                                             query: [],
-                                                             body: []
-                                                           },
-                                                           onChange
-                                                         }) => {
-  const [activeTab, setActiveTab] = useState<string>('header');
-  const [searchText, setSearchText] = useState('');
-  const [editingKey, setEditingKey] = useState<string>('');
-  const [form] = Form.useForm();
+  data = {
+    header: [],
+    cookie: [],
+    query: [],
+    body: [],
+  },
+  onChange,
+}) => {
+  const [activeTab, setActiveTab] = useState<string>('header')
+  const [searchText, setSearchText] = useState('')
+  const [editingKey, setEditingKey] = useState<string>('')
+  const [form] = Form.useForm()
   const [internalData, setInternalData] = useState<GlobalParameterData>({
     header: [],
     cookie: [],
     query: [],
     body: [],
-    ...data
-  });
+    ...data,
+  })
 
   useEffect(() => {
-    setInternalData(data);
-  }, [data]);
+    setInternalData(data)
+  }, [data])
 
   const getCurrentTabData = () => {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    return internalData[activeTab as keyof GlobalParameterData] || [];
-  };
+    return internalData[activeTab as keyof GlobalParameterData] || []
+  }
 
   const getTypeColor = (type: string) => {
-    const option = typeOptions.find(opt => opt.value === type);
-    return option ? option.color : '#000000';
-  };
+    const option = typeOptions.find((opt) => opt.value === type)
+    return option ? option.color : '#000000'
+  }
 
-  const isEditing = (record: Parameter) => record.id === editingKey;
+  const isEditing = (record: Parameter) => record.id === editingKey
 
   const edit = (record: Parameter) => {
     form.setFieldsValue({
@@ -79,37 +74,37 @@ const GlobalParameter: React.FC<GlobalParameterProps> = ({
       key: record.key,
       type: record.type,
       value: record.value,
-      description: record.description
-    });
-    setEditingKey(record.id);
-  };
+      description: record.description,
+    })
+    setEditingKey(record.id)
+  }
 
   const save = async (id: string) => {
     try {
-      const row = await form.validateFields();
-      const newData = { ...internalData };
+      const row = await form.validateFields()
+      const newData = { ...internalData }
 
-      newData[activeTab as keyof GlobalParameterData] =
-        newData[activeTab as keyof GlobalParameterData].map(item =>
-          item.id === id ? { ...item, ...row } : item
-        );
+      newData[activeTab as keyof GlobalParameterData] = newData[
+        activeTab as keyof GlobalParameterData
+      ].map((item) => (item.id === id ? { ...item, ...row } : item))
 
-      setInternalData(newData);
-      onChange?.(newData);
-      setEditingKey('');
+      setInternalData(newData)
+      onChange?.(newData)
+      setEditingKey('')
     } catch (errInfo) {
-      console.log('Validate Failed:', errInfo);
+      console.log('Validate Failed:', errInfo)
     }
-  };
+  }
 
   const handleDelete = (record: Parameter) => {
-    const newData = { ...internalData };
-    newData[activeTab as keyof GlobalParameterData] =
-      newData[activeTab as keyof GlobalParameterData].filter(item => item.id !== record.id);
+    const newData = { ...internalData }
+    newData[activeTab as keyof GlobalParameterData] = newData[
+      activeTab as keyof GlobalParameterData
+    ].filter((item) => item.id !== record.id)
 
-    setInternalData(newData);
-    onChange?.(newData);
-  };
+    setInternalData(newData)
+    onChange?.(newData)
+  }
 
   const handleAdd = () => {
     const newParam = {
@@ -118,17 +113,17 @@ const GlobalParameter: React.FC<GlobalParameterProps> = ({
       type: 'string',
       value: '',
       description: '',
-    };
+    }
 
     const newData = {
       ...internalData,
-      [activeTab]: [...internalData[activeTab as keyof GlobalParameterData], newParam]
-    };
+      [activeTab]: [...internalData[activeTab as keyof GlobalParameterData], newParam],
+    }
 
-    setInternalData(newData);
-    onChange?.(newData);
-    edit(newParam);
-  };
+    setInternalData(newData)
+    onChange?.(newData)
+    edit(newParam)
+  }
 
   const columns = [
     {
@@ -140,25 +135,25 @@ const GlobalParameter: React.FC<GlobalParameterProps> = ({
         return (
           record.key.toLowerCase().includes(value.toLowerCase()) ||
           record.description.toLowerCase().includes(value.toLowerCase())
-        );
+        )
       },
       render: (_: any, record: Parameter) => {
-        const editable = isEditing(record);
+        const editable = isEditing(record)
         return editable ? (
           <Form.Item
             name="key"
-            style={{ margin: 0 }}
             rules={[{ required: true, message: '请输入参数名' }]}
+            style={{ margin: 0 }}
           >
             <Input />
           </Form.Item>
         ) : (
           <Input
             bordered={false}
-            value={record.key}
             style={{ padding: 0, backgroundColor: 'transparent' }}
+            value={record.key}
           />
-        );
+        )
       },
     },
     {
@@ -166,38 +161,34 @@ const GlobalParameter: React.FC<GlobalParameterProps> = ({
       dataIndex: 'type',
       key: 'type',
       render: (_: any, record: Parameter) => {
-        const editable = isEditing(record);
+        const editable = isEditing(record)
         return editable ? (
           <Form.Item
             name="type"
-            style={{ margin: 0 }}
             rules={[{ required: true, message: '请选择类型' }]}
+            style={{ margin: 0 }}
           >
             <Select
-              style={{ width: '100%' }}
               dropdownStyle={{ minWidth: '120px' }}
-              options={typeOptions.map(opt => ({
+              options={typeOptions.map((opt) => ({
                 value: opt.value,
-                label: (
-                  <span style={{ color: opt.color }}>
-                    {opt.label}
-                  </span>
-                ),
+                label: <span style={{ color: opt.color }}>{opt.label}</span>,
               }))}
+              style={{ width: '100%' }}
             />
           </Form.Item>
         ) : (
           <Input
-            bordered={false}
             readOnly
-            value={record.type}
+            bordered={false}
             style={{
               padding: 0,
               backgroundColor: 'transparent',
-              color: getTypeColor(record.type)
+              color: getTypeColor(record.type),
             }}
+            value={record.type}
           />
-        );
+        )
       },
     },
     {
@@ -205,23 +196,23 @@ const GlobalParameter: React.FC<GlobalParameterProps> = ({
       dataIndex: 'value',
       key: 'value',
       render: (_: any, record: Parameter) => {
-        const editable = isEditing(record);
+        const editable = isEditing(record)
         return editable ? (
           <Form.Item
             name="value"
-            style={{ margin: 0 }}
             rules={[{ required: true, message: '请输入值' }]}
+            style={{ margin: 0 }}
           >
             <Input />
           </Form.Item>
         ) : (
           <Input
-            bordered={false}
             readOnly
-            value={record.value}
+            bordered={false}
             style={{ padding: 0, backgroundColor: 'transparent' }}
+            value={record.value}
           />
-        );
+        )
       },
     },
     {
@@ -229,71 +220,69 @@ const GlobalParameter: React.FC<GlobalParameterProps> = ({
       dataIndex: 'description',
       key: 'description',
       render: (_: any, record: Parameter) => {
-        const editable = isEditing(record);
+        const editable = isEditing(record)
         return editable ? (
-          <Form.Item
-            name="description"
-            style={{ margin: 0 }}
-          >
+          <Form.Item name="description" style={{ margin: 0 }}>
             <Input />
           </Form.Item>
         ) : (
           <Input
-            bordered={false}
             readOnly
-            value={record.description}
+            bordered={false}
             style={{ padding: 0, backgroundColor: 'transparent' }}
+            value={record.description}
           />
-        );
+        )
       },
     },
     {
       title: '操作',
       key: 'action',
       render: (_: any, record: Parameter) => {
-        const editable = isEditing(record);
+        const editable = isEditing(record)
         return editable ? (
           <Space size="middle">
-            <Button
-              type="link"
-              onClick={() => save(record.id)}
-            >
+            <Button type="link" onClick={() => save(record.id)}>
               保存
             </Button>
           </Space>
         ) : (
           <Space size="middle">
             <Button
-              type="link"
-              icon={<EditOutlined />}
               disabled={editingKey !== ''}
-              onClick={() => edit(record)}
+              icon={<EditOutlined />}
+              type="link"
+              onClick={() => {
+                edit(record)
+              }}
             />
             <Button
-              type="link"
               danger
               icon={<DeleteOutlined />}
-              onClick={() => { handleDelete(record); }}
+              type="link"
+              onClick={() => {
+                handleDelete(record)
+              }}
             />
           </Space>
-        );
+        )
       },
     },
-  ];
+  ]
 
   const renderTable = () => (
-    <Form form={form} component={false}>
+    <Form component={false} form={form}>
       <Table
         bordered
         columns={columns}
         dataSource={getCurrentTabData()}
-        rowKey="id"
         pagination={false}
+        rowKey="id"
       />
     </Form>
-  );
+  )
 
-  const items: TabsProps['items'] = ['header', 'cookie', 'query', 'body'].map(tab => ({
+  const items: TabsProps['items'] = ['header', 'cookie', 'query', 'body'].map((tab) => ({
     key: tab,
     label: tab.charAt(0).toUpperCase() + tab.slice(1),
     children: (
@@ -303,14 +292,16 @@ const GlobalParameter: React.FC<GlobalParameterProps> = ({
             <Input
               placeholder="搜索参数名或说明"
               prefix={<SearchOutlined />}
-              onChange={e => { setSearchText(e.target.value); }}
               style={{ width: 250 }}
+              onChange={(e) => {
+                setSearchText(e.target.value)
+              }}
             />
             <Button
-              type="primary"
-              icon={<PlusOutlined />}
-              onClick={handleAdd}
               disabled={editingKey !== ''}
+              icon={<PlusOutlined />}
+              type="primary"
+              onClick={handleAdd}
             >
               新增
             </Button>
@@ -318,8 +309,8 @@ const GlobalParameter: React.FC<GlobalParameterProps> = ({
         </div>
         {renderTable()}
       </>
-    )
-  }));
+    ),
+  }))
 
   return (
     <div className="global-parameter" style={{ padding: 24 }}>
@@ -327,13 +318,13 @@ const GlobalParameter: React.FC<GlobalParameterProps> = ({
         activeKey={activeTab}
         items={items}
         onChange={(key) => {
-          setActiveTab(key);
-          setSearchText('');
-          setEditingKey('');
+          setActiveTab(key)
+          setSearchText('')
+          setEditingKey('')
         }}
       />
     </div>
-  );
-};
+  )
+}
 
-export default GlobalParameter;
+export default GlobalParameter

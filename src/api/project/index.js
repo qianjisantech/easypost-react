@@ -1,12 +1,13 @@
-import request from "@/api";
+import request from '@/api'
+
 export function ProjectQueryPage(body) {
   return request({
     url: '/project/page',
     method: 'post',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
-    data: body
+    data: body,
   })
 }
 
@@ -15,9 +16,9 @@ export function ProjectCreate(body) {
     url: '/project/create',
     method: 'post',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
-    data: body
+    data: body,
   })
 }
 
@@ -26,9 +27,9 @@ export function ProjectUpdate(body) {
     url: '/project/update',
     method: 'post',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
-    data: body
+    data: body,
   })
 }
 
@@ -37,9 +38,9 @@ export function ProjectCopy(body) {
     url: '/project/copy',
     method: 'post',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
-    data: body
+    data: body,
   })
 }
 export function ProjectDelete(id) {
