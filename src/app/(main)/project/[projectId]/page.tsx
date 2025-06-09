@@ -7,7 +7,6 @@ import { Button, ConfigProvider, Dropdown, Flex, Space, theme, Tooltip } from 'a
 import { FilterIcon, PlusIcon } from 'lucide-react'
 
 import { ApiTreeQueryPage } from '@/api/ams/api'
-import GosmoMenu from '@/app/(main)/gosmo/Menu/page'
 import { ApiMenu } from '@/components/ApiMenu'
 import { ApiMenuContextProvider } from '@/components/ApiMenu/ApiMenuContext'
 import { ApiTab } from '@/components/ApiTab'
@@ -212,8 +211,6 @@ function ProjectContent() {
           ) : (
             // Gosmo 全屏独立展示
             <div className="size-full">
-              <h2>Gosmo流量录制和回放</h2>
-              <GosmoMenu />
             </div>
           )}
         </div>

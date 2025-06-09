@@ -1,4 +1,5 @@
-import type React, { cloneElement, PointerEvent, useMemo, useState } from 'react'
+import type React from 'react'
+import { cloneElement, PointerEvent, useMemo, useState } from 'react'
 import useEvent from 'react-use-event-hook'
 
 import {

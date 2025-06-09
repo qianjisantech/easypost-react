@@ -5,6 +5,7 @@
   "license": "UNLECENSED",
   "type": "module",
   "scripts": {
+    "prebuild": "rimraf .next/trace && exit 0",
     "build": "next build",
     "deps": "pnpm up --interactive --latest",
     "dev": "next dev",
@@ -52,6 +53,7 @@
     "lucide-react": "^0.447.0",
     "moment": "^2.30.1",
     "monaco-editor": "^0.52.2",
+    "monaco-editor-webpack-plugin": "^7.1.0",
     "nanoid": "^5.0.7",
     "next": "^14.2.14",
     "next-auth": "^4.24.11",

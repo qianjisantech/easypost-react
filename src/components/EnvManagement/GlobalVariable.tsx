@@ -33,7 +33,7 @@ interface GlobalVariableProps {
   }) => void
 }
 
-const { Text } = Typography
+// const { Text } = Typography
 
 const typeOptions = [
   { value: 'string', label: 'string', color: '#1890ff' },

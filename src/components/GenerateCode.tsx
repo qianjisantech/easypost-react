@@ -5,7 +5,7 @@ import MonacoEditor from '@monaco-editor/react'
 import { Button, Menu, message, Modal, Typography } from 'antd'
 import type * as monaco from 'monaco-editor'
 
-const { Text } = Typography
+// const { Text } = Typography
 
 interface ApiData {
   method: string

@@ -28,7 +28,7 @@ import TabPane from 'antd/es/tabs/TabPane'
 
 import { TeamInviteMember, TeamMemberPage, TeamUserSearch } from '@/api/team'
 
-const { Text } = Typography
+// const { Text } = Typography
 
 // 创建成员和角色全选组件
 const MembersAndRoles = ({ teamId }) => {
