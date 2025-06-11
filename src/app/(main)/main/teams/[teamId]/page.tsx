@@ -1,5 +1,5 @@
-// 服务端组件部分（静态生成）
-import TeamClientPage from './client'
+import TeamClientPage from "@/app/(main)/main/teams/[teamId]/client";
+
 
 export async function generateStaticParams() {
   return [
