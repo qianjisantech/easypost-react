@@ -26,7 +26,8 @@ import {
 } from 'antd'
 import TabPane from 'antd/es/tabs/TabPane'
 
-import { TeamInviteMember, TeamMemberPage, TeamUserSearch } from '@/api/team'
+import TeamAPI from '@/api/team'
+import {pagination} from "@nextui-org/react";
 
 // const { Text } = Typography
 
@@ -86,7 +87,7 @@ const MembersAndRoles = ({ teamId }) => {
   const handleSearch = async (value) => {
     try {
       console.log('搜索关键词:', value)
-      const response = await TeamUserSearch({
+      const response = await TeamAPI.searchUsers({
         current: pagination.current,
         pageSize: pagination.pageSize,
         keyword: value,
@@ -160,17 +161,17 @@ const MembersAndRoles = ({ teamId }) => {
   // 获取成员数据
   const handleQueryMembers = async () => {
     try {
-      const response = await TeamMemberPage({
+      const res = await TeamAPI.queryMembers({
         current: pagination.current,
         pageSize: pagination.pageSize,
-        teamId: teamId,
+        teamId: teamId
       })
-      setMembersData(response.data.data.records) // 假设返回的数据包含 records 字段
+      setMembersData(res.data.data.records)
       setPagination({
-        total: response.data.data.total,
-        totalPages: response.data.data.totalPages,
-        current: response.data.data.current,
-        pageSize: response.data.data.pageSize,
+        total: res.data.data.total,
+        totalPages: res.data.data.totalPages,
+        current: res.data.data.current,
+        pageSize: res.data.data.pageSize,
       })
     } catch (error) {
       console.error('Error fetching members data:', error)
@@ -183,7 +184,7 @@ const MembersAndRoles = ({ teamId }) => {
   }
   const handleConfirmInvite = async () => {
     setInviteModalVisible(false)
-    const response = await TeamInviteMember({
+    const response = await TeamAPI.inviteMembers({
       teamId: teamId,
       userIds: selectedRowKeys,
     })

@@ -1,8 +1,6 @@
 import type React from 'react'
 
-import { Button } from 'antd'
-
-import { useGlobalContext } from '@/contexts/global'
+import {Button, message} from 'antd'
 
 interface SwitchLoginMethodButtonProps {
   isQRCodeLogin: boolean
@@ -13,10 +11,9 @@ const SwitchLoginMethodButton: React.FC<SwitchLoginMethodButtonProps> = ({
   isQRCodeLogin,
   setIsQRCodeLogin,
 }) => {
-  const { messageApi } = useGlobalContext()
   const handleClick = () => {
     if (!isQRCodeLogin) {
-      messageApi.warning('当前功能待开发')
+      message.error('当前功能待开发')
     }
     // setIsQRCodeLogin(!isQRCodeLogin)
   }
@@ -25,7 +22,6 @@ const SwitchLoginMethodButton: React.FC<SwitchLoginMethodButtonProps> = ({
       ghost
       style={{
         width: '100%',
-        marginTop: 20,
         borderColor: '#D6A5D6',
         color: '#D6A5D6',
         borderRadius: '4px',

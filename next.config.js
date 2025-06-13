@@ -1,7 +1,7 @@
 import MonacoWebpackPlugin from 'monaco-editor-webpack-plugin'
 
 const nextConfig = {
-  output: 'export',
+  // output: 'export',
   reactStrictMode: false, // 禁用严格模式避免编辑器组件重复渲染
   eslint: {
     ignoreDuringBuilds: true, // 构建时跳过ESLint检查

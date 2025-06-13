@@ -1,40 +1,44 @@
+// app/layout.tsx
 import type { Metadata, Viewport } from 'next'
 import { AntdRegistry } from '@ant-design/nextjs-registry'
 import { App } from 'antd'
-
+import '@/styles/globals.css'
 import { ThemeProviderClient } from '@/components/ThemeEditor'
 import { GlobalContextProvider } from '@/contexts/global'
-
-import { getPageTitle } from '../utils'
-
-import '@/styles/globals.css'
+import { getPageTitle } from '@/utils'
+import { SpeedInsights } from '@vercel/speed-insights/next'
+import React, {Suspense} from "react";
+import Loading from "@/app/loading";
 
 export const metadata: Metadata = {
-  icons: [{ url: '/favicon.svg', type: 'image/svg+xml' }],
-  title: getPageTitle(),
-  description: '使用 Next.js + Antd 编写的 API网站',
-  authors: [{ name: '', url: '' }],
-  manifest: '/manifest.webmanifest',
+    icons: [{ url: '/favicon.svg', type: 'image/svg+xml' }],
+    title: getPageTitle(),
+    description: '使用 Next.js + Antd 编写的 API网站',
+    authors: [{ name: '', url: '' }],
+    manifest: '/manifest.webmanifest',
 }
 
 export const viewport: Viewport = {
-  colorScheme: 'light',
+    colorScheme: 'light',
 }
 
-export default function RootLayout(props: React.PropsWithChildren) {
-  return (
-    <html lang="zh-Hans-CN">
-      <body>
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+    return (
+        <html lang="zh-Hans-CN" suppressHydrationWarning>
+        <body suppressHydrationWarning>
         <AntdRegistry>
-          <App>
-            <ThemeProviderClient autoSaveId="theme:persistence">
-              <main>
-                <GlobalContextProvider>{props.children}</GlobalContextProvider>
-              </main>
-            </ThemeProviderClient>
-          </App>
+            <App>
+                <ThemeProviderClient autoSaveId="theme:persistence">
+                    <GlobalContextProvider>
+                        <Suspense fallback={<Loading />}>
+                            {children}
+                        </Suspense>
+                        <SpeedInsights />
+                    </GlobalContextProvider>
+                </ThemeProviderClient>
+            </App>
         </AntdRegistry>
-      </body>
-    </html>
-  )
+        </body>
+        </html>
+    )
 }

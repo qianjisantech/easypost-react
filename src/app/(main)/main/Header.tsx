@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation'
 import {
   AppstoreOutlined,
   BellOutlined,
-  CodeOutlined,
   GithubOutlined,
   GitlabOutlined,
   HomeOutlined,
@@ -15,16 +14,15 @@ import {
   UserOutlined,
 } from '@ant-design/icons'
 import { Avatar, Button, Dropdown, Menu, message, Modal, Space, Spin, Tooltip } from 'antd'
+import {useGlobalContext} from "@/contexts/global";
 
-import { ROUTES } from '@/utils/routes'
 
-const headerStyle = {
-  height: '40px',
-  backgroundColor: '#f0f0f0',
+const headerStyle: React.CSSProperties = {
+  height: '5%', // 固定高度
   display: 'flex',
   alignItems: 'center',
-  padding: '0 10px',
-  position: 'fixed',
+  marginRight:'1%',
+  position: 'sticky', // 改为sticky定位
   top: 0,
   left: 0,
   right: 0,
@@ -40,7 +38,7 @@ const HeaderPage = () => {
   const [loading, setLoading] = useState(false)
   const [modalState, setModalState] = useState({ visible: false, tab: 'basicSettings' })
   const router = useRouter()
-
+  const {setIsLogin} = useGlobalContext()
   const handleRefresh = () => {
     setLoading(true)
     setTimeout(() => {
@@ -50,9 +48,16 @@ const HeaderPage = () => {
 
   // 退出登录
   const logout = () => {
+
     setModalState({ ...modalState, visible: false })
-    localStorage.removeItem('accessToken')
-    router.push(ROUTES.LOGIN)
+    try {
+      localStorage.removeItem('accessToken')
+      setIsLogin(false)
+    }catch (e){
+      message.error("退出登录失败")
+    }
+
+
   }
   const returnToProject = () => {
     router.back()

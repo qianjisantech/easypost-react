@@ -13,7 +13,7 @@ export function request(config: Record<string, any>): Promise<AxiosResponse> {
   // 设置必要的请求头，防止跨域请求时没有授权
   if (config.headers) {
     // 如果需要认证信息，可以设置Authorization
-    const token = localStorage.getItem('accessToken')
+    const token = localStorage.getItem('token')
     if (token) {
       config.headers['Authorization'] = config.headers['Authorization'] || `Bearer ${token}`
     }

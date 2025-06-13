@@ -1,108 +1,66 @@
+// api/index.ts
+import axios from 'axios'
 import { redirect } from 'next/navigation'
-import { message, Spin } from 'antd'
-import axios, { type AxiosError, type AxiosInstance, type AxiosResponse } from 'axios'
-
+import { message } from 'antd'
+import { useApiStore } from '@/stores/api'
 import { ROUTES } from '@/utils/routes'
-
-// 定义响应数据类型
-interface ApiResponse<T = any> {
-  success: boolean
-  message?: string
-  data?: T
-  [key: string]: any
-}
+import type { AxiosError, AxiosInstance, AxiosResponse } from 'axios'
+import type { ApiResponse } from '@/api/types'
 
 const request: AxiosInstance = axios.create({
-  baseURL: '/app',
-  timeout: 10000,
+    baseURL: '/app',
+    timeout: 10000,
 })
 
-// 错误处理函数（使用类型断言）
-const errorHandler = (error: AxiosError<ApiResponse>) => {
-  if (!error.response) {
-    showMessage('error', 'Network or timeout error')
-    hideLoading()
-    return Promise.reject(error)
-  }
+// 请求拦截器 - 自动设置 Loading
+request.interceptors.request.use(config => {
+    const key = config.url || 'default'
+    useApiStore.getState().setLoading(key, true)
 
-  const { status, data } = error.response
-
-  // 现在可以安全访问 data.message
-  const errorMessage =
-    data.message ||
-    (status === 401
-      ? 'Token已过期，请重新登录'
-      : status === 500
-        ? '系统内部错误'
-        : status === 400
-          ? 'Bad request'
-          : status === 404
-            ? '资源未找到'
-            : `Request failed with status: ${status}`)
-
-  showMessage('error', errorMessage)
-
-  if (status === 401) {
-    if (typeof localStorage !== 'undefined' && localStorage.getItem('accessToken')) {
-      localStorage.removeItem('accessToken')
-    }
-    redirect(ROUTES.LOGIN)
-  }
-
-  hideLoading()
-  return Promise.reject(error)
-}
-
-// 请求拦截器（添加类型）
-request.interceptors.request.use(
-  (config) => {
+    // 注入认证和路由参数
     if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('accessToken')
-      if (token) {
-        config.headers['Authorization'] = `Bearer ${token}`
-      }
+        const token = localStorage.getItem('token')
+        if (token) config.headers.Authorization = `Bearer ${token}`
 
-      const path = window.location.pathname
-      if (path.startsWith('/project')) {
-        const projectId = path.split('/')[2]
-        config.headers['X-Project-Id'] = projectId || ''
-      }
-      if (path.startsWith('/main/teams')) {
-        const teamId = path.split('/')[3]
-        config.headers['X-Team-Id'] = teamId || ''
-      }
+        const path = window.location.pathname
+        const [, projectId] = path.match(/^\/project\/([^/]+)/) || []
+        const [, teamId] = path.match(/^\/main\/teams\/([^/]+)/) || []
+
+        if (projectId) config.headers['X-Project-Id'] = projectId
+        if (teamId) config.headers['X-Team-Id'] = teamId
     }
 
-    showLoading()
     return config
-  },
-  (error) => errorHandler(error)
-)
+})
 
-// 响应拦截器（添加类型）
+// 响应拦截器 - 自动清除 Loading
 request.interceptors.response.use(
-  (response: AxiosResponse<ApiResponse>) => {
-    hideLoading()
-    if (!response.data.success) {
-      showMessage('error', response.data.message || 'Request failed')
-      return Promise.reject(response)
+    (response: AxiosResponse<ApiResponse>) => {
+        const key = response.config.url || 'default'
+        useApiStore.getState().setLoading(key, false)
+
+        if (!response.data.success) {
+            message.error(response.data.message || '请求失败')
+            return Promise.reject(response)
+        }
+        return response
+    },
+    (error: AxiosError<ApiResponse>) => {
+        const key = error.config?.url || 'default'
+        useApiStore.getState().setLoading(key, false)
+
+        if (error.response?.status === 401) {
+            localStorage.removeItem('token')
+            redirect(ROUTES.LOGIN)
+        }
+
+        const msg = error.response?.data?.message ||
+            error.message ||
+            '网络错误，请稍后重试'
+        message.error(msg)
+
+        return Promise.reject(error)
     }
-    return response
-  },
-  (error) => errorHandler(error)
 )
-
-// 消息工具函数
-const showMessage = (type: 'success' | 'error', content: string) => {
-  message[type](content)
-}
-
-const showLoading = () => {
-  message.loading({ content: '', key: 'global_loading', duration: 0 })
-}
-
-const hideLoading = () => {
-  message.destroy('global_loading')
-}
 
 export default request

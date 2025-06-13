@@ -1,0 +1,206 @@
+/* 卡片容器样式 */
+.cardContainer {
+    transition: border-color 0.3s;
+}
+
+.cardContainer:hover {
+    border-color: #9254de !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+    transform: translateY(-2px);
+}
+.buttonText {
+    line-height: 1;
+}
+/* 卡片悬停效果 */
+.cardContainer:hover .cardActions {
+    display: flex;
+    animation: fadeIn 0.2s ease-out;
+}
+.cardContainer:hover .statsContainer {
+    display: none;
+}
+
+/* 卡片操作按钮区域 */
+.cardActions {
+    display: none;
+    gap: 8px;
+    background: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+}
+/* 统计信息容器 */
+.statsContainer {
+    display: flex;
+    gap: 16px;
+    background: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+}
+.statNumber {
+    color: #666;
+    margin-left: 4px;
+    font-size: 12px;
+}
+
+.statItem {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+}
+/* 卡片底部容器 */
+.cardFooter {
+    position: absolute;
+    bottom: 12px;
+    left: 16px;
+    right: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+/* 操作按钮样式 */
+.actionButton {
+    color: #b37feb !important;
+    transition: all 0.2s ease;
+    background: white !important;
+    border-radius: 12px;
+    height: 24px;
+    padding: 0 8px;
+    font-size: 11px;
+    border: 1px solid transparent !important;
+    display: inline-flex;
+    align-items: center;
+}
+
+.actionButton .anticon {
+    font-size: 11px; /* 匹配文字大小 */
+    margin-right: 3px; /* 更小的间距 */
+}
+
+.actionButton:hover {
+    color: #722ED1 !important;
+    background: rgba(114, 46, 209, 0.05) !important;
+}
+
+/* 顶部导航按钮样式 */
+.newCategoryButton,
+.newProjectButton {
+    height: 36px;
+    padding: 0 16px;
+    font-size: 14px;
+    border-radius: 4px;
+    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.newCategoryButton {
+    background: #f7f0ff;
+    border-color: #d3adf7;
+    color: #722ED1;
+}
+
+.newCategoryButton:hover {
+    background: #efdbff;
+    border-color: #b37feb;
+    color: #531dab;
+    box-shadow: 0 2px 8px rgba(114, 46, 209, 0.15);
+}
+
+.newProjectButton {
+    background: #722ED1;
+    border-color: #722ED1;
+    color: white;
+}
+
+.newProjectButton:hover {
+    background: #531dab;
+    border-color: #531dab;
+    color: white;
+    box-shadow: 0 2px 12px rgba(114, 46, 209, 0.3);
+}
+
+.newCategoryButton .anticon,
+.newProjectButton .anticon {
+    margin-right: 6px;
+    transition: transform 0.2s;
+}
+
+.newCategoryButton:hover .anticon {
+    transform: translateY(-1px);
+}
+
+.newProjectButton:hover .anticon {
+    transform: scale(1.1);
+}
+
+/* 弹窗相关样式 */
+.ant-modal-header {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.ant-modal-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+.ant-form-item-label > label {
+    color: #595959;
+}
+
+.ant-input, .ant-input-textarea {
+    border-radius: 2px;
+}
+
+.ant-btn {
+    border-radius: 2px;
+}
+
+.ant-upload.ant-upload-select-picture-card {
+    width: auto;
+    height: auto;
+    border: 1px dashed #d9d9d9;
+    background: #fafafa;
+}
+
+.ant-upload.ant-upload-select-picture-card:hover {
+    border-color: #9254de;
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+.menu {
+    border: none !important; /* 确保菜单没有边框 */
+}
+
+.sider {
+    border: none !important; /* 确保侧边栏没有边框 */
+}
+
+/* 移除Ant Design默认的菜单边框 */
+.ant-menu {
+    border-inline-end: none !important;
+}
+.content{
+
+}
+
+.layout{
+
+}
+/* 自定义滚动条样式 */
+.ant-menu-inline {
+    scrollbar-width: thin;
+    scrollbar-color: #d9d9d9 transparent;
+}
+
+.ant-menu-inline::-webkit-scrollbar {
+    width: 6px;
+}
+
+.ant-menu-inline::-webkit-scrollbar-thumb {
+    background-color: #d9d9d9;
+    border-radius: 3px;
+}

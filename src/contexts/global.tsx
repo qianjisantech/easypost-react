@@ -1,122 +1,67 @@
-'use client'
+'use client';
 
-import type React from 'react';
-import { createContext, useContext, useEffect, useState } from 'react'
-import { useRouter,usePathname } from 'next/navigation'
-import { Provider as NiceModalProvider } from '@ebay/nice-modal-react'
-import { message, Modal } from 'antd'
+import React, {createContext, useContext, useEffect, useState} from 'react';
+import {Provider as NiceModalProvider} from '@ebay/nice-modal-react';
+import { Modal} from 'antd';
+import {MenuHelpersContextProvider} from '@/contexts/menu-helpers';
+import {EnvironmentSetting} from '@/types';
+import {GlobalContextData} from '@/contexts/types';
+import {useTeamsContext} from '@/contexts/teams';
+import {RouterGuard} from "@/contexts/RouterGuard";
 
-import { UserProfile } from '@/api/user'
-import { MenuHelpersContextProvider } from '@/contexts/menu-helpers'
-import { ROUTES } from "@/utils/routes";
-import { TeamQueryPage } from "@/api/team";
-import { useSession } from "next-auth/react";
-import { EnvironmentSetting } from "@/types";
+const GlobalContext = createContext<GlobalContextData | undefined>(undefined);
 
-type ModalHookApi = ReturnType<typeof Modal.useModal>[0]
-type MessageApi = ReturnType<typeof message.useMessage>[0]
+export function GlobalContextProvider({children}: React.PropsWithChildren) {
+    const [modal, modalContextHolder] = Modal.useModal();
+    const [isLogin, setIsLogin] = useState(false);
+    const [needSetPassword, setNeedSetPassword] = useState(false);
+    const [environmentSettingContext, setEnvironmentSettingContext] = useState<EnvironmentSetting>({} as EnvironmentSetting);
+    useEffect(() => {
+        // 确保在客户端环境执行
+        if (typeof window === 'undefined') return;
+        // 获取 token 并转换为 boolean
+        const hasToken = !!localStorage.getItem('token');
 
-interface Team{
-  id:string
-  teamName:string
-}
-interface GlobalContextData {
-  modal: ModalHookApi
-  messageApi: MessageApi
-  isLogin: boolean
-  setIsLogin: React.Dispatch<React.SetStateAction<boolean>>
-  teams: Team[]
-  fetchTeams: () => Promise<Team[]>
-  needSetPassword: boolean
-  setNeedSetPassword: React.Dispatch<React.SetStateAction<boolean>>
-  setEnvironmentSettingContext: (environmentSetting: EnvironmentSetting) => void
-  environmentSettingContext: EnvironmentSetting
-}
-
-const GlobalContext = createContext({} as GlobalContextData)
-
-export function GlobalContextProvider(props: React.PropsWithChildren) {
-  const { children } = props
-  const router = useRouter()
-  const [modal, modalContextHolder] = Modal.useModal()
-  const [messageApi, messageContextHolder] = message.useMessage({ duration: 1 })
-  const [isLogin, setIsLogin] = useState(false)
-  const pathname = usePathname()
-  const [teams, setTeams] = useState<Team[]>([]) // 存储菜单数据
-  const [needSetPassword, setNeedSetPassword]=useState(false)
-  const [environmentSettingContext,setEnvironmentSettingContext]=useState({} as EnvironmentSetting)
-  // 获取菜单数据
-  const fetchTeams = async () => {
-    try {
-      const response = await TeamQueryPage({})
-      if (response.data.success) {
-        setTeams(response.data.data)
-        return response.data.data
-      } else {
-        messageApi.error('团队加载失败')
-        return []
-      }
-    } catch (error) {
-      messageApi.error('获取团队失败')
-      return  []
-    }
-  }
-  // 使用 useEffect 监听 isLogin 变化
-  useEffect(() => {
-
-    // 判断是否登录，并且是否存在 accessToken
-    if (localStorage.getItem('accessToken')) {
-      // 当 isLogin 为 true 且 accessToken 存在时，触发后端接口请求
-      const userProfile = async () => {
-        try {
-          const response = await UserProfile()
-          if (response.data.success) {
-            if (response.data.data.teamList && response.data.data.teamList.length > 0) {
-              if (pathname.startsWith(ROUTES.LOGIN)){
-                router.push(ROUTES.TEAMS(response.data.data.teamList[0].id))
-              }
-            } else {
-              router.push(ROUTES.MAIN)
-            }
-          } else {
-            messageApi.error('用户信息加载失败')
-          }
-        } catch (error) {
-          messageApi.error('请求失败')
+        // 避免不必要的状态更新
+        if (hasToken !== isLogin) {
+            setIsLogin(hasToken);
         }
-      }
-      userProfile()
+    }, []);
+    // 使用独立的 teams hook
+    const {teams, fetchTeams, setTeams} = useTeamsContext();
 
-    } else{
-      router.push(ROUTES.LOGIN)
-    }
-  }, [isLogin, messageApi, router,pathname]) // 监听 isLogin 和 router 变化
+    const contextValue: GlobalContextData = {
+        modal,
+        isLogin,
+        setIsLogin,
+        teams,
+        fetchTeams,
+        setTeams,
+        needSetPassword,
+        setNeedSetPassword,
+        environmentSettingContext,
+        setEnvironmentSettingContext
+    };
 
-  return (
-    <MenuHelpersContextProvider>
-      <NiceModalProvider>
-        <GlobalContext.Provider
-          value={{
-            modal,
-            messageApi,
-            isLogin,
-            setIsLogin, // 正确地传递 setIsLogin
-            fetchTeams,
-            teams,
-            needSetPassword,
-            setNeedSetPassword,
-            setEnvironmentSettingContext,
-            environmentSettingContext
-          }}
-        >
-          {children}
-
-          {modalContextHolder}
-          {messageContextHolder}
-        </GlobalContext.Provider>
-      </NiceModalProvider>
-    </MenuHelpersContextProvider>
-  )
+    return (
+        <MenuHelpersContextProvider>
+            <NiceModalProvider>
+                <GlobalContext.Provider value={contextValue}>
+                    <RouterGuard> {/* 包裹路由守卫 */}
+                        {children}
+                    </RouterGuard>
+                    {modalContextHolder}
+                </GlobalContext.Provider>
+            </NiceModalProvider>
+        </MenuHelpersContextProvider>
+    );
 }
 
-export const useGlobalContext = () => useContext(GlobalContext)
+// 安全的上下文访问hook
+export function useGlobalContext() {
+    const context = useContext(GlobalContext);
+    if (!context) {
+        throw new Error('useGlobalContext must be used within a GlobalContextProvider');
+    }
+    return context;
+}

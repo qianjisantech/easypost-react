@@ -1,56 +1,44 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
-    "noEmitOnError": false, // 禁止类型错误时不输出
-    "skipLibCheck": true, // 跳过库文件类型检查
-    "strict": true, // 关闭严格模式
-    "baseUrl": "./",
     "target": "ES2020",
     "module": "ESNext",
-    "moduleResolution": "node",
-    "moduleDetection": "force",
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext"
-    ],
-    "jsx": "preserve",
-    "noEmit": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noImplicitAny": true,
-    "incremental": true,
-    "importHelpers": true,
-    "sourceMap": true,
-    "stripInternal": true,
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    "strictNullChecks": true,
+    "strict": true,
+    "baseUrl": ".",
     "paths": {
       "@/*": [
-        "./src/*"
+        "src/*"
       ]
     },
+    "jsx": "preserve",
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "incremental": true,
+    "noImplicitAny": true,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "noEmit": true,
     "plugins": [
       {
         "name": "next"
       }
-    ],
-    "allowJs": true
+    ]
   },
   "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "types/**/*.d.ts",
     "next-env.d.ts",
-    "src/**/*",
-    ".next/types/**/*.ts",
-    "./tailwind.config.ts",
-    "../../../../home/JetBrains/WebStorm 2024.1/plugins/javascript-impl/jsLanguageServicesImpl/external/lib.es5.d.ts",
-    "../../../../home/JetBrains/WebStorm 2024.1/plugins/javascript-impl/jsLanguageServicesImpl/external/lib.es5.d.ts",
-    "node_modules/.pnpm/yaml@2.7.0/node_modules/yaml/dist/schema/json-schema.d.ts",
-    "node_modules/.pnpm/yaml@2.7.0/node_modules/yaml/dist/schema/json-schema.d.ts",
-    "node_modules/.pnpm/yaml@2.7.0/node_modules/yaml/dist/schema/json-schema.d.ts",
-    "node_modules/.pnpm/yaml@2.7.0/node_modules/yaml/dist/schema/json-schema.d.ts",
-    "node_modules/.pnpm/yaml@2.7.0/node_modules/yaml/dist/schema/json-schema.d.ts"
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",

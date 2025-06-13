@@ -4,4 +4,5 @@ export const ROUTES = {
   LOGIN: '/login',
   TEAMS: (teamId: string) => `/main/teams/${teamId}`,
   MAIN: '/main',
+  CollaborationDashboard:'/main/collaborationdashboard'
 }

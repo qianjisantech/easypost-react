@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation' // 假设 TeamDetail 用于获取团队详情
 import { Button, Form, Input, message, Modal, Table } from 'antd'
 
-import { TeamDelete, TeamDetail, TeamSettingsDetail, TeamUpdate } from '@/api/team'
+import TeamAPI from '@/api/team'
 import { useGlobalContext } from '@/contexts/global'
 import { ROUTES } from '@/utils/routes'
 
@@ -21,9 +21,9 @@ const TeamSettings = ({ teamId }) => {
   }
   const fetchTeamInfo = async () => {
     try {
-      const response = await TeamSettingsDetail(teamId)
-      if (response.data.success) {
-        setTeamSettingsDetail(response.data.data)
+      const res = await TeamAPI.getSettings(teamId)
+      if (res.data.success) {
+        setTeamSettingsDetail(res.data.data)
       }
     } catch (error) {
       message.error('获取团队信息异常')
@@ -51,7 +51,7 @@ const TeamSettings = ({ teamId }) => {
       ]
     : []
 
-  const normalColumns = [
+  const normalColumns:ColumnsType = [
     {
       dataIndex: 'label',
       key: 'label',
@@ -139,7 +139,7 @@ const TeamSettings = ({ teamId }) => {
   const handleSubmit = async (values) => {
     const submitData = { id: teamId, ...values }
     try {
-      const response = await TeamUpdate(submitData)
+      const response = await TeamAPI.update(submitData)
       if (response.data.success) {
         message.success(response.data.message)
         await fetchTeamInfo()
@@ -154,7 +154,7 @@ const TeamSettings = ({ teamId }) => {
 
   // 处理解散团队
   const handleDisbandTeam = async () => {
-    const response = await TeamDelete(teamId)
+    const response = await TeamAPI.delete(teamId)
     if (response.data.success) {
       message.success(response.data.message)
       setDisbandVisible(false)

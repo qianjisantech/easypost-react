@@ -12,13 +12,12 @@ import {
   Radio,
   Row,
   Spin,
-  Table,
   Tabs,
 } from 'antd'
 
 import { ProjectCreate, ProjectQueryPage } from '@/api/project'
 import CollaborationBoard from '@/components/CollaborationBoard'
-import TeamSettings from '@/components/main/TeamSettings'
+import TeamSettings from '@/app/(main)/main/teams/[teamId]/components/TeamSettings'
 
 import MembersAndRoles from './MembersAndRoles'
 import ProjectCard from './ProjectCard'
@@ -272,9 +271,9 @@ const TeamTabs = ({ teamId }) => {
             )}
           </div>
         </TabPane>
-        <TabPane key="2" tab="协作看板">
-          <CollaborationBoard />
-        </TabPane>
+        {/*<TabPane key="2" tab="协作看板">*/}
+        {/*  <CollaborationBoard />*/}
+        {/*</TabPane>*/}
         <TabPane key="3" tab="成员/权限">
           {membersLoading ? (
             <Spin tip="加载成员和角色数据..." />
