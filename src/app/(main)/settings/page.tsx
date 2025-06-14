@@ -3,7 +3,7 @@
 import { ConfigProvider, Menu, type MenuProps, Skeleton, theme } from 'antd'
 import { LayersIcon, SettingsIcon } from 'lucide-react'
 
-import { PanelLayout } from '../components/PanelLayout'
+import { PanelLayout } from '../project/[projectId]/components/PanelLayout'
 
 type MenuItem = Required<MenuProps>['items'][number]
 

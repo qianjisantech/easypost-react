@@ -17,7 +17,7 @@ import useResizeObserver from 'use-resize-observer'
 import { useLayoutContext } from '@/contexts/layout-settings'
 import { useStyles } from '@/hooks/useStyle'
 
-import { FooterBar } from '../components/FooterBar'
+// import { FooterBar } from '../components/FooterBar'
 
 import { css } from '@emotion/css'
 
@@ -37,7 +37,7 @@ export function PanelLayout(props: PanelLayoutProps) {
   const { layoutName, left, right } = props
 
   const { panelRef, isSideMenuCollapsed, setIsSideMenuCollapsed } = useLayoutContext()
-
+  console.log('isSideMenuCollapsed:', isSideMenuCollapsed);
   const { styles } = useStyles(({ token }) => {
     const resizeHandleInner = css({
       backgroundColor: token.colorBorderSecondary,
@@ -131,18 +131,7 @@ export function PanelLayout(props: PanelLayoutProps) {
               }}
             >
               <div className="p-2">
-                <span
-                  style={{
-                    fontSize: '20px',
-                    fontWeight: 520,
-                    fontFeatureSettings: 'tnum',
-                    color: 'rgba(16, 24, 40, 0.8)',
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Segoe UI", roboto, "Helvetica Neue", arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
-                  }}
-                >
-                  {layoutName}
-                </span>
+                <span className="px-2 text-lg font-semibold">{layoutName}</span>
               </div>
 
               {left}

@@ -2,7 +2,7 @@
 'use client'
 import { Layout, theme } from 'antd'
 import { usePathname } from 'next/navigation'
-import HeaderPage from '@/app/(main)/main/Header'
+import HeaderPage from '@/app/(main)/header'
 
 import { LayoutProvider } from '@/contexts/layout-settings'
 import { useCssVariable } from '@/hooks/useCssVariable'

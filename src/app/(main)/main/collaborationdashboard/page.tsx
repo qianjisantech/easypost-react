@@ -26,17 +26,17 @@ const menuItems = [
         children: [
             {
                 key: '1-1',
-                label: '华东分部',
+                label: '客户渠道',
                 count: 12
             },
             {
                 key: '1-2',
-                label: '华南分部',
+                label: '网点经营',
                 count: 8
             },
             {
                 key: '1-3',
-                label: '华北分部',
+                label: '操作中心',
                 count: 3
             }
         ]
@@ -48,12 +48,12 @@ const menuItems = [
         children: [
             {
                 key: '2-1',
-                label: '新加坡分部',
+                label: '新加坡',
                 count: 3
             },
             {
                 key: '2-2',
-                label: '马来西亚分部',
+                label: '印度尼西亚',
                 count: 2
             }
         ]
@@ -65,17 +65,17 @@ const menuItems = [
         children: [
             {
                 key: '3-1',
-                label: '欧洲分部',
+                label: '中东',
                 count: 20
             },
             {
                 key: '3-2',
-                label: '北美分部',
+                label: '巴西',
                 count: 15
             },
             {
                 key: '3-3',
-                label: '中东分部',
+                label: '墨西哥',
                 count: 12
             }
         ]
@@ -122,63 +122,63 @@ const dashboardCards = [
     {
         title: '客户渠道',
         description: '当前运行3个ES节点，版本7.17.5，存储容量15TB，平均查询延迟120ms，最大文档数2.4亿。',
-        img: 'https://cdn.apifox.com/app/project-icon/custom/20230831/d925d46b-dca7-4bfe-9fee-524c93ba9549.png',
+        img: '/assets/svg/project/book-svgrepo-com.svg',
         views: 128,  // 确保有views字段
         favorites: 24 // 确保有favorites字段
     },
     {
         title: '操作中心',
         description: '部署DeepSeek-R1模型，参数规模70B，推理延迟350ms，支持中文理解、代码生成等能力。',
-        img: 'https://cdn.apifox.com/app/project-icon/custom/20250205/688e17f7-aa1c-4d2f-8385-fb2952139d84.jpeg',
+        img: '/assets/svg/project/book-svgrepo-com.svg',
         views: 128,  // 确保有views字段
         favorites: 24 // 确保有favorites字段
     },
     {
         title: '云仓',
         description: '集成GPT极简风格-4-turbo模型，月调用量12万次，平均响应时间1.2s，支持多轮对话和长文本理解。',
-        img: 'https://cdn.apifox.com/app/project-icon/custom/20250228/4e3d8eee-c729-4246-aace-2c25c37219fa.png',
+        img: '/assets/svg/project/book-svgrepo-com.svg',
         views: 128,  // 确保有views字段
         favorites: 24 // 确保有favorites字段
     },
     {
         title: '网络经营',
         description: '生产环境K8s集群，包含32个节点，运行容器实例156个，平均CPU利用率45%，内存使用率62%。',
-        img: 'https://cdn.apifox.com/app/project-icon/custom/20220207/32eec71d-ec28-4aad-8065-ce701687ec9f.png',
+        img: '/assets/svg/project/book-svgrepo-com.svg',
         views: 128,  // 确保有views字段
         favorites: 24 // 确保有favorites字段
     },
     {
         title: '运输',
         description: '生产环境K8s集群，包含32个节点，运行容器实例156个，平均CPU利用率45%，内存使用率62%。',
-        img: 'https://cdn.apifox.com/app/project-icon/custom/20220207/32eec71d-ec28-4aad-8065-ce701687ec9f.png',
+        img: '/assets/svg/project/book-svgrepo-com.svg',
         views: 128,  // 确保有views字段
         favorites: 24 // 确保有favorites字段
     },
     {
         title: '服务质量',
         description: '生产环境K8s集群，包含32个节点，运行容器实例156个，平均CPU利用率45%，内存使用率62%。',
-        img: 'https://cdn.apifox.com/app/project-icon/custom/20220207/32eec71d-ec28-4aad-8065-ce701687ec9f.png',
+        img: '/assets/svg/project/book-svgrepo-com.svg',
         views: 128,  // 确保有views字段
         favorites: 24 // 确保有favorites字段
     },
     {
         title: '网点经营',
         description: '生产环境K8s集群，包含32个节点，运行容器实例156个，平均CPU利用率45%，内存使用率62%。',
-        img: 'https://cdn.apifox.com/app/project-icon/custom/20220207/32eec71d-ec28-4aad-8065-ce701687ec9f.png',
+        img: '/assets/svg/project/book-svgrepo-com.svg',
         views: 128,  // 确保有views字段
         favorites: 24 // 确保有favorites字段
     },
     {
         title: '运力规划',
         description: '生产环境K8s集群，包含32个节点，运行容器实例156个，平均CPU利用率45%，内存使用率62%。',
-        img: 'https://cdn.apifox.com/app/project-icon/custom/20220207/32eec71d-ec28-4aad-8065-ce701687ec9f.png',
+        img: '/assets/svg/project/book-svgrepo-com.svg',
         views: 128,  // 确保有views字段
         favorites: 24 // 确保有favorites字段
     },
     {
         title: '基础资料',
         description: '生产环境K8s集群，包含32个节点，运行容器实例156个，平均CPU利用率45%，内存使用率62%。',
-        img: 'https://cdn.apifox.com/app/project-icon/custom/20220207/32eec71d-ec28-4aad-8065-ce701687ec9f.png',
+        img: '/assets/svg/project/book-svgrepo-com.svg',
         views: 128,  // 确保有views字段
         favorites: 24 // 确保有favorites字段
     },
@@ -251,7 +251,7 @@ export default function CollaborationDashboard() {
             }}>
                 {/* 左侧菜单 */}
                 <Sider
-                    width={250}
+                    width={280}
                     className={styles.sider}
                     style={{
                         background: 'white',
@@ -331,6 +331,7 @@ export default function CollaborationDashboard() {
                                         style={{
                                             paddingLeft: '32px !important', // 二级菜单缩进
                                             height: '40px',
+                                            alignItems: 'center',
                                             lineHeight: '40px'
                                         }}
                                     >
@@ -366,7 +367,7 @@ export default function CollaborationDashboard() {
                                         color: '#666'
                                     }}
                                 >
-                                    新增分类
+                                    新增
                                 </Button>
                             </div>
                     </Menu>
@@ -436,12 +437,26 @@ export default function CollaborationDashboard() {
                                             gap: 12,
                                             marginBottom: 12
                                         }}>
+                                            <div
+                                            style={{
+                                                position: 'absolute',
+                                                width: '60px',
+                                                height: '60px',
+                                                display: 'flex',
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                                backgroundColor: '#a6cad7',
+                                                borderRadius: '10%',
+                                            }}>
+
+                                            </div>
                                             <Image
                                                 src={card.img}
-                                                width={48}
-                                                height={48}
+                                                width={60}
+                                                height={60}
                                                 preview={false}
                                                 style={{
+                                                    alignItems: 'center',
                                                     borderRadius: '50%',
                                                     objectFit: 'cover'
                                                 }}

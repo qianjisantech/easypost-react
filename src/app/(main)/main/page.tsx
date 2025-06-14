@@ -3,7 +3,6 @@ import { Layout } from 'antd'
 import Sidebar from '@/app/(main)/main/Sidebar'
 import MainContent from "@/app/(main)/main/content";
 import CollaborationDashboard from "@/app/(main)/main/collaborationdashboard/page";
-
 const { Content, Sider } = Layout
 
 export default function MainPage() {
@@ -37,6 +36,7 @@ export default function MainPage() {
 
                 <MainContent  />
                 <CollaborationDashboard></CollaborationDashboard>
+
             </Content>
         </Layout>
     )

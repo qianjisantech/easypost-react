@@ -168,7 +168,7 @@ const Sidebar = forwardRef((props, ref) => {
                     key="board"
                     icon={<DashboardOutlined />}
                     style={{margin: '8px 0', borderRadius: '6px'}}
-                    onClick={() =>  router.push(ROUTES.CollaborationDashboard)}
+                    onClick={() =>  router.push(ROUTES.COLLABORATIONDASHBOARD)}
                 >
                     协作看板
                 </Menu.Item>

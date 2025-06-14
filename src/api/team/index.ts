@@ -65,17 +65,11 @@ const TeamAPI = {
         request.delete(`/team/delete/${id}`),
 
     /**
-     * 获取团队详情
-     */
-    getDetail: (id: string): AxiosPromise<Team> =>
-        request.get(`/team/detail/${id}`),
-
-    /**
      * 分页查询团队成员
      */
     queryMembers: (params: {
         current: number
-        teamId: string
+        name: string
         pageSize: number
     }): AxiosPromise<PageResponse<TeamMember>> =>
         request.post('/team/member/page', params),
