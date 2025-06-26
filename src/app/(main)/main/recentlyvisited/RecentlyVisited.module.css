@@ -1,0 +1,156 @@
+.container {
+    width: 100%;
+    background: #fff;
+    border-radius: 4px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* 标题区域样式 */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.listIcon {
+    font-size: 20px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.listIcon:hover {
+    color: #1890ff;
+}
+.headerTitle {
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+}
+/* 列表内容区域 */
+.itemContent {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.timestamp {
+    font-size: 14px;
+    color: #666;
+}
+
+.headerIcons {
+    display: flex;
+    gap: 24px; /* 增加图标间距 */
+    margin-right: 16px;
+}
+
+.actionIcons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+.actionIcon:hover {
+    color: #1890ff;
+}
+
+/* 列表项样式 */
+.listItem {
+    padding: 12px 0;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.listItem:hover {
+    background-color: #fafafa;
+}
+
+.ant-list {
+    width: 100%;
+    border: none;
+}
+
+.ant-list-item {
+    padding: 12px 0 !important;
+    border-bottom: none !important;
+}
+
+.ant-list-item-meta-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+/* 底部区域 */
+.itemFooter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.newTag {
+    margin-left: 8px;
+    margin-right: auto; /* Push tag to the right */
+}
+
+/* 操作按钮 */
+.itemActions {
+    display: flex;
+    gap: 24px; /* 增加图标间距 */
+    margin-right: 24px;
+}
+
+.visibleIcon {
+    font-size: 18px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.visibleIcon:hover {
+    color: #edf1f5;
+}
+/* Add this to your CSS */
+.itemMetaContent {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.itemMetaWithTag {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.itemTitleWithTag {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+/* Square avatar with rounded corners */
+.squareAvatar {
+    border-radius: 4px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+}
+
+/* Adjust the meta content alignment */
+.ant-list-item-meta-avatar {
+    margin-right: 12px;
+}
+
+.ant-list-item-meta-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

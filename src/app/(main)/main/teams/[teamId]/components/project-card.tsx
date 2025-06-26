@@ -10,24 +10,22 @@ import {
   StarOutlined,
 } from '@ant-design/icons'
 import { Button, Form, Input, message, Modal, Popover, Radio, Tooltip } from 'antd'
-import { ProjectCopy, ProjectDelete, ProjectUpdate } from '@/api/project'
-
-interface ProjectCardProps {
+import  ProjectAPI from '@/api/project'
+export interface ProjectCardProps {
   card: {
     id: string
-    projectName: string
-    isPublic: boolean
-    projectIcon: string
+    name: string
+    is_public: boolean
+    icon: string
   }
   fetchCardsData: () => void
-  teamId: string
 }
 
 interface CardStyles {
   [key: string]: React.CSSProperties
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ card, fetchCardsData, teamId }) => {
+const ProjectCard: React.FC<ProjectCardProps> = ({ card, fetchCardsData }) => {
   const router = useRouter()
   const [isHovered, setIsHovered] = useState(false)
   const [hoveredItem, setHoveredItem] = useState('')
@@ -38,12 +36,14 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ card, fetchCardsData, teamId 
 
   useEffect(() => {
     if (card) {
+      console.log('card data',card)
       form.setFieldsValue({
         id: card.id,
-        projectName: card.projectName,
-        isPublic: card.isPublic,
+        name: card.name,
+        is_public: card.is_public,
+        icon: card.icon,
       })
-      setPrivacy(card.isPublic)
+      setPrivacy(card.is_public)
     }
   }, [card, form])
 
@@ -64,7 +64,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ card, fetchCardsData, teamId 
         setIsModalVisible(true)
         return
       case '复制项目':
-        await ProjectCopy({ id: card.id, teamId: teamId })
+        await ProjectAPI.copy({newName: "", sourceId: "", id: card.id, teamId: "" })
         fetchCardsData()
         return
       case '删除项目':
@@ -74,7 +74,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ card, fetchCardsData, teamId 
           okText: '删除',
           cancelText: '取消',
           onOk: async () => {
-            await ProjectDelete(card.id)
+            await ProjectAPI.delete(card.id)
             fetchCardsData()
           },
         })
@@ -88,7 +88,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ card, fetchCardsData, teamId 
 
   const handleProjectFormSubmit = async (values: any) => {
     try {
-      await ProjectUpdate({ ...values, id: card.id })
+      await ProjectAPI.update({ ...values, id: card.id })
       fetchCardsData()
       setIsModalVisible(false)
       message.success('项目修改成功')
@@ -165,17 +165,17 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ card, fetchCardsData, teamId 
           <Image
               alt="Project Image"
               height={50}
-              src={`/assets/svg/project/${card.projectIcon}`}
+              src={`/assets/svg/project/${card.icon}`}
               width={50}
           />
         </div>
 
         <div style={styles.cardTitleContainer}>
-          <span>{card?.projectName}</span>
+          <span>{card?.name}</span>
         </div>
 
         <div style={styles.projectLabelContainer}>
-          <span style={styles.projectLabel}>{card?.isPublic ? '公开' : '私有'}</span>
+          <span style={styles.projectLabel}>{card?.is_public ? '公开' : '私有'}</span>
         </div>
 
         <div
@@ -252,8 +252,8 @@ const styles: CardStyles = {
     width: '240px',
     height: '170px',
     backgroundColor: '#fff',
-    borderRadius: '8px',
-    boxShadow: '0 10px 8px rgba(0, 0, 0, 0.1)',
+    borderRadius: '5%',
+    border: '0.5px solid rgba(0, 0, 0, 0.1)',
     transition: 'transform 0.3s, box-shadow 0.3s',
     display: 'flex',
     flexDirection: 'column',
@@ -277,7 +277,7 @@ const styles: CardStyles = {
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#a6cad7',
-    borderRadius: '10%',
+    borderRadius: '25%',
     padding: '5px',
   },
   cardTitleContainer: {

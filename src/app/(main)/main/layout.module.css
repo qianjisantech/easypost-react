@@ -1,0 +1,27 @@
+/* 调整菜单项内边距 */
+.sidebarContainer .ant-menu-item {
+    margin: 0;
+    height: 40px;
+    line-height: 40px;
+}
+
+/* 图标和文字间距 */
+.sidebarContainer .ant-menu-item .ant-menu-item-icon {
+    margin-right: 8px; /* 调整图标和文字间距 */
+    font-size: 16px;
+}
+
+.ant-layout-sider {
+    border-right: none !important;
+}
+.sidebarContainer {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 确保内容区填满剩余空间 */
+.ant-layout-content {
+    flex: 1;
+    min-width: 0; /* 防止内容溢出 */
+}

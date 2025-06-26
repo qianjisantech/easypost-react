@@ -5,9 +5,9 @@ import { useRouter } from 'next/navigation'
 import { Button, Form, Input, Layout, message, Modal, Typography } from 'antd'
 import { Content } from 'antd/es/layout/layout'
 import TeamAPI from '@/api/team'
-import { UserSetPassword } from '@/api/user'
 import { useGlobalContext } from '@/contexts/global'
 import { ROUTES } from '@/utils/routes'
+import UserAPI from "@/api/user";
 
 // 单独提取的密码设置Modal组件
 function PasswordModal({ visible, onClose, onSuccess }) {
@@ -18,9 +18,9 @@ function PasswordModal({ visible, onClose, onSuccess }) {
         try {
             const values = await form.validateFields()
             setLoading(true)
-            const response = await UserSetPassword({ password: values.password })
-            if (response.data.success) {
-                message.success(response.data.message)
+            const res = await UserAPI.setPassword({ password: values.password })
+            if (res.data.success) {
+                message.success(res.data.message)
                 onSuccess?.()
             }
         } catch (error) {

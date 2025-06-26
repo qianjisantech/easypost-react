@@ -5,7 +5,7 @@ import ProjectPage from "@/app/(main)/project/[projectId]/page";
 
 const { Sider, Content } = Layout;
 
-const SideBar = () => {
+export const ProjectSideBar = () => {
 
 
     return (
@@ -16,21 +16,19 @@ const SideBar = () => {
                         itemBg: '#f5f5f5',
                         itemHoverBg: '#e8e8e8',
                         itemSelectedBg: '#d9d9d9',
-                        itemHeight: 80,
                         itemMarginInline: 0,
                         itemPaddingInline: 0,
                     },
                 },
             }}
         >
-            <Layout style={{ height: '100vh', display: 'flex', flexDirection: 'row' }}>
-                <Sider width={100} style={{ background: '#f0f0f0' }} >
+
                     <Menu
                         mode="vertical"
                         defaultSelectedKeys={['1']}
                         style={{
                             width: '100%',
-                            height: '100%',
+                            height: '93vh',
                             alignItems: 'center',
                         }}
                     >
@@ -41,17 +39,17 @@ const SideBar = () => {
                             { key: '3', icon: <UserOutlined />, label: '项目设置' },
                             { key: '4', icon: <SettingOutlined />, label: '在线分享' },
                             { key: '5', icon: <UserOutlined />, label: '请求历史' },
-                        ].map((item) => (
+                        ].map((item,index) => (
                             <Menu.Item
                                 key={item.key}
                                 style={{
-                                    height: '60px',
+                                    height: index === 0 ? '80px' : '70px',
                                     width: '80px',
                                     display: 'flex',
                                     flexDirection: 'column',
                                     justifyContent: 'center',
                                     alignItems: 'center',
-                                    margin: '0 auto 16px',
+                                    margin: '1% auto 16px',
                                     padding: '16px 20px',
                                     gap: '16px',
                                 }}
@@ -76,10 +74,6 @@ const SideBar = () => {
                             </Menu.Item>
                         ))}
                     </Menu>
-                </Sider>
-            </Layout>
         </ConfigProvider>
     );
 };
-
-export default SideBar;

@@ -5,5 +5,8 @@ export const ROUTES = {
   TEAMS: (teamId: string) => `/main/teams/${teamId}`,
   MAIN: '/main',
   COLLABORATIONDASHBOARD:'/main/collaborationdashboard',
+  RECENTLYVISITED:  '/main/recentlyvisited',
+  MYCOLLECTION: '/main/mycollection',
+  RESOURCEMARKET:'/main/resourcemarket',
   PROJECT: (projectId: string) => `/project/${projectId}`,
 }

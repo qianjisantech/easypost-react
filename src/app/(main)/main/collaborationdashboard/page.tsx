@@ -398,6 +398,7 @@ export default function CollaborationDashboard() {
                             justifyContent: 'space-between',
                             alignItems: 'center',
                             minWidth: 0
+
                         }}>
                             <Text style={{ fontSize: 20 }}>
                                 {selectedMenuKey === 'all' ? '全部分类' :
@@ -420,13 +421,14 @@ export default function CollaborationDashboard() {
                                         style={{
                                             background: 'white',
                                             padding: 16,
-                                            borderRadius: 0,
+                                            borderRadius: 8,
                                             border: '1px solid #e8e8e8',
                                             height: 180,
                                             display: 'flex',
                                             flexDirection: 'column',
                                             boxShadow: 'none',
                                             position: 'relative'
+
                                         }}
                                         className={styles.cardContainer}
                                     >

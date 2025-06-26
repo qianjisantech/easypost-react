@@ -1,11 +1,12 @@
 // src/api/team.ts
-import request from '@/api';
+import request from '@/api/index';
 import type { AxiosPromise } from 'axios';
 
 // ==================== 类型定义 ====================
 export interface Team {
     id: string;
     name: string;
+    role_type: number;
 }
 
 export interface TeamMember {
@@ -24,14 +25,6 @@ export interface TeamSettings {
     };
 }
 
-export interface PageQueryParams {
-    pageNum: number;
-    pageSize: number;
-    keyword?: string;
-    sortField?: string;
-    sortOrder?: 'asc' | 'desc';
-}
-
 export interface PageResponse<T> {
     total: number;
     list: T[];
@@ -41,33 +34,38 @@ export interface PageResponse<T> {
 
 const TeamAPI = {
     /**
-     * 分页查询团队列表
+     * 查询团队列表
      */
-    queryPage: (params: PageQueryParams): AxiosPromise<PageResponse<Team>> =>
-        request.post('/team/page', params),
+    query: (): AxiosPromise<PageResponse<Team>> =>
+        request.get('/team/query'),
 
     /**
      * 创建团队
      */
     create: (data: Omit<Team, 'id'>): AxiosPromise<{ name: string }> =>
-        request.post('/team/create', data),
+        request.post('/team', data),
 
     /**
      * 更新团队信息
      */
     update: (data: Partial<Team> & { id: string }): AxiosPromise<void> =>
-        request.put('/team/update', data),
+        request.put('/team', data),
 
     /**
      * 删除团队
      */
     delete: (id: string): AxiosPromise<void> =>
-        request.delete(`/team/delete/${id}`),
+        request.delete(`/team/${id}`),
 
+    /**
+     * 团队详情
+     */
+    detail: (): AxiosPromise<void> =>
+        request.get(`/team/detail`),
     /**
      * 分页查询团队成员
      */
-    queryMembers: (params: {
+    memberpage: (params: {
         current: number
         name: string
         pageSize: number
@@ -96,8 +94,8 @@ const TeamAPI = {
     /**
      * 获取团队设置详情
      */
-    getSettings: (id: string): AxiosPromise<TeamSettings> =>
-        request.get(`/team/settings/detail/${id}`)
+    getSetting: (): AxiosPromise<TeamSettings> =>
+        request.get(`/team/setting`)
 };
 
 export default TeamAPI;

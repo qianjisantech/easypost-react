@@ -1,0 +1,12 @@
+/* 图标和文字间距 */
+.sidebarContainer .ant-menu-item .ant-menu-item-icon {
+    margin-right: 8px; /* 调整图标和文字间距 */
+    font-size: 16px;
+}
+
+/* 菜单项高度 */
+.sidebarContainer .ant-menu-item {
+    height: 40px;
+    line-height: 40px;
+    margin: 0;
+}

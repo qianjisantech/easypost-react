@@ -1,5 +1,5 @@
-import type React, { useEffect, useState } from 'react'
-
+import type React from 'react'
+import  { useEffect, useState } from 'react'
 import { DeleteOutlined } from '@ant-design/icons'
 import { Button, Input, Select, Table, Tabs } from 'antd'
 import { nanoid } from 'nanoid'

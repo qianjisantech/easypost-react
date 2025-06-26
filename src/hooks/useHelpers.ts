@@ -33,32 +33,26 @@ export function useHelpers() {
   ) => {
     const { newLabel } = API_MENU_CONFIG[CatalogType.Request]
 
-    addTabItem(
-      {
+    addTabItem({
         ...payload,
         key: nanoid(6),
         label: newLabel,
         contentType: MenuItemType.HttpRequest,
-        data: { tabStatus: PageTabStatus.Create },
-      },
-      config
-    )
+        data: {tabStatus: PageTabStatus.Create},
+    }, config)
   }
 
   const createDoc = (
     payload?: Partial<ApiTabItem>,
     config?: { autoActive?: boolean; replaceTab?: ApiTabItem['key'] }
   ) => {
-    addTabItem(
-      {
+    addTabItem({
         ...payload,
         key: nanoid(6),
         label: '新建 Markdown',
         contentType: MenuItemType.Doc,
-        data: { tabStatus: PageTabStatus.Create },
-      },
-      config
-    )
+        data: {tabStatus: PageTabStatus.Create},
+    }, config)
   }
 
   const createApiSchema = (
@@ -67,16 +61,13 @@ export function useHelpers() {
   ) => {
     const { newLabel } = API_MENU_CONFIG[CatalogType.Schema]
 
-    addTabItem(
-      {
+    addTabItem({
         ...payload,
         key: nanoid(6),
         label: newLabel,
         contentType: MenuItemType.ApiSchema,
-        data: { tabStatus: PageTabStatus.Create },
-      },
-      config
-    )
+        data: {tabStatus: PageTabStatus.Create},
+    }, config)
   }
 
   return {

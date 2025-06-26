@@ -9,7 +9,7 @@ import { ROUTES } from '@/utils/routes'
 import {ColumnsType} from "antd/es/table";
 import {Team} from "@/app/(main)/main/teams/[teamId]/types";
 
-const TeamSettings = ({ teamSettingInfo}) => {
+const Setting = ({ teamSetting}) => {
   const [visible, setVisible] = useState(false)
   const [disbandVisible, setDisbandVisible] = useState(false) // 控制解散团队弹窗
   const [formData, setFormData] = useState({ key: '', label: '', teamName: '' })
@@ -22,10 +22,10 @@ const TeamSettings = ({ teamSettingInfo}) => {
   }
 
   useEffect(() => {
-    if (teamSettingInfo) {
-      setTeamSettingDetail(teamSettingInfo)
+    if (teamSetting) {
+      setTeamSettingDetail(teamSetting)
     }
-  }, [teamSettingInfo])
+  }, [teamSetting])
 
   useEffect(() => {
     if (visible) {
@@ -34,11 +34,11 @@ const TeamSettings = ({ teamSettingInfo}) => {
   }, [visible, formData, form])
 
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const normalDataSource = teamSettingDetail
+  const normalDataSource = teamSetting
     ? [
-        { key: '1', label: '团队名称', value: teamSettingDetail.name },
-        { key: '2', label: '团队ID', value: teamSettingDetail.id },
-        { key: '3', label: '我的团队内昵称', value: teamSettingDetail.memeberName },
+        { key: '1', label: '团队名称', value: teamSetting.name },
+        { key: '2', label: '团队ID', value: teamSetting.id },
+        // { key: '3', label: '我的团队内昵称', value: teamSetting.name },
       ]
     : []
 
@@ -236,4 +236,4 @@ const TeamSettings = ({ teamSettingInfo}) => {
   )
 }
 
-export default TeamSettings
+export default Setting

@@ -1,19 +1,21 @@
-import React, {useState, useTransition} from 'react'
+'use client'
+import React, {useState} from 'react'
 import {Button, Form, Input, message, Spin, Space} from 'antd'
 import AuthAPI from '@/api/auth'
-import {useGlobalContext} from '@/contexts/global'
 import {LoginFieldType} from "@/app/(main)/login/types";
 import type {NamePath} from 'antd/es/form/interface';
+import useAuthStore from "@/stores/auth";
+import {ROUTES} from "@/utils/routes";
+import {useRouter} from "next/navigation";
 
-const EmailLogin = () => {
+
+export default function  EmailLogin() {
     const [form] = Form.useForm<LoginFieldType>()
     const [isCodeLogin, setIsCodeLogin] = useState(false) //判断是否是验证码登录
-    const [codeLoading, setCodeLoading] = useState(false) //验证码按钮加载状态
-    const [isPending, startTransition] = useTransition()
-    const [loading, setLoading] = useState(false) // 登录按钮加载状态
     const [countdown, setCountdown] = useState(0)
-    const {setIsLogin, setNeedSetPassword} = useGlobalContext()
-
+    const [isPending ,setIsPending] =useState(false)
+    const { loginByEmail, loading,error  } = useAuthStore()
+    const router = useRouter()
     /**
      * 发送验证码
      */
@@ -26,8 +28,8 @@ const EmailLogin = () => {
             try {
                 const email = form.getFieldValue('email' as NamePath<LoginFieldType>);
                 if (loading || countdown > 0) return
-                setCodeLoading(true)
-                const res = await AuthAPI.sendEmailCode({email})
+                // setCodeLoading(true)
+                const res = await AuthAPI.send_email_code({email})
                 if (res?.data?.success) {
                     message.success(res.data.message || '验证码发送成功')
                     setCountdown(30)
@@ -35,7 +37,7 @@ const EmailLogin = () => {
                         setCountdown((prev) => {
                             if (prev <= 1) {
                                 clearInterval(timer)
-                                setCodeLoading(false)
+
                                 return 0
                             }
                             return prev - 1
@@ -43,11 +45,10 @@ const EmailLogin = () => {
                     }, 1000)
                 } else {
                     message.error(res?.data?.message || '验证码发送失败，请重试')
-                    setCodeLoading(false)
+
                 }
             } catch (error) {
                 console.error('发送验证码失败:', error)
-                setCodeLoading(false)
                 if ((error as any).errorFields) {
                     message.error('请输入有效的邮箱地址')
                 } else {
@@ -61,7 +62,8 @@ const EmailLogin = () => {
     /**
      * 表单提交
      */
-    const handleSubmit = async () => {
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
 
         try {
             // 验证所有字段
@@ -70,34 +72,29 @@ const EmailLogin = () => {
                 email: values.email as string,
                 code: values.code as string
             })
-            setLoading(true)
+
             if (isCodeLogin) {
                 // 验证码登录/注册
-                const res = await AuthAPI.registerByEmail({
+                const res = await AuthAPI.register_by_email({
                     email: values.email as string,
                     code: values.code as string
                 })
                 if (res?.data?.success) {
                     localStorage.setItem('token', res.data.data.token)
-                    setIsLogin(true)
                     message.success(res.data.message)
-                    setNeedSetPassword(res.data.data.needSetPassword)
                 }
             } else {
-                // 密码登录
-                const res = await AuthAPI.loginByEmail({
-                    email: values.email ,
-                    password: values.password
-                })
-                if (res?.data?.success) {
-                    localStorage.setItem('token', res.data.data.token)
-                    setIsLogin(true)
-                }
+                await loginByEmail({
+                    email: values.email as string,
+                    password: values.password as string
+                });
+                router.push(ROUTES.MAIN)
             }
         } catch (error) {
-            console.error('登录错误:', error)
+            console.error(error.message);
+            message.error(error.message)
+            router.replace(ROUTES.LOGIN)
         } finally {
-            setLoading(false)
         }
     }
 
@@ -144,7 +141,7 @@ const EmailLogin = () => {
                                     size={'large'}
 
                                     disabled={countdown > 0}
-                                    loading={codeLoading}
+                                    // loading={codeLoading}
                                     style={{width: '120px', color: '#D6A5D6'}}
                                     onClick={handleSendCode}
                                 >
@@ -200,4 +197,3 @@ const EmailLogin = () => {
     )
 }
 
-export default EmailLogin

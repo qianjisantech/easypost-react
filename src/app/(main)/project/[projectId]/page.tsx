@@ -23,75 +23,78 @@ function ProjectContent() {
     const { createTabItem } = useHelpers()
 
     return (
-        <PanelLayout
-            layoutName="接口管理"
-            left={
-                <>
-                    <Flex gap={token.paddingXXS} style={{ padding: token.paddingXS }}>
-                        <InputSearch />
+       <div style={{ backgroundColor: "white",width: "100%",padding: "20px"}}>
+           <PanelLayout
+               layoutName="接口管理"
+               left={
+                   <>
+                       <Flex gap={token.paddingXXS} style={{ padding: token.paddingXS }}>
+                           <InputSearch />
 
-                        <ConfigProvider
-                            theme={{
-                                components: {
-                                    Button: {
-                                        paddingInline: token.paddingXS,
-                                        defaultBorderColor: token.colorBorderSecondary,
-                                    },
-                                },
-                            }}
-                        >
-                            <Tooltip title="显示筛选条件">
-                                <Button>
-                                    <IconText icon={<FilterIcon size={16} />} />
-                                </Button>
-                            </Tooltip>
+                           <ConfigProvider
+                               theme={{
+                                   components: {
+                                       Button: {
+                                           paddingInline: token.paddingXS,
+                                           defaultBorderColor: token.colorBorderSecondary,
+                                       },
+                                   },
+                               }}
+                           >
+                               <Tooltip title="显示筛选条件">
+                                   <Button>
+                                       <IconText icon={<FilterIcon size={16} />} />
+                                   </Button>
+                               </Tooltip>
 
-                            <Dropdown
-                                menu={{
-                                    items: [
-                                        ...[
-                                            MenuItemType.ApiDetail,
-                                            MenuItemType.HttpRequest,
-                                            MenuItemType.Doc,
-                                            MenuItemType.ApiSchema,
-                                        ].map((t) => {
-                                            const { newLabel } = API_MENU_CONFIG[getCatalogType(t)]
+                               <Dropdown
+                                   menu={{
+                                       items: [
+                                           ...[
+                                               MenuItemType.ApiDetail,
+                                               MenuItemType.HttpRequest,
+                                               MenuItemType.Doc,
+                                               MenuItemType.ApiSchema,
+                                           ].map((t) => {
+                                               const { newLabel } = API_MENU_CONFIG[getCatalogType(t)]
 
-                                            return {
-                                                key: t,
-                                                label: t === MenuItemType.Doc ? '新建 Markdown' : newLabel,
-                                                icon: <FileIcon size={16} style={{ color: token.colorPrimary }} type={t} />,
-                                                onClick: () => {
-                                                    createTabItem(t)
-                                                },
-                                            }
-                                        }),
-                                    ],
-                                }}
-                            >
-                                <Button type="primary">
-                                    <IconText icon={<PlusIcon size={18} />} />
-                                </Button>
-                            </Dropdown>
-                        </ConfigProvider>
-                    </Flex>
+                                               return {
+                                                   key: t,
+                                                   label: t === MenuItemType.Doc ? '新建 Markdown' : newLabel,
+                                                   icon: <FileIcon size={16} style={{ color: token.colorPrimary }} type={t} />,
+                                                   onClick: () => {
+                                                       createTabItem(t)
+                                                   },
+                                               }
+                                           }),
+                                       ],
+                                   }}
+                               >
+                                   <Button type="primary">
+                                       <IconText icon={<PlusIcon size={18} />} />
+                                   </Button>
+                               </Dropdown>
+                           </ConfigProvider>
+                       </Flex>
 
-                    <div className="ui-menu flex-1 overflow-y-auto">
-                        <ApiMenuContextProvider>
-                            <ApiMenu />
-                        </ApiMenuContextProvider>
-                    </div>
-                </>
-            }
-            right={<ApiTab />}
-        />
+                       <div className="ui-menu flex-1 overflow-y-auto">
+                           <ApiMenuContextProvider>
+                               <ApiMenu  />
+                           </ApiMenuContextProvider>
+                       </div>
+                   </>
+               }
+               right={<ApiTab />}
+           />
+       </div>
     )
 }
 
 export default function ProjectPage() {
     return (
-        <MenuTabProvider>
+        <MenuTabProvider  >
             <ProjectContent />
         </MenuTabProvider>
+
     )
 }

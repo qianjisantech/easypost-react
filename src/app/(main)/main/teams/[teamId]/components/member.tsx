@@ -10,8 +10,6 @@ import {
 } from '@ant-design/icons'
 import {
   Button,
-  Card,
-  Checkbox,
   Col,
   Form,
   Input,
@@ -21,18 +19,14 @@ import {
   Space,
   Table,
   Tabs,
-  Tag,
-  Typography,
+  Tag, Typography,
 } from 'antd'
 import TabPane from 'antd/es/tabs/TabPane'
 
 import TeamAPI from '@/api/team'
-import {pagination} from "@nextui-org/react";
-
-// const { Text } = Typography
-
+const { Title, Text } = Typography
 // 创建成员和角色全选组件
-const MembersAndRoles = ({ teamId }) => {
+const Member = ({ memberspage }) => {
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 5,
@@ -52,7 +46,18 @@ const MembersAndRoles = ({ teamId }) => {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResult, setSearchResult] = useState([])
   const [selectedRowKeys, setSelectedRowKeys] = useState([])
+  useEffect(() => {
+    if (memberspage!=null){
+      setPagination({
+        current: memberspage.current,
+        pageSize: memberspage.pageSize,
+        total: memberspage.total,
+        totalPages: memberspage.totalPages
+      })
+      setMembersData(memberspage.records)
+    }
 
+  }, [memberspage]);
   // 处理分页变化
   const handleTableChange = (pagination) => {
     setPagination({
@@ -85,25 +90,6 @@ const MembersAndRoles = ({ teamId }) => {
   ]
 
   const handleSearch = async (value) => {
-    try {
-      console.log('搜索关键词:', value)
-      const response = await TeamAPI.searchUsers({
-        current: pagination.current,
-        pageSize: pagination.pageSize,
-        keyword: value,
-        teamId: teamId,
-      })
-      if (response.data.success) {
-        setSearchResult(response.data.data.records)
-      } else {
-        setSearchResult([])
-      }
-    } catch (e) {
-      console.error('搜索失败:', e)
-      setSearchResult([])
-    }
-    // 重置选中项
-    setSelectedRowKeys([])
   }
   // 切换Tab时触发
   const handleTabChange = (key) => {
@@ -160,22 +146,22 @@ const MembersAndRoles = ({ teamId }) => {
 
   // 获取成员数据
   const handleQueryMembers = async () => {
-    try {
-      const res = await TeamAPI.queryMembers({
-        current: pagination.current,
-        pageSize: pagination.pageSize,
-        teamId: teamId
-      })
-      setMembersData(res.data.data.records)
-      setPagination({
-        total: res.data.data.total,
-        totalPages: res.data.data.totalPages,
-        current: res.data.data.current,
-        pageSize: res.data.data.pageSize,
-      })
-    } catch (error) {
-      console.error('Error fetching members data:', error)
-    }
+    // try {
+    //   const res = await TeamAPI.queryMembers({
+    //     current: pagination.current,
+    //     pageSize: pagination.pageSize,
+    //     teamId: teamId
+    //   })
+    //   setMembersData(res.data.data.records)
+    //   setPagination({
+    //     total: res.data.data.total,
+    //     totalPages: res.data.data.totalPages,
+    //     current: res.data.data.current,
+    //     pageSize: res.data.data.pageSize,
+    //   })
+    // } catch (error) {
+    //   console.error('Error fetching members data:', error)
+    // }
   }
   // 打开邀请弹窗
   const handleOpenInvite = () => {
@@ -185,7 +171,7 @@ const MembersAndRoles = ({ teamId }) => {
   const handleConfirmInvite = async () => {
     setInviteModalVisible(false)
     const response = await TeamAPI.inviteMembers({
-      teamId: teamId,
+      teamId: "",
       userIds: selectedRowKeys,
     })
     if (response.data.success) {
@@ -577,4 +563,4 @@ const MembersAndRoles = ({ teamId }) => {
   )
 }
 
-export default MembersAndRoles
+export default Member

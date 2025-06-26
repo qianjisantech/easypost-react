@@ -53,23 +53,23 @@ export default function AddOrUpdateProjectModal({ visible, onCancel, onOk }) {
         >
             <Form form={form} layout="vertical">
                 {/* 1. 图片上传 */}
-                <Form.Item
-                    name="image"
-                    label="项目图片"
-                    valuePropName="fileList"
-                    getValueFromEvent={(e) => e.fileList}
-                    rules={[{ required: true, message: '请上传项目图片' }]}
-                >
-                    <Upload
-                        name="avatar"
-                        listType="picture-card"
-                        showUploadList={false}
-                        beforeUpload={beforeUpload}
-                        maxCount={1}
-                    >
-                        <Button icon={<UploadOutlined />}></Button>
-                    </Upload>
-                </Form.Item>
+                {/*<Form.Item*/}
+                {/*    name="image"*/}
+                {/*    label="项目图片"*/}
+                {/*    valuePropName="fileList"*/}
+                {/*    getValueFromEvent={(e) => e.fileList}*/}
+                {/*    rules={[{ required: true, message: '请上传项目图片' }]}*/}
+                {/*>*/}
+                {/*    <Upload*/}
+                {/*        name="avatar"*/}
+                {/*        listType="picture-card"*/}
+                {/*        showUploadList={false}*/}
+                {/*        beforeUpload={beforeUpload}*/}
+                {/*        maxCount={1}*/}
+                {/*    >*/}
+                {/*        <Button icon={<UploadOutlined />}></Button>*/}
+                {/*    </Upload>*/}
+                {/*</Form.Item>*/}
 
                 {/* 2. 分类下拉框 */}
                 <Form.Item

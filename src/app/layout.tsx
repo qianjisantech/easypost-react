@@ -3,13 +3,11 @@ import type { Metadata, Viewport } from 'next'
 import { AntdRegistry } from '@ant-design/nextjs-registry'
 import { App } from 'antd'
 import '@/styles/globals.css'
-import { ThemeProviderClient } from '@/components/ThemeEditor'
 import { GlobalContextProvider } from '@/contexts/global'
 import { getPageTitle } from '@/utils'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import React, {Suspense} from "react";
 import Loading from "@/app/loading";
-
 export const metadata: Metadata = {
     icons: [{ url: '/favicon.svg', type: 'image/svg+xml' }],
     title: getPageTitle(),
@@ -28,14 +26,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <body suppressHydrationWarning>
         <AntdRegistry>
             <App>
-                <ThemeProviderClient autoSaveId="theme:persistence">
                     <GlobalContextProvider>
                         <Suspense fallback={<Loading />}>
                             {children}
                         </Suspense>
                         <SpeedInsights />
                     </GlobalContextProvider>
-                </ThemeProviderClient>
             </App>
         </AntdRegistry>
         </body>

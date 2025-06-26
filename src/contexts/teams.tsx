@@ -1,4 +1,3 @@
-// hooks/teams.ts
 'use client'
 
 import { useState } from 'react'
@@ -14,7 +13,7 @@ export function useTeamsContext() {
     const fetchTeams = async () => {
         setLoading(true)
         try {
-            const res = await TeamAPI.queryPage({pageNum: 1, pageSize: 10})
+            const res = await TeamAPI.query()
             if (res.data.success) {
                 setTeams(res.data.data)
                 return res.data.data
@@ -27,25 +26,6 @@ export function useTeamsContext() {
             return []
         } finally {
             setLoading(false)
-        }
-    }
-    //
-    const fetchTeamMembers = async (params:  any) => {
-
-        try {
-            const res = await TeamAPI.queryMembers()
-            if (res.data.success) {
-                setTeams(res.data.data)
-                return res.data.data
-            } else {
-                message.error('获取团队成员失败')
-                return []
-            }
-        } catch (error) {
-            message.error('获取团队成员失败')
-            return []
-        } finally {
-            message.error('获取团队成员失败')
         }
     }
 

@@ -291,14 +291,11 @@ export function ApiRun({ activeKey }: { activeKey: string }) {
         data: { ...values, name: menuName },
       }
       saveApiForm(menuItemData)
-      addTabItem(
-        {
+      addTabItem({
           key: menuItemId,
           label: menuName,
           contentType: MenuItemType.ApiDetail,
-        },
-        { replaceTab: tabData.key }
-      )
+      }, {replaceTab: tabData.key})
     } else {
       const menuItemData = {
         id: tabData.key,

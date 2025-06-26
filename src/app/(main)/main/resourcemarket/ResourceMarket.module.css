@@ -1,0 +1,84 @@
+.container {
+    width: 100%;
+    margin: 0 auto;
+    height:80%;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.title {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 24px !important;
+    color: #1890ff;
+}
+
+.searchArea {
+    width: 100%;
+    max-width: 600px;
+}
+
+.searchInput {
+    width: 100%;
+}
+
+.filterSection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.categoryFilter, .sortFilter {
+    display: flex;
+    align-items: center;
+}
+
+.resourceList {
+    margin-top: 24px;
+}
+
+.cardCover {
+    display: flex;
+    justify-content: center;
+    padding: 24px 0;
+    background-color: #fafafa;
+}
+
+.resourceAvatar {
+    background-color: #fff;
+    border: 1px solid #f0f0f0;
+}
+
+.tags {
+    margin: 8px 0;
+}
+
+.priceSection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+}
+
+.author {
+    font-size: 12px;
+}
+
+@media (max-width: 768px) {
+    .filterSection {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .searchInput {
+        width: 100%;
+    }
+}

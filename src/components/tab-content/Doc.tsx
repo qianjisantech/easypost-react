@@ -123,14 +123,11 @@ export function Doc() {
                     type: MenuItemType.Doc,
                     data: values,
                   })
-                  addTabItem(
-                    {
+                  addTabItem({
                       key: '',
                       label: docValue?.name || DEFAULT_DOC_NAME,
                       contentType: MenuItemType.Doc,
-                    },
-                    { replaceTab: tabData.key }
-                  )
+                  }, {replaceTab: tabData.key})
                 } else {
                   updateMenuItem({
                     id: values.id,

@@ -4,6 +4,7 @@ import useEvent from 'react-use-event-hook'
 import type { ApiTabItem, EditStatus } from '@/components/ApiTab'
 import { initialActiveTabKey, initialTabItems } from '@/data/remote'
 import { HttpMethod, type MenuItemType } from '@/enums'
+import {PageTabStatus} from "@/components/ApiTab/ApiTab.enum";
 
 interface MenuTabContextData {
   /** 当前在 Tabs 中打开的所有页签。 */
@@ -58,8 +59,8 @@ interface MenuTabHelpers {
   getTabItem: (payload: Pick<ApiTabItem, 'key'>) => ApiTabItem | undefined
   /** 添加新的页签。 */
   addTabItem: (
-    payload: { label: string; contentType: MenuItemType; key: string },
-    config?: { autoActive?: boolean; replaceTab?: ApiTabItem['key'] }
+      payload: { data: { tabStatus: PageTabStatus }; label: "新建接口"; contentType: MenuItemType; key: string },
+      config?: { autoActive?: boolean; replaceTab?: ApiTabItem["key"] } | undefined
   ) => void
   updateTabItem: (
     payload: { label: string; contentType: MenuItemType; key: string },

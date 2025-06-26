@@ -1,4 +1,4 @@
-// api/index.ts
+// api/user.ts
 import axios from 'axios'
 import { redirect } from 'next/navigation'
 import { message } from 'antd'
@@ -9,7 +9,7 @@ import type { ApiResponse } from '@/api/types'
 
 const request: AxiosInstance = axios.create({
     baseURL: '/app',
-    timeout: 10000,
+    timeout: 60000,
 })
 
 // 请求拦截器 - 自动设置 Loading
@@ -38,21 +38,16 @@ request.interceptors.response.use(
     (response: AxiosResponse<ApiResponse>) => {
         const key = response.config.url || 'default'
         useApiStore.getState().setLoading(key, false)
-
-        if (!response.data.success) {
-            message.error(response.data.message || '请求失败')
-            return Promise.reject(response)
-        }
         return response
     },
     (error: AxiosError<ApiResponse>) => {
         const key = error.config?.url || 'default'
         useApiStore.getState().setLoading(key, false)
 
-        if (error.response?.status === 401) {
-            localStorage.removeItem('token')
-            redirect(ROUTES.LOGIN)
-        }
+        // if (error.response?.status === 401) {
+        //     localStorage.removeItem('token')
+        //     redirect(ROUTES.LOGIN)
+        // }
 
         const msg = error.response?.data?.message ||
             error.message ||

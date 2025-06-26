@@ -62,9 +62,9 @@ export function ApiMenu() {
           const { title } = API_MENU_CONFIG[menuId]
 
           addTabItem({
-            key: menuId,
-            label: title,
-            contentType: menuId,
+              key: menuId,
+              label: title,
+              contentType: menuId,
           })
         } else {
           if ('customData' in node) {
@@ -76,12 +76,12 @@ export function ApiMenu() {
               catalog.type !== MenuItemType.RequestFolder
             ) {
               addTabItem({
-                key: menuId,
-                label: catalog.name,
-                contentType: catalog.type,
-                data: {
-                  tabStatus: PageTabStatus.Update,
-                },
+                  key: menuId,
+                  label: catalog.name,
+                  contentType: catalog.type,
+                  data: {
+                      tabStatus: PageTabStatus.Update,
+                  },
               })
             }
           }
