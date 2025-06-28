@@ -36,7 +36,7 @@ const RecentlyVisited: React.FC = () => {
         {
             id: '3',
             title: '项目设置',
-            url: '/projects/settings',
+            url: '/projects/setting',
             icon: '⚙️',
             timestamp: '1小时前'
         },

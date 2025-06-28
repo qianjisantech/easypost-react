@@ -1,7 +1,7 @@
 import { AnyType, UnsafeAny } from '@/types'
 
 export function getPageTitle(title?: string): string {
-  const mainTitle = 'Apifox UI'
+  const mainTitle = 'EasyPost'
 
   return title ? `${title} - ${mainTitle}` : mainTitle
 }

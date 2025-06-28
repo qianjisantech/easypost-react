@@ -22,9 +22,7 @@ import Setting from "@/app/(main)/main/teams/[teamId]/components/setting";
 import Member from "@/app/(main)/main/teams/[teamId]/components/member";
 import {Project} from "@/app/(main)/main/teams/[teamId]/components/project";
 
-
 const { Title, Text } = Typography
-const { TabPane } = Tabs
 
 const TeamContent: React.FC<TeamContentProps> = ({
                                                      teamDetail,
@@ -40,7 +38,6 @@ const TeamContent: React.FC<TeamContentProps> = ({
     const [form] = Form.useForm()
 
     // ================ 渲染组件 ================
-
     const renderTeamHeader = useMemo(() => {
         if (!teamDetail) return null
 
@@ -76,90 +73,44 @@ const TeamContent: React.FC<TeamContentProps> = ({
         )
     }, [teamDetail, activeKey])
 
-    // ================ TabPane 内容 ================
-
-    const ProjectsTabContent = () => (
-        <>
-            {projects.length === 0 ? (
-                <div style={emptyContainerStyle}>
-                    <Empty
-                        description={<Text type="secondary">暂无项目，点击右上角按钮创建</Text>}
-                        style={emptyIconStyle}
-                    />
-                </div>
-            ) : (
-                <div style={{ padding: '0 20px' }}>
-                    <Row gutter={[16, 16]} justify="start">
-                        {projects.map((project) => (
-                            <Col key={project.id} xs={24} sm={12} md={8} lg={6} xl={4}>
-                                <Text>{JSON.stringify(project)}</Text>
-                            </Col>
-                        ))}
-                    </Row>
-                </div>
-            )}
-        </>
-    )
-
-    const MembersTabContent = () => (
-        <div style={{ padding: 20 }}>
-            {members?.records?.length > 0 ? (
-                <div>
-                    <Text>{JSON.stringify(members)}</Text>
-                </div>
-            ) : (
-                <Text type="secondary">暂无成员</Text>
-            )}
-        </div>
-    )
-
-    const SettingsTabContent = () => (
-        <div style={{ padding: 20 }}>
-            {setting ? (
-                <Text>{JSON.stringify(setting)}</Text>
-            ) : (
-                <Text type="secondary">暂无设置信息</Text>
-            )}
-        </div>
-    )
+    // ================ Tabs 配置 ================
+    const tabItems = [
+        {
+            key: 'project',
+            label: '团队项目',
+            children: <Project />
+        },
+        {
+            key: 'member',
+            label: '成员/权限',
+            children: <Member memberspage={members} />
+        },
+        {
+            key: 'setting',
+            label: '团队设置',
+            children: <Setting teamSetting={setting} />
+        }
+    ]
 
     // 加载状态
     if (!teamDetail) {
         return (
-            <>
+            <div style={containerStyle}>
                 <div>团队详情没有值</div>
-            </>)
-        //     <div style={containerStyle}>
-        //         <div style={{ marginBottom: 20, marginLeft: 10 }}>
-        //             <Skeleton active paragraph={{ rows: 1 }} />
-        //         </div>
-        //         <Skeleton active paragraph={{ rows: 4 }} />
-        //     </div>
-        // )
+            </div>
+        )
     }
 
     return (
         <div style={containerStyle}>
             {renderTeamHeader}
+
             <Tabs
                 activeKey={activeKey}
                 onChange={setActiveKey}
                 style={{ padding: '0 20px' }}
-            >
-                <TabPane key="project" tab="团队项目">
-
-                    <Project ></Project>
-                </TabPane>
-
-                <TabPane key="member" tab="成员/权限">
-
-                    <Member memberspage={members}></Member>
-                </TabPane>
-
-                <TabPane key="setting" tab="团队设置">
-               <Setting teamSetting={setting}></Setting>
-                </TabPane>
-            </Tabs>
+                items={tabItems}
+            />
 
             <Modal
                 title="新建项目"

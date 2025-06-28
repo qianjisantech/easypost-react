@@ -25,6 +25,7 @@
 .headerTitle {
     font-size: 30px;
     display: flex;
+    color: #1a1a1a;
     align-items: center;
 }
 /* 列表内容区域 */

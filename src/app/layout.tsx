@@ -1,4 +1,4 @@
-// app/layout.tsx
+// app/page.tsx
 import type { Metadata, Viewport } from 'next'
 import { AntdRegistry } from '@ant-design/nextjs-registry'
 import { App } from 'antd'
@@ -7,7 +7,7 @@ import { GlobalContextProvider } from '@/contexts/global'
 import { getPageTitle } from '@/utils'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import React, {Suspense} from "react";
-import Loading from "@/app/loading";
+import { RouterLoading } from '@/components/loading/RouterLoading';
 export const metadata: Metadata = {
     icons: [{ url: '/favicon.svg', type: 'image/svg+xml' }],
     title: getPageTitle(),
@@ -27,9 +27,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <AntdRegistry>
             <App>
                     <GlobalContextProvider>
-                        <Suspense fallback={<Loading />}>
-                            {children}
-                        </Suspense>
+                        {children}
+                        {/*<Suspense fallback={<RouterLoading />}>*/}
+                        {/*   */}
+                        {/*</Suspense>*/}
                         <SpeedInsights />
                     </GlobalContextProvider>
             </App>

@@ -36,7 +36,7 @@ const RecentlyVisited: React.FC = () => {
         {
             id: '3',
             title: '项目设置',
-            url: '/projects/settings',
+            url: '/projects/setting',
             icon: '⚙️',
             timestamp: '1小时前'
         },
@@ -87,14 +87,14 @@ const RecentlyVisited: React.FC = () => {
                             }
                             description={
                                 <div className={styles.itemContent}>
-                                    最近访问：<span className={styles.timestamp}>{item.timestamp}</span>
+                                    最近访问时间：<span className={styles.timestamp}>{item.timestamp}</span>
                                 </div>
                             }
                         />
                         <div className={styles.actionIcons}>
                             {item.isNew && (
                                 <Tag color="green" className={styles.newTag}>
-                                    最近访问
+                                    最近访问时间
                                 </Tag>
                             )}
                             <LinkOutlined className={styles.listIcon} />

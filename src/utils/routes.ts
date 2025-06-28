@@ -9,4 +9,6 @@ export const ROUTES = {
   MYCOLLECTION: '/main/mycollection',
   RESOURCEMARKET:'/main/resourcemarket',
   PROJECT: (projectId: string) => `/project/${projectId}`,
+  MAIN_ORGANIZATIONS:'/main/organizations',
+  SETTINGS_ORGANIZATIONS:'/main/settings/organizations'
 }

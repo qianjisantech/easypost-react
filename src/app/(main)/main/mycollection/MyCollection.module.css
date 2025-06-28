@@ -26,6 +26,7 @@
     font-size: 30px;
     display: flex;
     align-items: center;
+    color: #1a1a1a;
 }
 /* 列表内容区域 */
 .itemContent {

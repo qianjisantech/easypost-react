@@ -42,7 +42,7 @@ const TeamAPI = {
     /**
      * 创建团队
      */
-    create: (data: Omit<Team, 'id'>): AxiosPromise<{ name: string }> =>
+    create: (data: { name: string }): AxiosPromise<{ name: string }> =>
         request.post('/team', data),
 
     /**

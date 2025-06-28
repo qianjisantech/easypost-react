@@ -23,7 +23,25 @@ const nextConfig = {
           globalAPI: true
         })
       )
-
+      config.optimization.minimizer.forEach(plugin => {
+        if (plugin.constructor.name === 'TerserPlugin') {
+          plugin.options.terserOptions = {
+            ...plugin.options.terserOptions,
+            format: { ascii_only: true } // 强制ASCII字符
+          }
+        }
+      })
+      config.module.rules.push({
+        test: /\.markdown$/,
+        use: [
+          {
+            loader: 'raw-loader',
+            options: {
+              esModule: false
+            }
+          }
+        ]
+      });
       // 优化Monaco编辑器打包
       config.optimization.splitChunks = {
         ...config.optimization.splitChunks,

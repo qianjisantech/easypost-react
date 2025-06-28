@@ -35,9 +35,9 @@ export const ProjectSideBar = () => {
                         {[
                             { key: '0', icon: <HomeOutlined />, label: '首页' },
                             { key: '1', icon: <HomeOutlined />, label: '接口管理' },
-                            { key: '2', icon: <SettingOutlined />, label: '自动化测试' },
+                            // { key: '2', icon: <SettingOutlined />, label: '自动化测试' },
                             { key: '3', icon: <UserOutlined />, label: '项目设置' },
-                            { key: '4', icon: <SettingOutlined />, label: '在线分享' },
+                            // { key: '4', icon: <SettingOutlined />, label: '在线分享' },
                             { key: '5', icon: <UserOutlined />, label: '请求历史' },
                         ].map((item,index) => (
                             <Menu.Item

@@ -45,7 +45,7 @@ const enum NavPath {
   AutoTest = '/project/auto-test',
   Shared = '/project/shared',
   History = '/project/history',
-  Settings = '/project/settings',
+  Settings = '/project/setting',
   Invite = '/project/invite',
 }
 

@@ -1,13 +1,15 @@
 'use client'
-import { Layout, Menu } from 'antd'
-import React from "react"
+import { Layout } from 'antd'
+import React from 'react';
 import{MainSideBar} from "@/app/(main)/main/sidebar";
 import HeaderPage from "@/app/(main)/header";
-import styles from './layout.module.css'; // 创建对应的CSS模块文件
+import styles from './layout.module.css';
+
 
 const { Header, Content, Footer, Sider } = Layout
 
 export default function MainLayout(props: React.PropsWithChildren) {
+
     const headerStyle: React.CSSProperties = {
         textAlign: 'center',
         color: 'rgb(242, 244, 247)',

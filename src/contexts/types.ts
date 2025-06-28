@@ -22,6 +22,8 @@ export interface GlobalContextData {
     setEnvironmentSettingContext: (environmentSetting: EnvironmentSetting) => void
     environmentSettingContext: EnvironmentSetting
     setTeams: React.Dispatch<React.SetStateAction<Team[]>> // 新增 setTeams 类型
+    setGlobalLoading: React.Dispatch<React.SetStateAction<boolean>>
+    globalLoading:boolean
 }
 
 export interface Project {

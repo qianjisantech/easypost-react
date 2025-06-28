@@ -2,18 +2,24 @@
   "name": "easypost",
   "private": true,
   "description": "Replicate the Easy Post with Next.js and Ant Design.",
-  "license": "UNLECENSED",
+  "license": "UNLICENSED",
   "type": "module",
   "scripts": {
     "prebuild": "rimraf .next/trace && exit 0",
     "build": "next build",
     "deps": "pnpm up --interactive --latest",
     "dev": "next dev",
-    "lint": "run-p lint:ts lint:es lint:css",
-    "lint:css": "stylelint **/*.css",
-    "lint:es": "eslint **/*.{ts,tsx}",
-    "lint:ts": "tsc --noEmit --skipLibCheck",
-    "start": "next start -p 9527 -H 0.0.0.0"
+    "lint": "run-p lint:*",
+    "lint:types": "tsc --noEmit --skipLibCheck",
+    "lint:es": "eslint . --ext .ts,.tsx,.js,.jsx --max-warnings 0",
+    "lint:style": "stylelint \"**/*.{css,less,scss}\"",
+    "lint:prettier": "prettier --check .",
+    "format": "run-p format:*",
+    "format:es": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
+    "format:style": "stylelint \"**/*.{css,less,scss}\" --fix",
+    "format:prettier": "prettier --write .",
+    "start": "next start -p 9527 -H 0.0.0.0",
+    "check": "run-p lint build"
   },
   "dependencies": {
     "@ant-design/cssinjs": "^1.21.1",
@@ -45,18 +51,21 @@
     "dompurify": "^3.2.3",
     "foxact": "^0.2.38",
     "framer-motion": "^12.6.3",
+    "highlight.js": "^11.11.1",
     "http-proxy-middleware": "^3.0.3",
+    "idb-keyval": "^6.2.2",
     "immer": "^10.1.1",
     "java-parser": "^2.3.3",
     "json-beautify": "^1.1.1",
     "jsonschema": "^1.5.0",
     "lodash-es": "^4.17.21",
-    "lucide-react": "^0.447.0",
+    "logan-web": "^1.1.0",
+    "lucide-react": "^0.525.0",
     "moment": "^2.30.1",
     "monaco-editor": "^0.52.2",
     "monaco-editor-webpack-plugin": "^7.1.0",
     "nanoid": "^5.0.7",
-    "next": "^14.2.14",
+    "next": "^15.3.4",
     "next-auth": "^4.24.11",
     "next-transpile-modules": "^10.0.1",
     "prismjs": "^1.29.0",
@@ -65,6 +74,7 @@
     "react-dom": "18.3.1",
     "react-flow": "^1.0.3",
     "react-json-editor-ajrm": "^2.5.14",
+    "react-markdown": "^10.1.0",
     "react-masonry-css": "^1.0.16",
     "react-resizable": "^3.0.5",
     "react-resizable-panels": "^2.1.4",
@@ -73,8 +83,12 @@
     "react-use-event-hook": "^0.9.6",
     "react18-json-view": "^0.2.8",
     "reactflow": "^11.11.4",
+    "rehype-highlight": "^7.0.2",
+    "rehype-raw": "^7.0.0",
+    "remark-gfm": "^4.0.1",
     "serialize-javascript": "^6.0.2",
     "styled-components": "^6.1.17",
+    "terser": "^5.43.1",
     "use-debounce": "^10.0.4",
     "use-resize-observer": "^9.1.0",
     "vercel": "^42.3.0",
@@ -91,10 +105,27 @@
     "@types/react-resizable": "^3.0.8",
     "@types/react-syntax-highlighter": "^15.5.13",
     "@types/serialize-javascript": "^5.0.4",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
     "autoprefixer": "^10.4.21",
+    "eslint": "^8.56.0",
+    "eslint-config-next": "^14.2.3",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-import-resolver-typescript": "^3.6.1",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.34.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-simple-import-sort": "^12.1.0",
+    "eslint-plugin-unused-imports": "^3.2.0",
     "npm-run-all": "^4.1.5",
     "postcss": "^8.5.3",
     "prefer-code-style": "1.0.0",
+    "prettier": "^3.2.5",
+    "raw-loader": "^4.0.2",
     "rimraf": "^6.0.1",
     "source-map-loader": "^5.0.0",
     "stylelint": "^16.18.0",
@@ -106,7 +137,92 @@
     "typescript": "5.8.3",
     "workbox-webpack-plugin": "^7.3.0"
   },
+  "eslintConfig": {
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:react/recommended",
+      "plugin:react-hooks/recommended",
+      "plugin:jsx-a11y/recommended",
+      "next/core-web-vitals",
+      "prettier"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "ecmaVersion": "latest",
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "jsx": true
+      },
+      "project": "./tsconfig.json"
+    },
+    "plugins": [
+      "@typescript-eslint",
+      "react",
+      "react-hooks",
+      "jsx-a11y",
+      "simple-import-sort",
+      "unused-imports"
+    ],
+    "rules": {
+      "react/react-in-jsx-scope": "off",
+      "react/prop-types": "off",
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/no-explicit-any": "warn",
+      "simple-import-sort/imports": "error",
+      "simple-import-sort/exports": "error",
+      "unused-imports/no-unused-imports": "error",
+      "unused-imports/no-unused-vars": [
+        "warn",
+        {
+          "vars": "all",
+          "varsIgnorePattern": "^_",
+          "args": "after-used",
+          "argsIgnorePattern": "^_"
+        }
+      ]
+    },
+    "settings": {
+      "react": {
+        "version": "detect"
+      }
+    }
+  },
+  "prettier": {
+    "printWidth": 100,
+    "tabWidth": 2,
+    "useTabs": false,
+    "semi": true,
+    "singleQuote": true,
+    "jsxSingleQuote": false,
+    "trailingComma": "all",
+    "bracketSpacing": true,
+    "jsxBracketSameLine": false,
+    "arrowParens": "always",
+    "endOfLine": "lf"
+  },
+  "stylelint": {
+    "extends": [
+      "stylelint-config-standard",
+      "stylelint-config-clean-order",
+      "stylelint-config-tailwindcss"
+    ],
+    "rules": {
+      "selector-class-pattern": null,
+      "keyframes-name-pattern": null,
+      "no-descending-specificity": null,
+      "function-no-unknown": [
+        true,
+        {
+          "ignoreFunctions": [
+            "theme"
+          ]
+        }
+      ]
+    }
+  },
   "engines": {
-    "node": ">=20"
+    "node": "^22.7.0",
+    "pnpm": "^9.9.0"
   }
 }
